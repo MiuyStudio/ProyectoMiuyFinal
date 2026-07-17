@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'greyscalebasic';
+  src: url('/path-to/greyscalebasic.woff2') format('woff2'),
+       url('/path-to/greyscalebasic.woff') format('woff'),
+       url('/path-to/greyscalebasic.ttf')  format('truetype');
+}
+
+body {
+  font-family: 'greyscalebasic', sans-serif;
+}

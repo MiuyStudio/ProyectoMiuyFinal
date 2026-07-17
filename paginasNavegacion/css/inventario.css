@@ -1,0 +1,178 @@
+/* Reset basico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+/* ENCABEZADO */
+.encabezado {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.encabezado h1 {
+    font-size: 18px;
+}
+
+.encabezado a {
+    color: #ccc;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.contenedorPrincipal {
+    display: flex;
+    min-height: calc(100vh - 42px);
+}
+
+/* BARRA LATERAL */
+.barraLateral {
+    width: 180px;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    padding: 10px 0;
+    flex-shrink: 0;
+}
+
+.barraLateral ul {
+    list-style: none;
+}
+
+.barraLateral ul li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #222;
+    border-bottom: 1px solid #ddd;
+}
+
+.barraLateral ul li a:hover {
+    background-color: #ddd;
+}
+
+.barraLateral ul li a.activo {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+/* AREA DE CONTENIDO */
+.areaContenido {
+    flex: 1;
+    padding: 20px;
+}
+
+/* SECCIONES */
+.seccion {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.seccion h2 {
+    margin-bottom: 12px;
+    font-size: 15px;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 6px;
+    color: #333;
+}
+
+/* FILTROS */
+.filtros {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filtros label {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+/* TABLA DE INVENTARIO */
+.tablaInventario {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.tablaInventario th,
+.tablaInventario td {
+    border: 1px solid #bbb;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tablaInventario th {
+    background-color: #e8e8e8;
+    font-weight: bold;
+}
+
+.tablaInventario tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* ESTADOS DE EQUIPOS */
+.estadoDisponible    { color: green;      font-weight: bold; }
+.estadoEnUso         { color: steelblue;  font-weight: bold; }
+.estadoMantenimiento { color: goldenrod;  font-weight: bold; }
+.estadoBaja          { color: #888;       font-weight: bold; }
+
+/* FORMULARIO */
+.grupoFormulario {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 500px;
+}
+
+.grupoFormulario label {
+    font-weight: bold;
+    color: #444;
+}
+
+.grupoFormulario input,
+.grupoFormulario select {
+    padding: 5px;
+    border: 1px solid #aaa;
+    width: 100%;
+}
+
+.botonesFormulario {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* BOTONES */
+button {
+    padding: 5px 12px;
+    cursor: pointer;
+    border: 1px solid #888;
+    background-color: #e8e8e8;
+}
+
+button:hover {
+    background-color: #d0d0d0;
+}
+
+select,
+input[type="text"] {
+    padding: 4px;
+    border: 1px solid #aaa;
+}

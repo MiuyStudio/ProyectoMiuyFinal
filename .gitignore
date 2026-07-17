@@ -1,0 +1,35 @@
+# === Seguridad y Credenciales ===
+.env
+.env.local
+sftp.json
+config.local.php
+
+# === Editores y Entornos de Desarrollo ===
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# === Archivos del Sistema Operativo ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Logs y Temporales ===
+*.log
+error_log
+tmp/
+temp/
+*.tmp
+*.bak
+
+# === Gestores de Dependencias ===
+node_modules/
+vendor/
+composer.lock
+package-lock.json
+

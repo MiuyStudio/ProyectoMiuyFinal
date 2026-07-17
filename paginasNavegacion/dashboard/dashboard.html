@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Panel General</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- cabecera de la página -->
+    <div class="encabezado">
+        <h1>Dashboard</h1>
+        <span>Usuario: Marcel Matiaude | <a href="#">Cerrar sesión</a></span>
+    </div>
+
+    <!-- layout principal -->
+    <div class="contenedorPrincipal">
+
+        <!-- menú izquierdo: solo accesos del dashboard -->
+        <div class="barraLateral">
+            <ul>
+                <li><a href="dashboard.html" class="activo">Panel General</a></li>
+                <li><a href="diagnosticos.html">Diagnósticos</a></li>
+                <li><a href="administrar_usuarios.php">Administrar Usuarios</a></li>
+            </ul>
+        </div>
+
+        <!-- contenido principal -->
+        <div class="areaContenido">
+
+            <!-- ===== FILA 1: tarjetas de resumen ===== -->
+            <!-- ===== asignaciones activas ===== -->
+            <div class="seccion">
+                <h2>Asignaciones activas</h2>
+                <table class="tablaSimple">
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th>Categoría</th>
+                            <th>Asignado a</th>
+                            <th>Rol</th>
+                            <th>Desde</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Computadora de escritorio 1</td>
+                            <td>Computadora</td>
+                            <td>Samuel Fontes</td>
+                            <td>Usuario</td>
+                            <td>01/03/2026 08:15</td>
+                        </tr>
+                        <tr>
+                            <td>Computadora de escritorio 2</td>
+                            <td>Computadora</td>
+                            <td>Alan Díaz</td>
+                            <td>Usuario</td>
+                            <td>01/03/2026 08:20</td>
+                        </tr>
+                        <tr>
+                            <td>Notebook del técnico 1</td>
+                            <td>Notebook</td>
+                            <td>Marcel Matiaude</td>
+                            <td>Técnico</td>
+                            <td>15/01/2026 09:00</td>
+                        </tr>
+                        <tr>
+                            <td>Notebook del técnico 2</td>
+                            <td>Notebook</td>
+                            <td>Santiago Bica</td>
+                            <td>Técnico</td>
+                            <td>15/01/2026 09:05</td>
+                        </tr>
+                        <tr>
+                            <td>Impresora de oficina</td>
+                            <td>Impresora</td>
+                            <td>Damián Rodriguez</td>
+                            <td>Usuario</td>
+                            <td>10/02/2026 10:30</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

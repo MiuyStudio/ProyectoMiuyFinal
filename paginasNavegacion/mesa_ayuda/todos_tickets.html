@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesa de Ayuda - Todos los Tickets</title>
+    <link rel="stylesheet" href="../css/mesa_ayuda.css">
+</head>
+<body>
+
+    <!-- cabecera de la página -->
+    <div class="encabezado">
+        <h1>Mesa de Ayuda</h1>
+        <span>Usuario: Samuel Fontes | <a href="#">Cerrar sesión</a></span>
+    </div>
+
+    <!-- layout principal -->
+    <div class="contenedorPrincipal">
+
+        <!-- menú de la izquierda -->
+        <div class="barraLateral">
+            <ul>
+                <li><a href="mesa_ayuda.html">Mis Tickets</a></li>
+                <li><a href="nuevo_ticket.html">Nuevo Ticket</a></li>
+                <li><a href="todos_tickets.html">Todos los Tickets</a></li>
+                <li><a href="equipos_atencion.html">Equipos con atención</a></li>
+            </ul>
+        </div>
+
+        <!-- contenido principal -->
+        <div class="areaContenido">
+
+            <!-- vista del técnico, muestra todos -->
+            <div class="seccion">
+                <h2>Todos los Tickets (Vista Técnico)</h2>
+                <table class="tablaTickets">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Título</th>
+                            <th>Usuario</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Técnico</th>
+                            <th>Fecha</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>No puedo acceder al sistema</td>
+                            <td>Samuel Fontes</td>
+                            <td>Alta</td>
+                            <td><span class="estadoAbierto">Abierto</span></td>
+                            <td>Sin asignar</td>
+                            <td>09/07/2026</td>
+                            <td>
+                                <button type="button">Ver</button>
+                                <button type="button">Asignarme</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Error al imprimir reportes</td>
+                            <td>Alan Díaz</td>
+                            <td>Media</td>
+                            <td><span class="estadoEnProgreso">En Progreso</span></td>
+                            <td>Marcel Matiaude</td>
+                            <td>08/07/2026</td>
+                            <td>
+                                <button type="button">Ver</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Solicitud de nuevo equipo</td>
+                            <td>Damián Rodriguez</td>
+                            <td>Baja</td>
+                            <td><span class="estadoCerrado">Cerrado</span></td>
+                            <td>Santiago Bica</td>
+                            <td>05/07/2026</td>
+                            <td>
+                                <button type="button">Ver</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

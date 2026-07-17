@@ -1,0 +1,260 @@
+/* Reset basico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+/* ENCABEZADO */
+.encabezado {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.encabezado h1 {
+    font-size: 18px;
+}
+
+.encabezado a {
+    color: #ccc;
+}
+
+/* CONTENEDOR PRINCIPAL: barra lateral + contenido */
+.contenedorPrincipal {
+    display: flex;
+    min-height: calc(100vh - 42px);
+}
+
+/* BARRA LATERAL */
+.barraLateral {
+    width: 180px;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.barraLateral ul {
+    list-style: none;
+}
+
+.barraLateral ul li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #222;
+    border-bottom: 1px solid #ddd;
+}
+
+.barraLateral ul li a:hover {
+    background-color: #ddd;
+}
+
+/* AREA DE CONTENIDO */
+.areaContenido {
+    flex: 1;
+    padding: 20px;
+}
+
+/* SECCIONES */
+.seccion h2 {
+    margin-bottom: 15px;
+    font-size: 16px;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 5px;
+}
+
+.seccion h3 {
+    margin: 15px 0 8px 0;
+    font-size: 14px;
+}
+
+/* FILTROS */
+.filtros {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filtros label {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+/* TABLA DE TICKETS */
+.tablaTickets {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.tablaTickets th,
+.tablaTickets td {
+    border: 1px solid #bbb;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+.tablaTickets th {
+    background-color: #e8e8e8;
+}
+
+.tablaTickets tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* ESTADOS */
+.estadoAbierto {
+    color: red;
+    font-weight: bold;
+}
+
+.estadoEnProgreso {
+    color: darkorange;
+    font-weight: bold;
+}
+
+.estadoCerrado {
+    color: green;
+    font-weight: bold;
+}
+
+/* FORMULARIO */
+.grupoFormulario {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 500px;
+}
+
+.grupoFormulario input,
+.grupoFormulario select,
+.grupoFormulario textarea {
+    padding: 5px;
+    border: 1px solid #aaa;
+    width: 100%;
+}
+
+.botonesFormulario {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* FICHA DE DETALLE */
+.fichaTicket {
+    border: 1px solid #bbb;
+    padding: 12px;
+    margin: 10px 0;
+    max-width: 600px;
+    background-color: #fafafa;
+}
+
+.filaDetalle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.filaDetalle p {
+    margin-top: 4px;
+}
+
+/* HISTORIAL DE COMENTARIOS */
+.historialComentarios {
+    border: 1px solid #bbb;
+    padding: 10px;
+    max-width: 600px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    background-color: #fafafa;
+}
+
+.comentario {
+    border-bottom: 1px solid #ddd;
+    padding: 6px 0;
+}
+
+.comentario:last-child {
+    border-bottom: none;
+}
+
+/* AGREGAR COMENTARIO */
+.agregarComentario {
+    max-width: 600px;
+    margin-bottom: 15px;
+}
+
+.agregarComentario textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #aaa;
+    margin-bottom: 5px;
+}
+
+/* CAMBIAR ESTADO */
+.cambiarEstado {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+/* RESUMEN DE REPORTES */
+.contenedorResumen {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.cajaResumen {
+    border: 1px solid #bbb;
+    padding: 12px 20px;
+    text-align: center;
+    min-width: 100px;
+    background-color: #f5f5f5;
+}
+
+.cajaResumen h3 {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.numeroResumen {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* BOTONES */
+button {
+    padding: 5px 12px;
+    cursor: pointer;
+    border: 1px solid #888;
+    background-color: #e8e8e8;
+}
+
+button:hover {
+    background-color: #d0d0d0;
+}
+
+select,
+input[type="text"] {
+    padding: 4px;
+    border: 1px solid #aaa;
+}

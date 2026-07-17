@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesa de Ayuda - Equipos que requieren atención</title>
+    <link rel="stylesheet" href="../css/mesa_ayuda.css">
+</head>
+
+<body>
+
+    <!-- cabecera de la página -->
+    <div class="encabezado">
+        <h1>Mesa de Ayuda</h1>
+        <span>Usuario: Samuel Fontes | <a href="#">Cerrar sesión</a></span>
+    </div>
+
+    <!-- layout principal -->
+    <div class="contenedorPrincipal">
+
+        <!-- menú de la izquierda -->
+        <div class="barraLateral">
+            <ul>
+                <li><a href="mesa_ayuda.html">Mis Tickets</a></li>
+                <li><a href="nuevo_ticket.html">Nuevo Ticket</a></li>
+                <li><a href="todos_tickets.html">Todos los Tickets</a></li>
+                <li><a href="equipos_atencion.html" class="activo">Equipos con atención</a></li>
+            </ul>
+        </div>
+
+        <!-- contenido principal -->
+        <div class="areaContenido">
+
+            <div class="seccion">
+                <h2>Equipos que requieren atención</h2>
+                <table class="tablaTickets">
+                    <thead>
+                        <tr>
+                            <th>N° Serie</th>
+                            <th>Equipo</th>
+                            <th>Marca / Modelo</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SN-00041</td>
+                            <td>Computadora del laboratorio 7</td>
+                            <td>(modelo)</td>
+                            <td>Computadora</td>
+                            <td><span class="estadoEnProgreso">En Mantenimiento</span></td>
+                        </tr>
+                        <tr>
+                            <td>SN-00019</td>
+                            <td>Impresora de oficina 2</td>
+                            <td>(modelo)</td>
+                            <td>Impresora</td>
+                            <td><span class="estadoEnProgreso">En Mantenimiento</span></td>
+                        </tr>
+                        <tr>
+                            <td>SN-00033</td>
+                            <td>Switch del piso 1</td>
+                            <td>(modelo)</td>
+                            <td>Red</td>
+                            <td><span class="estadoEnProgreso">En Mantenimiento</span></td>
+                        </tr>
+                        <tr>
+                            <td>SN-00005</td>
+                            <td>Monitor del laboratorio 3</td>
+                            <td>(modelo)</td>
+                            <td>Monitor</td>
+                            <td><span class="estadoCerrado">De Baja</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

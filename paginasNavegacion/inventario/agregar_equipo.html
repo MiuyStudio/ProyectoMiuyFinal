@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - Agregar Equipo</title>
+    <link rel="stylesheet" href="../css/inventario.css">
+</head>
+
+<body>
+
+    <!-- cabecera de la página -->
+    <div class="encabezado">
+        <h1>Inventario</h1>
+        <span>Usuario: Marcel Matiaude | <a href="#">Cerrar sesión</a></span>
+    </div>
+
+    <!-- layout principal -->
+    <div class="contenedorPrincipal">
+
+        <!-- menú de la izquierda -->
+        <div class="barraLateral">
+            <ul>
+                <li><a href="inventario.html">Equipos</a></li>
+                <li><a href="categorias.html">Categorías</a></li>
+                <li><a href="agregar_equipo.html" class="activo">Agregar equipo</a></li>
+            </ul>
+        </div>
+
+        <!-- contenido principal -->
+        <div class="areaContenido">
+
+            <div class="seccion">
+                <h2>Agregar nuevo equipo</h2>
+
+                <form id="formularioEquipo">
+
+                    <div class="grupoFormulario">
+                        <label for="nombreEquipo">Nombre del equipo *</label>
+                        <input type="text" id="nombreEquipo" placeholder="Ej: Computadora del laboratorio 5">
+                    </div>
+
+                    <div class="grupoFormulario">
+                        <label for="numeroSerie">Número de serie</label>
+                        <input type="text" id="numeroSerie" placeholder="Ej: SN-00025">
+                    </div>
+
+                    <div class="grupoFormulario">
+                        <label for="marcaEquipo">Marca *</label>
+                        <input type="text" id="marcaEquipo" placeholder="Ej: Dell, HP, Lenovo">
+                    </div>
+
+                    <div class="grupoFormulario">
+                        <label for="modeloEquipo">Modelo</label>
+                        <input type="text" id="modeloEquipo" placeholder="Ej: OptiPlex 3080">
+                    </div>
+
+                    <div class="grupoFormulario">
+                        <label for="categoriaEquipo">Categoría *</label>
+                        <select id="categoriaEquipo">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="1">Computadora</option>
+                            <option value="2">Notebook</option>
+                            <option value="3">Impresora</option>
+                            <option value="4">Monitor</option>
+                            <option value="5">Red</option>
+                        </select>
+                    </div>
+
+                    <div class="botonesFormulario">
+                        <button type="button">Guardar equipo</button>
+                        <button type="button">Cancelar</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

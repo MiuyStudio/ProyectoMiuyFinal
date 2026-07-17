@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Todos los Diagnósticos</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- cabecera de la página -->
+    <div class="encabezado">
+        <h1>Dashboard</h1>
+        <span>Usuario: Marcel Matiaude | <a href="#">Cerrar sesión</a></span>
+    </div>
+
+    <!-- layout principal -->
+    <div class="contenedorPrincipal">
+
+        <!-- menú izquierdo: solo accesos del dashboard -->
+        <div class="barraLateral">
+            <ul>
+                <li><a href="dashboard.html">Panel General</a></li>
+                <li><a href="diagnosticos.html" class="activo">Diagnósticos</a></li>
+                <li><a href="administrar_usuarios.php">Administrar Usuarios</a></li>
+            </ul>
+        </div>
+
+        <!-- contenido principal -->
+        <div class="areaContenido">
+
+            <div class="seccion">
+                <h2>Todos los diagnósticos registrados</h2>
+                <table class="tablaSimple">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ticket</th>
+                            <th>Equipo</th>
+                            <th>Técnico</th>
+                            <th>Problema encontrado</th>
+                            <th>Qué se hizo</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>006</td>
+                            <td>#015</td>
+                            <td>Computadora del laboratorio 7</td>
+                            <td>Marcel Matiaude</td>
+                            <td>La fuente de poder estaba quemada</td>
+                            <td>Se reemplazó la fuente</td>
+                            <td>09/07/2026 14:30</td>
+                        </tr>
+                        <tr>
+                            <td>005</td>
+                            <td>#017</td>
+                            <td>Impresora de oficina 2</td>
+                            <td>Marcel Matiaude</td>
+                            <td>El driver estaba desactualizado</td>
+                            <td>Se actualizaron los controladores</td>
+                            <td>08/07/2026 10:15</td>
+                        </tr>
+                        <tr>
+                            <td>004</td>
+                            <td>#013</td>
+                            <td>Computadora del laboratorio 3</td>
+                            <td>Santiago Bica</td>
+                            <td>Disco duro con sectores dañados</td>
+                            <td>Se cambió el disco por uno SSD</td>
+                            <td>05/07/2026 09:00</td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>#011</td>
+                            <td>Switch del piso 1</td>
+                            <td>Santiago Bica</td>
+                            <td>Un puerto no funcionaba bien</td>
+                            <td>Se reconfiguró y se cambió el cable</td>
+                            <td>02/07/2026 11:45</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>#009</td>
+                            <td>Computadora de escritorio 5</td>
+                            <td>Santiago Bica</td>
+                            <td>El sistema operativo estaba corrupto</td>
+                            <td>Se reinstaló Windows</td>
+                            <td>25/06/2026 08:30</td>
+                        </tr>
+                        <tr>
+                            <td>001</td>
+                            <td>#007</td>
+                            <td>Monitor del laboratorio 3</td>
+                            <td>Marcel Matiaude</td>
+                            <td>No encendía al conectarlo</td>
+                            <td>Se diagnosticó falla interna, dado de baja</td>
+                            <td>18/06/2026 16:00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

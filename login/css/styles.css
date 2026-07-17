@@ -1,0 +1,240 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #000000;
+    z-index: 0;
+}
+
+
+.contenedor {
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    height: 100vh;
+    z-index: 2;
+}
+
+.col-izq {
+    border: 3px solid white;
+    border-radius: 10px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    background-color: black;
+    opacity: 0.8;
+    grid-row: span 5;
+    margin-right: 40px;
+    margin-left: 20%;
+}
+
+.col-izq p {
+    margin-top: 120px;
+    color: white;
+    font-size: 50px;
+    text-align: center;
+}
+
+.col-der {
+    grid-row: span 5;
+    margin-left: 40px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border: 3px solid white; */
+    /* border-radius: 10px; */
+}
+
+.col-der p {
+    color: white;
+    text-align: center;
+}
+
+.col-der img {
+    width: 100%;
+    height: 100%;
+    filter: opacity(0.8);
+    object-fit: cover;
+}
+
+.tarjeta {
+    display: flex;
+    /* width: 420px; */
+    height: 100%;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg,
+            rgb(0, 0, 0) 9%,
+            rgb(43, 43, 44) 68%,
+            rgb(45, 46, 48) 97%);
+    backdrop-filter: blur(9px);
+    color: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    /* border: 3px solid red; */
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo-login {
+    font-size: 36px;
+    text-align: center;
+}
+
+.tarjeta .campo {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.campo input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+}
+
+.campo input::placeholder {
+    color: #fff;
+}
+
+.tarjeta .opciones {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.opciones label input {
+    accent-color: #fff;
+    margin-right: 3px;
+}
+
+.opciones a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.opciones a:hover {
+    text-decoration: underline;
+}
+
+.tarjeta .boton {
+    /* border: 3px solid rgb(255, 27, 27); */
+    width: 120px;
+    height: 45px;
+    background: #fff;
+    /* border: none; */
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+.tarjeta .enlace-registro {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.enlace-registro p a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.enlace-registro p {
+    font-size: 16px;
+}
+
+.enlace-registro p a:hover {
+    text-decoration: underline;
+}
+
+.col-izq button {
+    border: none;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.185);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: large;
+    color: white;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.col-izq button:hover {
+    background-color: rgba(255, 251, 251, 0.884);
+    transform: scale(1.05);
+}
+
+@media screen and (max-width: 768px) {
+    .contenedor {
+        display: flex;
+        flex-direction: column-reverse;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .col-der {
+        display: flex;
+        height: 220px;
+        width: 220px;
+        margin-top: 30px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .col-der p {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        font-size: 25px;
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .col-izq {
+        display: flex;
+        flex-direction: column;
+        height: 600px;
+        width: 300px;
+        justify-content: center;
+        margin-top: 30px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .col-izq p {
+        display: flex;
+        height: 15%;
+        width: 100%;
+        font-size: 25px;
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+}

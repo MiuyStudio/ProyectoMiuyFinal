@@ -1,0 +1,186 @@
+/* Reset general y tipografía */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #121212;
+    /* Fondo oscuro moderno */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Contenedor de la aplicación */
+.contenedor {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Barra lateral */
+.barra-lateral {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    /* Gris oscuro para el panel lateral */
+    width: 260px;
+    height: 100%;
+    border-right: 2px solid #2e2e2e;
+    padding: 20px 15px;
+    justify-content: space-between;
+    /* Empuja los idiomas hacia abajo */
+}
+
+/* Cabecera (Logo y título de la UTU) */
+.cabecera {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2e2e2e;
+}
+
+.cabecera img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.cabecera p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Lista de botones */
+.botones {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+    flex-grow: 1;
+    /* Ocupa el espacio disponible del centro */
+}
+
+/* Enlaces estilo botón */
+.boton-nav {
+    display: block;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* Efecto al pasar el mouse por encima */
+.boton-nav:hover {
+    background-color: #3a3a3a;
+    transform: translateX(5px);
+    /* Desplazamiento a la derecha */
+}
+
+/* Estado de foco (cuando haces click en un botón) */
+.boton-nav:focus {
+    background-color: #2e7d32;
+    /* Verde agradable cuando se hace clic */
+    border-color: #4caf50;
+    font-weight: bold;
+}
+
+/* Panel inferior para el idioma */
+.idiomas {
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #2e2e2e;
+    padding-top: 20px;
+    justify-content: center;
+}
+
+.idiomas button {
+    background-color: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.idiomas button:hover {
+    background-color: #3a3a3a;
+    transform: scale(1.1);
+    /* Agranda un poquito el botón de idioma */
+}
+
+/* Iframe de contenido (Visor) */
+#visor {
+    flex-grow: 1;
+    height: 100%;
+    background-color: #1a1a1a;
+    border: none;
+    padding: 10px;
+}
+
+/* RESPONSIVE: Diseño adaptativo para dispositivos móviles */
+@media (max-width: 768px) {
+    .contenedor {
+        flex-direction: column;
+        /* Pasa de horizontal a vertical */
+    }
+
+    .barra-lateral {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 2px solid #2e2e2e;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .cabecera {
+        border-bottom: none;
+        padding-bottom: 0;
+        justify-content: center;
+    }
+
+    .botones {
+        flex-direction: row;
+        /* Coloca los botones uno al lado de otro */
+        flex-wrap: wrap;
+        /* Permite que bajen de línea si no caben */
+        justify-content: center;
+        margin-top: 10px;
+        gap: 8px;
+    }
+
+    .boton-nav {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    .boton-nav:hover {
+        transform: none;
+        /* Desactiva el movimiento horizontal en móviles */
+    }
+
+    .idiomas {
+        border-top: none;
+        padding-top: 0;
+    }
+
+    #visor {
+        height: calc(100vh - 190px);
+        /* Ajusta dinámicamente la altura del visor en celulares */
+        padding: 5px;
+    }
+}
