@@ -22,8 +22,8 @@
         <!-- menú de la izquierda -->
         <div class="barraLateral">
             <ul>
-                <li><a href="mesa_ayuda.html">Mis Tickets</a></li>
-                <li><a href="nuevo_ticket.html">Nuevo Ticket</a></li>
+                <li><a href="mesa_ayuda.php">Mis Tickets</a></li>
+                <li><a href="nuevo_ticket.php">Nuevo Ticket</a></li>
                 <li><a href="todos_tickets.html">Todos los Tickets</a></li>
                 <li><a href="equipos_atencion.html">Equipos con atención</a></li>
             </ul>

@@ -1,47 +1,30 @@
 <?php
-/**
- * Función manual para cargar variables de entorno de forma compatible
- */
-function cargarEnv($ruta) {
-    if (!file_exists($ruta)) {
-        return;
-    }
-    $lineas = file($ruta, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lineas as $linea) {
-        // Ignorar comentarios
-        if (strpos(trim($linea), '#') === 0) {
-            continue;
-        }
-        // Dividir la línea en nombre y valor
-        if (strpos($linea, '=') !== false) {
-            list($nombre, $valor) = explode('=', $linea, 2);
-            $nombreClean = trim($nombre);
-            $valorClean = trim($valor);
-            
-            // Guardar en múltiples arrays para asegurar compatibilidad total
-            $_ENV[$nombreClean] = $valorClean;
-            $_SERVER[$nombreClean] = $valorClean;
-        }
-    }
+// CONEXIÓN A LA BASE DE DATOS USANDO .ENV Y MYSQLI
+
+// 1. Leer el archivo .env en una sola línea usando la función nativa parse_ini_file
+$env = file_exists(__DIR__ . '/.env') ? parse_ini_file(__DIR__ . '/.env') : [];
+// parse_ini_file(__DIR__ . '/.env') toma todo el archivo .env y lo convierte automáticamente en un array $env['DB_HOST'], $env['DB_USER'], etc.
+
+
+// 2. Tomar los datos del .env (si no existen, usa los valores por defecto de XAMPP)
+$db_host = $env['DB_HOST']     ?? 'localhost';
+$db_user = $env['DB_USER']     ?? 'root';
+$db_pass = $env['DB_PASS']     ?? $env['DB_PASSWORD'] ?? '';
+$db_name = $env['DB_NAME']     ?? 'bd_proyectofinal';
+
+// El operador ?? se llama operador de fusión nula (Null Coalescing Operator).
+// En palabras sencillas, significa: "Si lo de la izquierda existe, úsalo. Si no existe, usa lo de la derecha como plan B".
+
+
+
+// 3. Crear la conexión con la base de datos usando MySQLi
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+// 4. Verificar si hubo algún error al conectar
+if ($conn->connect_error) {
+    die("Error al conectar con la base de datos: " . $conn->connect_error);
 }
 
-// Detectar entorno
-$is_localhost = ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_ADDR'] === '127.0.0.1');
-
-// Cargar el archivo .env desde la raíz
-cargarEnv(__DIR__ . '/.env');
-
-// Asignación de variables buscando en $_ENV, $_SERVER o usando el fallback de desarrollo
-$db_host = $_ENV['DB_HOST'] ?? $_SERVER['DB_HOST'] ?? 'localhost';
-$db_user = $_ENV['DB_USER'] ?? $_SERVER['DB_USER'] ?? 'root';
-$db_pass = $_ENV['DB_PASS'] ?? $_SERVER['DB_PASS'] ?? '';
-$db_name = $_ENV['DB_NAME'] ?? $_SERVER['DB_NAME'] ?? 'bd_proyectofinal';
-
-try {
-    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error crítico de conexión: " . $e->getMessage());
-}
+// 5. Soporte para caracteres especiales (acentos, eñes, etc.)
+$conn->set_charset("utf8mb4");
 ?>

@@ -20,7 +20,7 @@
             <!-- Lista de botones de navegación -->
             <ul class="botones">
                 <li><a href="paginasNavegacion/inventario/inventario.html" target="visor-paginas" class="boton-nav">Inventario</a></li>
-                <li><a href="paginasNavegacion/mesa_ayuda/mesa_ayuda.html" target="visor-paginas" class="boton-nav">Mesa de Ayuda</a></li>
+                <li><a href="paginasNavegacion/mesa_ayuda/mesa_ayuda.php" target="visor-paginas" class="boton-nav">Mesa de Ayuda</a></li>
                 <li><a href="paginasNavegacion/dashboard/dashboard.html" target="visor-paginas" class="boton-nav">Dashboard</a></li>
             </ul>
             

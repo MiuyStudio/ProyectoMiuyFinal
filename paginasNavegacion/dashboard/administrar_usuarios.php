@@ -11,7 +11,7 @@
     <?php 
     require_once '../../conexion.php';
     $sql = "SELECT * FROM usuarios";
-    $resultado = $pdo->query($sql); // PDO usa la variable $pdo
+    $resultado = $conn->query($sql);
     ?>
 
     <!-- Cabecera de la pagina -->
@@ -49,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while($fila = $resultado->fetch()): ?>
+                        <?php while($fila = $resultado->fetch_assoc()): ?>
                             <tr>
                                 <td><?php echo $fila['id_usuario']; ?></td>
                                 <td><?php echo $fila['nombre'] . ' ' . $fila['apellido']; ?></td>

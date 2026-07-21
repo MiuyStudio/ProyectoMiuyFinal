@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesa de Ayuda - Nuevo Ticket</title>
     <link rel="stylesheet" href="../css/mesa_ayuda.css">
 </head>
-<body>
 
+<body>
+    <?php
+    require_once '../../conexion.php';
+    $sql = "SELECT * FROM categorias";
+    $resultado = $conn->query($sql);
+    ?>
     <!-- cabecera de la página -->
     <div class="encabezado">
         <h1>Mesa de Ayuda</h1>
@@ -20,8 +26,8 @@
         <!-- menú de la izquierda -->
         <div class="barraLateral">
             <ul>
-                <li><a href="mesa_ayuda.html">Mis Tickets</a></li>
-                <li><a href="nuevo_ticket.html">Nuevo Ticket</a></li>
+                <li><a href="mesa_ayuda.php">Mis Tickets</a></li>
+                <li><a href="nuevo_ticket.php">Nuevo Ticket</a></li>
                 <li><a href="todos_tickets.html">Todos los Tickets</a></li>
                 <li><a href="equipos_atencion.html">Equipos con atención</a></li>
             </ul>
@@ -44,12 +50,11 @@
                         <label for="categoriaTicket">Categoría *</label>
                         <select id="categoriaTicket">
                             <option value="">-- Seleccionar --</option>
-                            <option value="acceso">Acceso / Contraseñas</option>
-                            <option value="hardware">Hardware</option>
-                            <option value="software">Software</option>
-                            <option value="red">Red / Internet</option>
-                            <option value="impresion">Impresión</option>
-                            <option value="otro">Otro</option>
+                            <?php while($fila = $resultado->fetch_assoc()): ?>
+                            <option value="<?php echo $fila['id_categoria']; ?>">
+                                <?php echo $fila['nombre_categoria']; ?>
+                            </option>
+                            <?php endwhile; ?>
                         </select>
                     </div>
 
@@ -65,7 +70,8 @@
 
                     <div class="grupoFormulario">
                         <label for="descripcionTicket">Descripción detallada *</label>
-                        <textarea id="descripcionTicket" rows="5" placeholder="Describí el problema con el mayor detalle posible..."></textarea>
+                        <textarea id="descripcionTicket" rows="5"
+                            placeholder="Describí el problema con el mayor detalle posible..."></textarea>
                     </div>
 
                     <div class="grupoFormulario">
@@ -85,4 +91,5 @@
     </div>
 
 </body>
+
 </html>
