@@ -81,8 +81,8 @@
                         <select id="nuevoRol">
                             <?php
                                 $sql_roles = "SELECT * FROM roles";
-                                $resultado_roles = $pdo->query($sql_roles);
-                                while($fila_rol = $resultado_roles->fetch()):
+                                $resultado_roles = $conn->query($sql_roles);
+                                while($fila_rol = $resultado_roles->fetch_assoc()):
                             ?>
                                 <option value="<?php echo $fila_rol['id_rol']; ?>">
                                     <?php echo $fila_rol['nombre_rol']; ?>
