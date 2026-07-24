@@ -11,7 +11,7 @@
 <body>
     <?php
     require_once '../../conexion.php';
-    $sql = "SELECT * FROM categorias";
+    $sql = "SELECT nombre_categoria FROM categorias WHERE id_categoria BETWEEN 1 AND 6";
     $resultado = $conn->query($sql);
     ?>
     <!-- cabecera de la página -->
@@ -47,13 +47,20 @@
                     </div>
 
                     <div class="grupoFormulario">
+                        <label for="tipoTicket">Tipo de ticket *</label>
+                        <select id="tipoTicket">
+                            <option value="Incidencia">Incidencia</option>
+                            <option value="Solicitud de Servicio">Solicitud de Servicio</option>
+                        </select>
+                    </div>
+
+                    <div class="grupoFormulario">
                         <label for="categoriaTicket">Categoría *</label>
                         <select id="categoriaTicket">
-                            <option value="">-- Seleccionar --</option>
-                            <?php while($fila = $resultado->fetch_assoc()): ?>
-                            <option value="<?php echo $fila['id_categoria']; ?>">
-                                <?php echo $fila['nombre_categoria']; ?>
-                            </option>
+                            <?php while ($fila = $resultado->fetch_assoc()): ?>
+                                <option value="<?php echo $fila['nombre_categoria']; ?>">
+                                    <?php echo $fila['nombre_categoria']; ?>
+                                </option>
                             <?php endwhile; ?>
                         </select>
                     </div>
@@ -61,7 +68,6 @@
                     <div class="grupoFormulario">
                         <label for="prioridadTicket">Prioridad *</label>
                         <select id="prioridadTicket">
-                            <option value="">-- Seleccionar --</option>
                             <option value="alta">Alta</option>
                             <option value="media">Media</option>
                             <option value="baja">Baja</option>

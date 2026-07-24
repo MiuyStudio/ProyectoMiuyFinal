@@ -127,10 +127,25 @@ body {
 }
 
 /* ESTADOS DE EQUIPOS */
-.estadoDisponible    { color: green;      font-weight: bold; }
-.estadoEnUso         { color: steelblue;  font-weight: bold; }
-.estadoMantenimiento { color: goldenrod;  font-weight: bold; }
-.estadoBaja          { color: #888;       font-weight: bold; }
+.estadoDisponible {
+    color: green;
+    font-weight: bold;
+}
+
+.estadoEnUso {
+    color: steelblue;
+    font-weight: bold;
+}
+
+.estadoEnMantenimiento {
+    color: goldenrod;
+    font-weight: bold;
+}
+
+.estadoDeBaja {
+    color: #888;
+    font-weight: bold;
+}
 
 /* FORMULARIO */
 .grupoFormulario {
@@ -175,4 +190,17 @@ select,
 input[type="text"] {
     padding: 4px;
     border: 1px solid #aaa;
+}
+
+.btn-cancelar {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid #888;
+    background-color: #e8e8e8;
+    color: #000;
+    text-decoration: none;
+}
+
+.btn-cancelar:hover {
+    background-color: #d0d0d0;
 }

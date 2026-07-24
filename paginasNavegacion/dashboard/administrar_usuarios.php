@@ -64,37 +64,7 @@
                 </table>
             </div>
 
-            <!-- Formulario para registrar un usuario nuevo -->
-            <div class="seccion">
-                <h2>Crear Nuevo Usuario</h2>
-                <form class="formularioUsuario">
-                    <div class="grupoFormulario">
-                        <label for="nuevoNombre">Nombre Completo</label>
-                        <input type="text" id="nuevoNombre" placeholder="Ej: Marcel Matiaude">
-                    </div>
-                    <div class="grupoFormulario">
-                        <label for="nuevoUsuario">Cédula</label>
-                        <input type="text" id="nuevoUsuario" placeholder="Ej: 512345678">
-                    </div>
-                    <div class="grupoFormulario">
-                        <label for="nuevoRol">Rol Inicial</label>
-                        <select id="nuevoRol">
-                            <?php
-                                $sql_roles = "SELECT * FROM roles";
-                                $resultado_roles = $conn->query($sql_roles);
-                                while($fila_rol = $resultado_roles->fetch_assoc()):
-                            ?>
-                                <option value="<?php echo $fila_rol['id_rol']; ?>">
-                                    <?php echo $fila_rol['nombre_rol']; ?>
-                                </option>
-                            <?php endwhile; ?>
-                        </select>
-                    </div>
-                    <div class="botonesFormulario">
-                        <button type="button" class="btn btn-crear">Crear Usuario</button>
-                    </div>
-                </form>
-            </div>
+
 
         </div>
     </div>

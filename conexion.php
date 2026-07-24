@@ -3,19 +3,12 @@
 
 // 1. Leer el archivo .env en una sola línea usando la función nativa parse_ini_file
 $env = file_exists(__DIR__ . '/.env') ? parse_ini_file(__DIR__ . '/.env') : [];
-// parse_ini_file(__DIR__ . '/.env') toma todo el archivo .env y lo convierte automáticamente en un array $env['DB_HOST'], $env['DB_USER'], etc.
-
 
 // 2. Tomar los datos del .env (si no existen, usa los valores por defecto de XAMPP)
 $db_host = $env['DB_HOST']     ?? 'localhost';
 $db_user = $env['DB_USER']     ?? 'root';
 $db_pass = $env['DB_PASS']     ?? $env['DB_PASSWORD'] ?? '';
 $db_name = $env['DB_NAME']     ?? 'bd_proyectofinal';
-
-// El operador ?? se llama operador de fusión nula (Null Coalescing Operator).
-// En palabras sencillas, significa: "Si lo de la izquierda existe, úsalo. Si no existe, usa lo de la derecha como plan B".
-
-
 
 // 3. Crear la conexión con la base de datos usando MySQLi
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
