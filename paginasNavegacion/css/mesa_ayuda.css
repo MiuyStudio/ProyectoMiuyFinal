@@ -215,32 +215,6 @@ body {
     margin-top: 8px;
 }
 
-/* RESUMEN DE REPORTES */
-.contenedorResumen {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.cajaResumen {
-    border: 1px solid #bbb;
-    padding: 12px 20px;
-    text-align: center;
-    min-width: 100px;
-    background-color: #f5f5f5;
-}
-
-.cajaResumen h3 {
-    font-size: 12px;
-    margin-bottom: 5px;
-}
-
-.numeroResumen {
-    font-size: 24px;
-    font-weight: bold;
-}
-
 /* BOTONES */
 button {
     padding: 5px 12px;
