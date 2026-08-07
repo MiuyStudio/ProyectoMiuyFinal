@@ -15,15 +15,18 @@
         exit();
     }
 
-    // Equipos en mantenimiento o de baja
+    // Equipos vinculados a tickets de soporte en Mesa de Ayuda
     $sql = "SELECT e.id_equipo, e.numero_serie, e.nombre, e.estado,
-                   m.nombre_marca, mo.nombre_modelo, c.nombre_categoria
+                   m.nombre_marca, mo.nombre_modelo, c.nombre_categoria,
+                   COUNT(t.id_ticket) AS total_tickets,
+                   MAX(t.fecha_creacion) AS ultima_incidencia
             FROM equipos e
+            INNER JOIN tickets t ON e.id_equipo = t.id_equipo
             LEFT JOIN marcas m ON e.id_marca = m.id_marca
             LEFT JOIN modelos mo ON e.id_modelo = mo.id_modelo
-            INNER JOIN categorias c ON e.id_categoria = c.id_categoria
-            WHERE e.estado IN ('En Mantenimiento', 'De Baja')
-            ORDER BY e.estado ASC, e.nombre ASC";
+            LEFT JOIN categorias c ON e.id_categoria = c.id_categoria
+            GROUP BY e.id_equipo
+            ORDER BY total_tickets DESC, ultima_incidencia DESC";
     $res = $conn->query($sql);
     ?>
 <!DOCTYPE html>
@@ -32,8 +35,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mesa de Ayuda - Equipos con atención</title>
+    <title>Mesa de Ayuda - Equipos atendidos en soporte</title>
     <link rel="stylesheet" href="../css/mesa_ayuda.css">
+    <link rel="stylesheet" href="../css/inventario.css">
 </head>
 
 <body>
@@ -63,7 +67,7 @@
         <div class="areaContenido">
 
             <div class="seccion">
-                <h2>Equipos que requieren atención</h2>
+                <h2>Equipos Atendidos en Soporte Técnico</h2>
 
                 <table class="tablaTickets">
                     <thead>
@@ -72,7 +76,9 @@
                             <th>Equipo</th>
                             <th>Marca / Modelo</th>
                             <th>Categoría</th>
-                            <th>Estado</th>
+                            <th>Tickets Reportados</th>
+                            <th>Estado Actual</th>
+                            <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,18 +86,26 @@
                             <?php while ($eq = $res->fetch_assoc()): ?>
                             <tr>
                                 <td><?php echo htmlspecialchars($eq['numero_serie'] ?? '—'); ?></td>
-                                <td><?php echo htmlspecialchars($eq['nombre']); ?></td>
+                                <td><strong><?php echo htmlspecialchars($eq['nombre']); ?></strong></td>
                                 <td><?php echo htmlspecialchars(($eq['nombre_marca'] ?? '') . ' ' . ($eq['nombre_modelo'] ?? '')); ?></td>
-                                <td><?php echo htmlspecialchars($eq['nombre_categoria']); ?></td>
+                                <td><?php echo htmlspecialchars($eq['nombre_categoria'] ?? '—'); ?></td>
                                 <td>
-                                    <span class="estado<?php echo str_replace(' ', '', $eq['estado']); ?>">
+                                    <span style="background: #e3f2fd; color: #0d47a1; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 12px;">
+                                        <?php echo $eq['total_tickets']; ?> ticket(s)
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge-equipo estado<?php echo str_replace(' ', '', $eq['estado']); ?>">
                                         <?php echo htmlspecialchars($eq['estado']); ?>
                                     </span>
+                                </td>
+                                <td>
+                                    <a href="../inventario/ver_equipo.php?id=<?php echo $eq['id_equipo']; ?>"><button type="button">Ver Ficha</button></a>
                                 </td>
                             </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
-                            <tr><td colspan="5">No hay equipos en mantenimiento o de baja.</td></tr>
+                            <tr><td colspan="7">No hay equipos vinculados a tickets de soporte registrados aún.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
