@@ -11,6 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+    if (preg_match('/[^0-9]/', $ci)) {
+        header("Location: index.php?error=" . urlencode("Ingrese su cédula solo con números, sin puntos ni guiones."));
+        exit();
+    }
+
     $ci_clean = $conn->real_escape_string($ci);
     $contrasena_clean = $conn->real_escape_string($contrasena);
     $contrasena_encriptada = md5($contrasena_clean);
