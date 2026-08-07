@@ -14,8 +14,8 @@
     $sql_cat = "SELECT id_categoria, nombre_categoria FROM categorias WHERE id_categoria BETWEEN 1 AND 6";
     $res_cat = $conn->query($sql_cat);
 
-    // Equipos para el campo opcional
-    $res_eq = $conn->query("SELECT id_equipo, nombre FROM equipos ORDER BY nombre ASC");
+    // Equipos para el campo opcional (excluyendo equipos dados de baja)
+    $res_eq = $conn->query("SELECT id_equipo, nombre FROM equipos WHERE estado != 'De Baja' ORDER BY nombre ASC");
     ?>
 <!DOCTYPE html>
 <html lang="es">
