@@ -1,240 +1,252 @@
+/* RESET GENERAL */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #000000;
-    z-index: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #050505;
+    color: #ffffff;
+    overflow-x: hidden;
 }
 
-
+/* CONTENEDOR PRINCIPAL */
 .contenedor {
-    display: grid;
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
     position: relative;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    height: 100vh;
+}
+
+/* COLUMNA IZQUIERDA (FORMULARIO) */
+.col-izq {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
     z-index: 2;
 }
 
-.col-izq {
-    border: 3px solid white;
-    border-radius: 10px;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    background-color: black;
-    opacity: 0.8;
-    grid-row: span 5;
-    margin-right: 40px;
-    margin-left: 20%;
+/* TARJETA DEL FORMULARIO */
+.tarjeta {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(20, 20, 20, 0.85);
+    background: linear-gradient(135deg, rgba(25, 25, 28, 0.95) 0%, rgba(15, 15, 18, 0.95) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 40px 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.col-izq p {
-    margin-top: 120px;
-    color: white;
-    font-size: 50px;
-    text-align: center;
-}
-
-.col-der {
-    grid-row: span 5;
-    margin-left: 40px;
-    margin-top: 0;
+.tarjeta form {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* border: 3px solid white; */
-    /* border-radius: 10px; */
 }
 
-.col-der p {
-    color: white;
+.titulo-login {
+    font-size: 28px;
+    font-weight: bold;
     text-align: center;
+    margin-bottom: 24px;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+/* CAMPOS DE ENTRADA */
+.tarjeta .campo {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.campo input {
+    width: 100%;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    font-size: 15px;
+    color: #ffffff;
+    padding: 0 20px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.campo input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.campo input:focus {
+    border-color: #2563eb;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+}
+
+/* OPCIONES (CHECKBOX Y LINK) */
+.tarjeta .opciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    margin-bottom: 24px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.opciones label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.85);
+    user-select: none;
+}
+
+.opciones label input {
+    accent-color: #2563eb;
+    margin-right: 6px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.opciones a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.opciones a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* BOTÓN DE INGRESO */
+.tarjeta .boton {
+    width: 100%;
+    height: 48px;
+    background: #ffffff;
+    color: #111111;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.tarjeta .boton:hover {
+    background: #e2e8f0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+}
+
+.tarjeta .boton:active {
+    transform: translateY(0);
+}
+
+/* COLUMNA DERECHA (IMAGEN DE FONDO) */
+.col-der {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .col-der img {
     width: 100%;
     height: 100%;
-    filter: opacity(0.8);
     object-fit: cover;
+    filter: brightness(0.7) opacity(0.85);
 }
 
-.tarjeta {
-    display: flex;
-    /* width: 420px; */
-    height: 100%;
-    background: rgb(2, 0, 36);
-    background: linear-gradient(90deg,
-            rgb(0, 0, 0) 9%,
-            rgb(43, 43, 44) 68%,
-            rgb(45, 46, 48) 97%);
-    backdrop-filter: blur(9px);
-    color: #fff;
-    border-radius: 12px;
-    padding: 30px 40px;
-    /* border: 3px solid red; */
-    justify-content: center;
-    align-items: center;
+/* MEDIAS QUERIES Y ADAPTABILIDAD RESPONSIVE */
+
+/* Pantallas Medianas (Tablets) */
+@media screen and (max-width: 992px) {
+    .tarjeta {
+        max-width: 380px;
+        padding: 32px 24px;
+    }
+
+    .titulo-login {
+        font-size: 25px;
+    }
 }
 
-.titulo-login {
-    font-size: 36px;
-    text-align: center;
-}
-
-.tarjeta .campo {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 30px 0;
-}
-
-.campo input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 40px;
-    font-size: 16px;
-    color: #fff;
-    padding: 20px 45px 20px 20px;
-}
-
-.campo input::placeholder {
-    color: #fff;
-}
-
-.tarjeta .opciones {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.5px;
-    margin: -15px 0 15px;
-}
-
-.opciones label input {
-    accent-color: #fff;
-    margin-right: 3px;
-}
-
-.opciones a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.opciones a:hover {
-    text-decoration: underline;
-}
-
-.tarjeta .boton {
-    /* border: 3px solid rgb(255, 27, 27); */
-    width: 120px;
-    height: 45px;
-    background: #fff;
-    /* border: none; */
-    outline: none;
-    border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    font-size: 16px;
-    color: #333;
-    font-weight: 600;
-}
-
-.tarjeta .enlace-registro {
-    font-size: 14.5px;
-    text-align: center;
-    margin: 20px 0 15px;
-}
-
-.enlace-registro p a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 18px;
-}
-
-.enlace-registro p {
-    font-size: 16px;
-}
-
-.enlace-registro p a:hover {
-    text-decoration: underline;
-}
-
-.col-izq button {
-    border: none;
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: rgba(255, 255, 255, 0.185);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: large;
-    color: white;
-    transform: scale(1);
-    transition: transform 0.3s ease;
-}
-
-.col-izq button:hover {
-    background-color: rgba(255, 251, 251, 0.884);
-    transform: scale(1.05);
-}
-
+/* Pantallas Pequeñas (Móviles) */
 @media screen and (max-width: 768px) {
     .contenedor {
-        display: flex;
-        flex-direction: column-reverse;
-        height: 100vh;
-        width: 100vw;
-    }
-
-    .col-der {
-        display: flex;
-        height: 220px;
-        width: 220px;
-        margin-top: 30px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .col-der p {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        font-size: 25px;
-        margin: 0;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
+    }
+
+    /* La columna derecha se convierte en fondo superpuesto */
+    .col-der {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .col-der img {
+        filter: brightness(0.4) opacity(0.5);
     }
 
     .col-izq {
-        display: flex;
-        flex-direction: column;
-        height: 600px;
-        width: 300px;
-        justify-content: center;
-        margin-top: 30px;
-        margin-left: auto;
-        margin-right: auto;
+        width: 100%;
+        min-height: 100vh;
+        padding: 24px 16px;
     }
 
-    .col-izq p {
-        display: flex;
-        height: 15%;
+    .tarjeta {
+        max-width: 100%;
         width: 100%;
-        font-size: 25px;
-        margin: 0;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 10px;
+        margin: auto;
+        padding: 32px 20px;
+        background: rgba(15, 15, 18, 0.9);
+    }
+
+    .opciones {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+/* Pantallas Muy Pequeñas (Móviles reducidos < 400px) */
+@media screen and (max-width: 400px) {
+    .tarjeta {
+        padding: 24px 16px;
+        border-radius: 12px;
+    }
+
+    .titulo-login {
+        font-size: 22px;
+    }
+
+    .campo input {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    .tarjeta .boton {
+        height: 44px;
+        font-size: 15px;
     }
 }

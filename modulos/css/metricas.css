@@ -1,0 +1,75 @@
+/* Estilos específicos para la vista de Métricas y Reportes */
+@import url('dashboard.css');
+
+.metricas-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Fila Doble para secciones superiores */
+.fila-doble-metricas {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.fila-doble-metricas .seccion {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Cajas de Tiempos Promedio */
+.caja-promedio-contenedor {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.caja-promedio-item {
+    flex: 1;
+    background-color: #fafafa;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.caja-promedio-item .titulo-item {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.caja-promedio-item .valor-item {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Tabla de equipos con más fallas */
+.tabla-fallas td.num-fallas {
+    text-align: center;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+/* Tabla de técnicos y efectividad */
+.tabla-tecnicos td.porcentaje-efectividad {
+    text-align: center;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.badge-porcentaje {
+    background-color: #e6f4ea;
+    color: #137333;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 13px;
+}

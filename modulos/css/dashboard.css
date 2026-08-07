@@ -1,0 +1,433 @@
+/* Reset basico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+body {
+    background-color: #f8f8f8;
+}
+
+/* ENCABEZADO */
+.encabezado {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.encabezado h1 {
+    font-size: 18px;
+}
+
+.encabezado a {
+    color: #ccc;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.contenedorPrincipal {
+    display: flex;
+    min-height: calc(100vh - 42px);
+}
+
+/* BARRA LATERAL */
+.barraLateral {
+    width: 180px;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    padding: 10px 0;
+    flex-shrink: 0;
+}
+
+.barraLateral ul {
+    list-style: none;
+}
+
+.barraLateral ul li a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #222;
+    border-bottom: 1px solid #ddd;
+}
+
+.barraLateral ul li a:hover {
+    background-color: #ddd;
+}
+
+.barraLateral ul li a.activo {
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+}
+
+/* AREA DE CONTENIDO */
+.areaContenido {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* SECCIONES */
+.seccion {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.seccion h2 {
+    margin-bottom: 12px;
+    font-size: 15px;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 6px;
+    color: #333;
+}
+
+/* TARJETAS DE RESUMEN */
+.filaTarjetas {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.tarjeta {
+    border: 1px solid #bbb;
+    background-color: #fafafa;
+    padding: 14px 18px;
+    min-width: 180px;
+    flex: 1;
+}
+
+.tarjeta-titulo {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tarjeta-numero {
+    font-size: 32px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.tarjeta-detalle {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* PUNTOS DE COLOR */
+.punto {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+.punto.verde {
+    background-color: green;
+}
+
+.punto.naranja {
+    background-color: darkorange;
+}
+
+.punto.amarillo {
+    background-color: goldenrod;
+}
+
+.punto.rojo {
+    background-color: crimson;
+}
+
+/* FILA DOBLE (dos secciones lado a lado) */
+.filaDoble {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filaDoble .seccion {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* TABLAS */
+.tablaSimple {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tablaSimple th,
+.tablaSimple td {
+    border: 1px solid #bbb;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tablaSimple th {
+    background-color: #e8e8e8;
+    font-weight: bold;
+}
+
+.tablaSimple tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* PRIORIDADES */
+.prioridadBaja {
+    color: steelblue;
+    font-weight: bold;
+}
+
+.prioridadMedia {
+    color: goldenrod;
+    font-weight: bold;
+}
+
+.prioridadAlta {
+    color: darkorange;
+    font-weight: bold;
+}
+
+.prioridadCritica {
+    color: crimson;
+    font-weight: bold;
+}
+
+/* ESTADOS TICKETS */
+.estadoPendiente {
+    color: crimson;
+    font-weight: bold;
+}
+
+.estadoEnProceso {
+    color: darkorange;
+    font-weight: bold;
+}
+
+.estadoResuelto {
+    color: green;
+    font-weight: bold;
+}
+
+/* ESTADOS EQUIPOS */
+.estadoMantenimiento {
+    color: goldenrod;
+    font-weight: bold;
+}
+
+.estadoBaja {
+    color: #888;
+    font-weight: bold;
+}
+
+/* FORMULARIO DE ASIGNACIÓN */
+.formularioAsignacion {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.grupoFormulario {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.grupoFormulario label {
+    font-weight: bold;
+    color: #444;
+    font-size: 13px;
+}
+
+.grupoFormulario input,
+.grupoFormulario select {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+}
+
+.btn {
+    padding: 5px 10px;
+    border: 1px solid #888;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.btn-guardar {
+    background-color: #e8e8e8;
+    color: #333;
+}
+
+.btn-guardar:hover {
+    background-color: #d0d0d0;
+}
+
+.form-finalizar {
+    display: inline;
+}
+.btn-peligro-sm {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.btn-peligro-sm:hover { background-color: #c82333; }
+.badge-activa {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 3px 7px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 12px;
+}
+.badge-finalizada {
+    background-color: #e2e3e5;
+    color: #383d41;
+    padding: 3px 7px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* MODALES */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.modal-contenido {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    max-width: 850px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.modal-header h3 { font-size: 16px; color: #333; }
+.btn-cerrar {
+    background: #999;
+    color: #fff;
+    border: none;
+    padding: 5px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.btn-cerrar:hover { background: #666; }
+.btn-ver-diag {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.btn-ver-diag:hover { background-color: #0056b3; }
+.btn-ver-sol {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.btn-ver-sol:hover { background-color: #1e7e34; }
+.badge-sin-sol {
+    color: #aaa;
+    font-style: italic;
+    font-size: 12px;
+}
+
+/* MENSAJES Y ALERTAS */
+.mensaje-exito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.mensaje-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* CLASES DE UTILIDAD PARA TABLAS Y METRICAS */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.fw-bold { font-weight: bold; }
+.text-verde { color: #28a745; }
+.text-rojo { color: #dc3545; }
+.text-muted { color: #777; }
+.subtitulo-seccion { margin-bottom: 15px; color: #666; }
+
+.caja-promedio-contenedor {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+.caja-promedio-item {
+    flex: 1;
+    background: #fafafa;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+}
+.caja-promedio-item .titulo-item {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+.caja-promedio-item .valor-item {
+    font-size: 20px;
+    font-weight: bold;
+    color: #28a745;
+}
