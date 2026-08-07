@@ -25,6 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $num_serie_clean = $conn->real_escape_string($numero_serie);
         $estado_clean = $conn->real_escape_string($estado);
 
+        // Validar si el número de serie ya existe
+        if (!empty($num_serie_clean)) {
+            $res_check_serie = $conn->query("SELECT id_equipo FROM equipos WHERE numero_serie = '$num_serie_clean'");
+            if ($res_check_serie && $res_check_serie->num_rows > 0) {
+                header("Location: ../../modulos/inventario/agregar_equipo.php?error=" . urlencode("El número de serie '$numero_serie' ya se encuentra registrado en otro equipo."));
+                exit();
+            }
+        }
+
         $sql = "INSERT INTO equipos (nombre, numero_serie, id_marca, id_modelo, id_categoria, estado) 
                 VALUES ('$nombre_clean', '$num_serie_clean', $id_marca, $id_modelo, $id_categoria, '$estado_clean')";
 
