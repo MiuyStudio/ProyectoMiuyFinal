@@ -186,19 +186,21 @@
                                             <?php echo htmlspecialchars($equipo['estado'] ?? ''); ?>
                                         </span>
                                     </td>
-                                    <td>
-                                        <button type="button" class="btn-ver"
-                                            data-id="<?php echo $equipo['id_equipo']; ?>"
-                                            data-serie="<?php echo htmlspecialchars($equipo['numero_serie'] ?? '', ENT_QUOTES); ?>"
-                                            data-nombre="<?php echo htmlspecialchars($equipo['nombre'] ?? '', ENT_QUOTES); ?>"
-                                            data-categoria="<?php echo $equipo['id_categoria']; ?>"
-                                            data-marca="<?php echo $equipo['id_marca']; ?>"
-                                            data-modelo="<?php echo $equipo['id_modelo']; ?>"
-                                            data-estado="<?php echo htmlspecialchars($equipo['estado'] ?? '', ENT_QUOTES); ?>"
-                                            onclick="abrirModalDesdeBoton(this)">
-                                            Editar
-                                        </button>
-                                        <a href="ver_equipo.php?id=<?php echo $equipo['id_equipo']; ?>" class="btn-ver" style="text-decoration:none; display:inline-block; margin-left:4px;">Detalle</a>
+                                    <td class="celda-acciones">
+                                        <div class="acciones-tabla">
+                                            <button type="button" class="btn-ver"
+                                                data-id="<?php echo $equipo['id_equipo']; ?>"
+                                                data-serie="<?php echo htmlspecialchars($equipo['numero_serie'] ?? '', ENT_QUOTES); ?>"
+                                                data-nombre="<?php echo htmlspecialchars($equipo['nombre'] ?? '', ENT_QUOTES); ?>"
+                                                data-categoria="<?php echo $equipo['id_categoria']; ?>"
+                                                data-marca="<?php echo $equipo['id_marca']; ?>"
+                                                data-modelo="<?php echo $equipo['id_modelo']; ?>"
+                                                data-estado="<?php echo htmlspecialchars($equipo['estado'] ?? '', ENT_QUOTES); ?>"
+                                                onclick="abrirModalDesdeBoton(this)">
+                                                Editar
+                                            </button>
+                                            <a href="ver_equipo.php?id=<?php echo $equipo['id_equipo']; ?>" class="btn-ver">Detalle</a>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
