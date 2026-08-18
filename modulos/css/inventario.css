@@ -258,8 +258,8 @@ input[type="text"] {
     margin-bottom: 4px;
 }
 
-.panel input, 
-.panel select, 
+.panel input,
+.panel select,
 .panel textarea {
     padding: 6px 8px;
     font-size: 14px;
@@ -286,7 +286,7 @@ input[type="text"] {
     border-top: 1px solid #ddd;
 }
 
-.acciones button, 
+.acciones button,
 .acciones a {
     padding: 7px 16px;
     font-size: 14px;
@@ -369,6 +369,7 @@ input[type="text"] {
         opacity: 0;
         transform: translateY(-15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

@@ -44,7 +44,6 @@ $res_diag = $conn->query($sql_diag);
 $diagnosticos_por_equipo = [];
 if ($res_diag) {
     while ($row = $res_diag->fetch_assoc()) {
-        // Usar el equipo directo o el equipo del ticket como fallback
         $eq_id = $row['equipo_efectivo'];
         if ($eq_id) {
             if (!isset($diagnosticos_por_equipo[$eq_id])) {

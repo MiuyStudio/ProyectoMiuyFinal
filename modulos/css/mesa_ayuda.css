@@ -116,7 +116,8 @@ body {
 }
 
 /* ESTADOS Y PRIORIDADES (Badges) */
-.badge-estado, .badge-prioridad {
+.badge-estado,
+.badge-prioridad {
     display: inline-block;
     padding: 3px 8px;
     border-radius: 4px;

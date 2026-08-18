@@ -288,6 +288,7 @@ body {
 .form-finalizar {
     display: inline;
 }
+
 .btn-peligro-sm {
     background-color: #dc3545;
     color: #fff;
@@ -297,7 +298,11 @@ body {
     border-radius: 3px;
     cursor: pointer;
 }
-.btn-peligro-sm:hover { background-color: #c82333; }
+
+.btn-peligro-sm:hover {
+    background-color: #c82333;
+}
+
 .badge-activa {
     background-color: #d4edda;
     color: #155724;
@@ -306,6 +311,7 @@ body {
     font-weight: bold;
     font-size: 12px;
 }
+
 .badge-finalizada {
     background-color: #e2e3e5;
     color: #383d41;
@@ -318,12 +324,16 @@ body {
 .modal-overlay {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
     justify-content: center;
     align-items: center;
 }
+
 .modal-contenido {
     background-color: #fff;
     padding: 20px;
@@ -332,8 +342,9 @@ body {
     width: 90%;
     max-height: 85vh;
     overflow-y: auto;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
+
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -342,7 +353,12 @@ body {
     padding-bottom: 10px;
     margin-bottom: 15px;
 }
-.modal-header h3 { font-size: 16px; color: #333; }
+
+.modal-header h3 {
+    font-size: 16px;
+    color: #333;
+}
+
 .btn-cerrar {
     background: #999;
     color: #fff;
@@ -351,7 +367,11 @@ body {
     cursor: pointer;
     border-radius: 3px;
 }
-.btn-cerrar:hover { background: #666; }
+
+.btn-cerrar:hover {
+    background: #666;
+}
+
 .btn-ver-diag {
     background-color: #007bff;
     color: #fff;
@@ -362,7 +382,11 @@ body {
     font-size: 12px;
     font-weight: bold;
 }
-.btn-ver-diag:hover { background-color: #0056b3; }
+
+.btn-ver-diag:hover {
+    background-color: #0056b3;
+}
+
 .btn-ver-sol {
     background-color: #28a745;
     color: #fff;
@@ -373,7 +397,11 @@ body {
     font-size: 12px;
     font-weight: bold;
 }
-.btn-ver-sol:hover { background-color: #1e7e34; }
+
+.btn-ver-sol:hover {
+    background-color: #1e7e34;
+}
+
 .badge-sin-sol {
     color: #aaa;
     font-style: italic;
@@ -389,6 +417,7 @@ body {
     border-radius: 4px;
     margin-bottom: 15px;
 }
+
 .mensaje-error {
     background-color: #f8d7da;
     color: #721c24;
@@ -399,19 +428,41 @@ body {
 }
 
 /* CLASES DE UTILIDAD PARA TABLAS Y METRICAS */
-.text-center { text-align: center; }
-.text-right { text-align: right; }
-.fw-bold { font-weight: bold; }
-.text-verde { color: #28a745; }
-.text-rojo { color: #dc3545; }
-.text-muted { color: #777; }
-.subtitulo-seccion { margin-bottom: 15px; color: #666; }
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.fw-bold {
+    font-weight: bold;
+}
+
+.text-verde {
+    color: #28a745;
+}
+
+.text-rojo {
+    color: #dc3545;
+}
+
+.text-muted {
+    color: #777;
+}
+
+.subtitulo-seccion {
+    margin-bottom: 15px;
+    color: #666;
+}
 
 .caja-promedio-contenedor {
     display: flex;
     gap: 15px;
     margin-top: 10px;
 }
+
 .caja-promedio-item {
     flex: 1;
     background: #fafafa;
@@ -420,14 +471,16 @@ body {
     padding: 15px;
     text-align: center;
 }
+
 .caja-promedio-item .titulo-item {
     font-size: 13px;
     color: #555;
     margin-bottom: 8px;
     font-weight: bold;
 }
+
 .caja-promedio-item .valor-item {
     font-size: 20px;
     font-weight: bold;
     color: #28a745;
-}
+}
