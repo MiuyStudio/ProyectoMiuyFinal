@@ -12,6 +12,7 @@ if (!isset($_SESSION['usuario_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UTU - Portal de Gestión</title>
+    <link rel="icon" type="image/png" href="assets/utu.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -51,6 +52,23 @@ if (!isset($_SESSION['usuario_id'])) {
             src="<?php echo (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] == 3) ? 'modulos/mesa_ayuda/mesa_ayuda.php' : 'modulos/inventario/inventario.php'; ?>"
             name="visor-paginas" id="visor"></iframe>
     </div>
+
+    <script>
+        const visor = document.getElementById('visor');
+        const botones = document.querySelectorAll('.boton-nav');
+
+        // Al hacer clic en un botón del menú, desvanecer suavemente el visor
+        botones.forEach(boton => {
+            boton.addEventListener('click', () => {
+                visor.classList.add('cargando');
+            });
+        });
+
+        // Cuando la nueva sección termine de cargar, volver a mostrarla suavemente
+        visor.addEventListener('load', () => {
+            visor.classList.remove('cargando');
+        });
+    </script>
 </body>
 
 </html>

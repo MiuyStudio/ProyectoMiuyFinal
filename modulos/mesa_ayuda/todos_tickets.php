@@ -50,6 +50,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesa de Ayuda - Todos los Tickets</title>
+    <link rel="icon" type="image/png" href="../../assets/utu.png">
     <link rel="stylesheet" href="../css/mesa_ayuda.css">
 </head>
 

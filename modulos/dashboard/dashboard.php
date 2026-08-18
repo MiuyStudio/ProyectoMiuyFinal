@@ -54,6 +54,7 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Panel General y Asignaciones</title>
+    <link rel="icon" type="image/png" href="../../assets/utu.png">
     <link rel="stylesheet" href="../css/dashboard.css?v=<?php echo time(); ?>">
 </head>
 

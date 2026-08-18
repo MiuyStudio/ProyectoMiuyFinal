@@ -129,6 +129,12 @@ body {
     background-color: #1a1a1a;
     border: none;
     padding: 10px;
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+
+#visor.cargando {
+    opacity: 0;
 }
 
 /* RESPONSIVE: Diseño adaptativo para dispositivos móviles */
