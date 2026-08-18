@@ -100,7 +100,9 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="../inventario/ver_equipo.php?id=<?php echo $eq['id_equipo']; ?>"><button type="button">Ver Ficha</button></a>
+                                    <a href="../inventario/ver_equipo.php?id=<?php echo $eq['id_equipo']; ?>">
+                                        <button type="button">Ver Historial</button>
+                                    </a>
                                 </td>
                             </tr>
                             <?php endwhile; ?>

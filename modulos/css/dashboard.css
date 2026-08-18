@@ -332,6 +332,11 @@ body {
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay.activo {
+    display: flex;
 }
 
 .modal-contenido {
@@ -484,3 +489,155 @@ body {
     font-weight: bold;
     color: #28a745;
 }
+
+/* SELECTOR DE EQUIPO MODAL */
+.selector-equipo-contenedor {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.selector-equipo-contenedor input[type="text"] {
+    flex: 1;
+    background-color: #fafafa;
+}
+
+.btn-secundario {
+    padding: 6px 10px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+    background-color: #eee;
+    white-space: nowrap;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.btn-secundario:hover {
+    background-color: #ddd;
+}
+
+.btn-cancelar {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid #888;
+    background-color: #e8e8e8;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: normal;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.btn-cancelar:hover {
+    background-color: #d0d0d0;
+}
+
+.btn-seleccionar-modal {
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #555;
+    background-color: #0066cc;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.btn-seleccionar-modal:hover {
+    background-color: #004c99;
+}
+
+.modal-equipos {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 650px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    padding: 16px;
+}
+
+.modal-equipos .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.modal-equipos .modal-header h2 {
+    font-size: 16px;
+    margin: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+    color: #333;
+}
+
+.modal-cerrar {
+    font-size: 22px;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-cerrar:hover {
+    color: #000;
+}
+
+.modal-buscador {
+    margin-bottom: 10px;
+}
+
+.modal-buscador input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.modal-tabla-scroll {
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+}
+
+.tablaEquiposModal {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tablaEquiposModal th,
+.tablaEquiposModal td {
+    border-bottom: 1px solid #ddd;
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.tablaEquiposModal th {
+    background-color: #f0f0f0;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.tablaEquiposModal tr:hover {
+    background-color: #f5f5f5;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}

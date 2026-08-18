@@ -30,8 +30,19 @@ $sql_asignaciones = "SELECT a.*,
                      ORDER BY a.fecha_inicio DESC";
 $res_asignaciones = $conn->query($sql_asignaciones);
 
-// 2. Consultar equipos disponibles para el select
-$res_equipos = $conn->query("SELECT id_equipo, nombre, numero_serie, estado FROM equipos WHERE estado = 'Disponible' ORDER BY nombre ASC");
+// 2. Consultar equipos disponibles para el modal
+$sql_equipos_disp = "SELECT e.id_equipo, e.nombre, e.numero_serie, c.nombre_categoria
+                     FROM equipos e
+                     LEFT JOIN categorias c ON e.id_categoria = c.id_categoria
+                     WHERE e.estado = 'Disponible'
+                     ORDER BY e.nombre ASC";
+$res_equipos = $conn->query($sql_equipos_disp);
+$equipos_lista = [];
+if ($res_equipos) {
+    while ($eq = $res_equipos->fetch_assoc()) {
+        $equipos_lista[] = $eq;
+    }
+}
 
 // 3. Consultar usuarios activos para el select
 $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombre_rol FROM usuarios u LEFT JOIN roles r ON u.id_rol = r.id_rol WHERE u.activo = 1 ORDER BY u.nombre ASC");
@@ -43,7 +54,7 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Panel General y Asignaciones</title>
-    <link rel="stylesheet" href="../css/dashboard.css?v=2">
+    <link rel="stylesheet" href="../css/dashboard.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -93,17 +104,13 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
                     <input type="hidden" name="accion" value="asignar">
 
                     <div class="grupoFormulario">
-                        <label for="id_equipo">Equipo *</label>
-                        <select name="id_equipo" id="id_equipo" required>
-                            <option value="">-- Seleccionar Equipo --</option>
-                            <?php if ($res_equipos): ?>
-                                <?php while ($eq = $res_equipos->fetch_assoc()): ?>
-                                    <option value="<?php echo $eq['id_equipo']; ?>">
-                                        <?php echo htmlspecialchars($eq['nombre'] . ' (' . ($eq['numero_serie'] ?? 'S/N') . ') - Estado: ' . $eq['estado']); ?>
-                                    </option>
-                                <?php endwhile; ?>
-                            <?php endif; ?>
-                        </select>
+                        <label for="nombre_equipo_seleccionado">Equipo *</label>
+                        <input type="hidden" id="id_equipo" name="id_equipo" value="" required>
+                        <div class="selector-equipo-contenedor">
+                            <input type="text" id="nombre_equipo_seleccionado" value="" placeholder="-- Seleccionar Equipo --" readonly required>
+                            <button type="button" class="btn-secundario" onclick="abrirModalEquipos()">Buscar equipo</button>
+                            <button type="button" class="btn-secundario" id="btnLimpiarEquipo" onclick="limpiarEquipo()" style="display: none;" title="Quitar equipo seleccionado">&times;</button>
+                        </div>
                     </div>
 
                     <div class="grupoFormulario">
@@ -190,9 +197,124 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
+
+    <!-- MODAL SELECTOR DE EQUIPO -->
+    <div id="modalSeleccionarEquipo" class="modal-overlay">
+        <div class="modal-equipos">
+            <div class="modal-header">
+                <h2>Seleccionar Equipo Disponible</h2>
+                <span class="modal-cerrar" onclick="cerrarModalEquipos()">&times;</span>
+            </div>
+
+            <div class="modal-buscador">
+                <input type="text" id="inputBuscarEquipo" placeholder="Buscar por nombre, n° de serie o categoría..." oninput="filtrarEquiposModal()">
+            </div>
+
+            <div class="modal-tabla-scroll">
+                <table class="tablaEquiposModal" id="tablaEquiposModal">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>N° Serie</th>
+                            <th>Categoría</th>
+                            <th style="text-align: center;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($equipos_lista)): ?>
+                            <?php foreach ($equipos_lista as $eq): ?>
+                                <tr class="fila-equipo" 
+                                    data-nombre="<?php echo htmlspecialchars($eq['nombre'] ?? '', ENT_QUOTES); ?>"
+                                    data-serie="<?php echo htmlspecialchars($eq['numero_serie'] ?? '', ENT_QUOTES); ?>"
+                                    data-categoria="<?php echo htmlspecialchars($eq['nombre_categoria'] ?? '', ENT_QUOTES); ?>">
+                                    <td><strong><?php echo htmlspecialchars($eq['nombre']); ?></strong></td>
+                                    <td><?php echo htmlspecialchars($eq['numero_serie'] ?? '—'); ?></td>
+                                    <td><?php echo htmlspecialchars($eq['nombre_categoria'] ?? '—'); ?></td>
+                                    <td style="text-align: center;">
+                                        <button type="button" class="btn-seleccionar-modal" 
+                                            onclick="seleccionarEquipo(<?php echo $eq['id_equipo']; ?>, '<?php echo htmlspecialchars($eq['nombre'] . ' (' . ($eq['numero_serie'] ?? 'S/N') . ')', ENT_QUOTES); ?>')">
+                                            Seleccionar
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #777; padding: 15px;">No hay equipos disponibles para asignar en este momento.</td>
+                            </tr>
+                        <?php endif; ?>
+                        <tr id="sinCoincidencias" style="display: none;">
+                            <td colspan="4" style="text-align: center; color: #777; padding: 15px;">No se encontraron equipos que coincidan con la búsqueda.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cancelar" onclick="cerrarModalEquipos()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function abrirModalEquipos() {
+        document.getElementById('modalSeleccionarEquipo').classList.add('activo');
+        const inputBuscar = document.getElementById('inputBuscarEquipo');
+        inputBuscar.value = '';
+        filtrarEquiposModal();
+        setTimeout(() => inputBuscar.focus(), 100);
+    }
+
+    function cerrarModalEquipos() {
+        document.getElementById('modalSeleccionarEquipo').classList.remove('activo');
+    }
+
+    function seleccionarEquipo(id, nombre) {
+        document.getElementById('id_equipo').value = id;
+        document.getElementById('nombre_equipo_seleccionado').value = nombre;
+        document.getElementById('btnLimpiarEquipo').style.display = 'inline-block';
+        cerrarModalEquipos();
+    }
+
+    function limpiarEquipo() {
+        document.getElementById('id_equipo').value = '';
+        document.getElementById('nombre_equipo_seleccionado').value = '';
+        document.getElementById('btnLimpiarEquipo').style.display = 'none';
+    }
+
+    function filtrarEquiposModal() {
+        const texto = document.getElementById('inputBuscarEquipo').value.toLowerCase().trim();
+        const filas = document.querySelectorAll('#tablaEquiposModal tbody .fila-equipo');
+        let visibles = 0;
+
+        filas.forEach(fila => {
+            const nombre = (fila.getAttribute('data-nombre') || '').toLowerCase();
+            const serie = (fila.getAttribute('data-serie') || '').toLowerCase();
+            const categoria = (fila.getAttribute('data-categoria') || '').toLowerCase();
+
+            if (nombre.includes(texto) || serie.includes(texto) || categoria.includes(texto)) {
+                fila.style.display = '';
+                visibles++;
+            } else {
+                fila.style.display = 'none';
+            }
+        });
+
+        const sinCoincidencias = document.getElementById('sinCoincidencias');
+        if (sinCoincidencias) {
+            sinCoincidencias.style.display = (visibles === 0 && filas.length > 0) ? '' : 'none';
+        }
+    }
+
+    window.addEventListener('click', function(e) {
+        const modal = document.getElementById('modalSeleccionarEquipo');
+        if (e.target === modal) {
+            cerrarModalEquipos();
+        }
+    });
+    </script>
 
     <?php $conn->close(); ?>
 </body>
