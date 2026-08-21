@@ -33,7 +33,13 @@
                     </div>
 
                     <div class="campo">
-                        <input name="contrasena" required placeholder="Contraseña" type="password" autocomplete="current-password" />
+                        <input id="contrasenia" name="contrasena" required placeholder="Contraseña" type="password" autocomplete="current-password" />
+                    </div>
+
+                    <div class="opciones">
+                        <label>
+                            <input type="checkbox" id="mostrarContrasenia"> Mostrar contraseña
+                        </label>
                     </div>
 
                     <button class="boton" type="submit">Ingresar</button>

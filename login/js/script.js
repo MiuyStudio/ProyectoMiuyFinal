@@ -1,6 +1,7 @@
 
 function mostrarContrasenia() {
   var x = document.getElementById("contrasenia");
+  if (!x) return;
   if (x.type === "password") {
     x.type = "text";
   } else {
@@ -8,4 +9,7 @@ function mostrarContrasenia() {
   }
 }
 
-document.getElementById("mostrarContrasenia").addEventListener("click", mostrarContrasenia);
+var btnMostrar = document.getElementById("mostrarContrasenia");
+if (btnMostrar) {
+  btnMostrar.addEventListener("click", mostrarContrasenia);
+}

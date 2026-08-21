@@ -38,7 +38,7 @@ if ($res_eq) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesa de Ayuda - Nuevo Ticket</title>
     <link rel="icon" type="image/png" href="../../assets/utu.png">
-    <link rel="stylesheet" href="../css/mesa_ayuda.css">
+    <link rel="stylesheet" href="../css/mesa_ayuda.css?v=<?php echo time(); ?>">
 </head>
 
 <body>

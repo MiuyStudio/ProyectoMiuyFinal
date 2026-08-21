@@ -51,7 +51,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesa de Ayuda - Todos los Tickets</title>
     <link rel="icon" type="image/png" href="../../assets/utu.png">
-    <link rel="stylesheet" href="../css/mesa_ayuda.css">
+    <link rel="stylesheet" href="../css/mesa_ayuda.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -135,10 +135,11 @@
                                 <td><?php echo htmlspecialchars($t['nombre_tecnico'] ?? 'Sin asignar'); ?></td>
                                 <td><?php echo date('d/m/Y', strtotime($t['fecha_creacion'])); ?></td>
                                 <td>
-                                    <a href="ver_ticket.php?id=<?php echo $t['id_ticket']; ?>"><button type="button">Ver</button></a>
+                                    <a href="ver_ticket.php?id=<?php echo $t['id_ticket']; ?>&origen=todos"><button type="button">Ver</button></a>
                                     <?php if ($t['nombre_tecnico'] === null): ?>
                                         <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php" style="display: inline;">
                                             <input type="hidden" name="id_ticket" value="<?php echo $t['id_ticket']; ?>">
+                                            <input type="hidden" name="origen" value="todos">
                                             <input type="hidden" name="accion" value="asignarme">
                                             <button type="submit">Asignarme</button>
                                         </form>

@@ -15,9 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $id_ticket  = intval($_POST['id_ticket'] ?? 0);
 $comentario = trim($_POST['comentario'] ?? '');
 $id_usuario = intval($_SESSION['usuario_id']);
+$origen     = trim($_POST['origen'] ?? '');
+$param_orig = !empty($origen) ? '&origen=' . urlencode($origen) : '';
 
 if ($id_ticket <= 0 || empty($comentario)) {
-    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&error=" . urlencode("El comentario no puede estar vacío."));
+    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&error=" . urlencode("El comentario no puede estar vacío."));
     exit();
 }
 
@@ -27,10 +29,10 @@ $sql = "INSERT INTO comentarios (id_ticket, id_usuario, comentario, fecha_creaci
 
 if ($conn->query($sql)) {
     $conn->query("UPDATE tickets SET fecha_actualizacion = NOW() WHERE id_ticket = $id_ticket");
-    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&mensaje=" . urlencode("Comentario agregado correctamente."));
+    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&mensaje=" . urlencode("Comentario agregado correctamente."));
     exit();
 } else {
-    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&error=" . urlencode("Error al guardar el comentario: " . $conn->error));
+    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&error=" . urlencode("Error al guardar el comentario: " . $conn->error));
     exit();
 }
 ?>

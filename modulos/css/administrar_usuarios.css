@@ -55,6 +55,7 @@ body {
     text-decoration: none;
     color: #222;
     border-bottom: 1px solid #ddd;
+    white-space: nowrap;
 }
 
 .barraLateral ul li a:hover {
@@ -70,6 +71,7 @@ body {
 /* Zona de contenido */
 .areaContenido {
     flex: 1;
+    min-width: 0;
     padding: 20px;
     display: flex;
     flex-direction: column;

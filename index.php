@@ -28,14 +28,17 @@ if (!isset($_SESSION['usuario_id'])) {
             </div>
 
             <!-- Lista de botones de navegación -->
+            <?php
+            $es_rol_3 = (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] == 3);
+            ?>
             <ul class="botones">
-                <?php if (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] != 3): ?>
-                    <li><a href="modulos/inventario/inventario.php" target="visor-paginas" class="boton-nav">Inventario</a>
+                <?php if (!$es_rol_3): ?>
+                    <li><a href="modulos/inventario/inventario.php" target="visor-paginas" class="boton-nav activo">Inventario</a>
                     </li>
                 <?php endif; ?>
-                <li><a href="modulos/mesa_ayuda/mesa_ayuda.php" target="visor-paginas" class="boton-nav">Mesa de
+                <li><a href="modulos/mesa_ayuda/mesa_ayuda.php" target="visor-paginas" class="boton-nav <?php echo $es_rol_3 ? 'activo' : ''; ?>">Mesa de
                         Ayuda</a></li>
-                <?php if (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] != 3): ?>
+                <?php if (!$es_rol_3): ?>
                     <li><a href="modulos/dashboard/dashboard.php" target="visor-paginas" class="boton-nav">Dashboard</a>
                     </li>
                 <?php endif; ?>
@@ -57,10 +60,12 @@ if (!isset($_SESSION['usuario_id'])) {
         const visor = document.getElementById('visor');
         const botones = document.querySelectorAll('.boton-nav');
 
-        // Al hacer clic en un botón del menú, desvanecer suavemente el visor
+        // Al hacer clic en un botón del menú, marcar como activo y desvanecer visor
         botones.forEach(boton => {
             boton.addEventListener('click', () => {
                 visor.classList.add('cargando');
+                botones.forEach(b => b.classList.remove('activo'));
+                boton.classList.add('activo');
             });
         });
 

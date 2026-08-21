@@ -88,12 +88,14 @@ body {
     /* Desplazamiento a la derecha */
 }
 
-/* Estado de foco (cuando haces click en un botón) */
-.boton-nav:focus {
+/* Estado de foco y estado activo persistente */
+.boton-nav:focus,
+.boton-nav.activo {
     background-color: #2e7d32;
-    /* Verde agradable cuando se hace clic */
+    /* Verde agradable cuando está activo o seleccionado */
     border-color: #4caf50;
     font-weight: bold;
+    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.4);
 }
 
 /* Panel inferior para el idioma */

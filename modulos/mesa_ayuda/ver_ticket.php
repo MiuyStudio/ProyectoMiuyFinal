@@ -12,9 +12,14 @@
     $id_usuario = intval($_SESSION['usuario_id']);
     $mensaje    = $_GET['mensaje'] ?? '';
     $error      = $_GET['error'] ?? '';
+    $origen     = $_GET['origen'] ?? '';
+
+    $es_de_todos = ($origen === 'todos' && ($rol == 1 || $rol == 2));
+    $volver_url  = $es_de_todos ? 'todos_tickets.php' : 'mesa_ayuda.php';
+    $volver_texto = $es_de_todos ? '← Volver a todos los tickets' : '← Volver a mis tickets';
 
     if ($id_ticket <= 0) {
-        header("Location: mesa_ayuda.php");
+        header("Location: " . $volver_url);
         exit();
     }
 
@@ -68,7 +73,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesa de Ayuda - Ver Ticket #<?php echo $id_ticket; ?></title>
     <link rel="icon" type="image/png" href="../../assets/utu.png">
-    <link rel="stylesheet" href="../css/mesa_ayuda.css">
+    <link rel="stylesheet" href="../css/mesa_ayuda.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -88,10 +93,10 @@
         <!-- menú lateral -->
         <div class="barraLateral">
             <ul>
-                <li><a href="mesa_ayuda.php">Mis Tickets</a></li>
+                <li><a href="mesa_ayuda.php" class="<?php echo (!$es_de_todos) ? 'activo' : ''; ?>">Mis Tickets</a></li>
                 <li><a href="nuevo_ticket.php">Nuevo Ticket</a></li>
                 <?php if ($rol == 1 || $rol == 2): ?>
-                <li><a href="todos_tickets.php">Todos los Tickets</a></li>
+                <li><a href="todos_tickets.php" class="<?php echo ($es_de_todos) ? 'activo' : ''; ?>">Todos los Tickets</a></li>
                 <li><a href="equipos_atencion.php">Equipos con atención</a></li>
                 <?php endif; ?>
             </ul>
@@ -112,7 +117,7 @@
             <?php endif; ?>
 
             <div style="margin-bottom: 12px;">
-                <a href="mesa_ayuda.php" style="color: #0066cc; text-decoration: none; font-weight: 500;">← Volver a mis tickets</a>
+                <a href="<?php echo htmlspecialchars($volver_url); ?>" style="color: #0066cc; text-decoration: none; font-weight: 500;"><?php echo htmlspecialchars($volver_texto); ?></a>
             </div>
 
             <!-- CONTENEDOR EN 2 COLUMNAS (TICKET A LA IZQUIERDA Y COMENTARIOS A LA DERECHA) -->
@@ -153,59 +158,130 @@
                     </div>
                     <?php endif; ?>
 
-                    <!-- Formulario de actualización — solo para técnicos y admins -->
+                    <!-- Sección de Estado y Acciones para técnicos y admins -->
                     <?php if ($rol == 1 || $rol == 2): ?>
-                    <div style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px;">
-                        <h3 style="font-size: 15px; margin-bottom: 12px;">Actualizar estado del ticket</h3>
-                        
-                        <?php if ($ticket['id_tecnico'] === null): ?>
-                            <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php" style="margin-bottom: 15px;">
-                                <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
-                                <input type="hidden" name="accion" value="asignarme">
-                                <button type="submit" class="btn-secundario" style="background: #0066cc; color: #fff; font-weight: bold; padding: 6px 14px; border-radius: 4px;">Asignarme este ticket</button>
-                            </form>
-                        <?php endif; ?>
+                        <div class="panel-acciones-ticket">
+                            <?php if ($ticket['estado'] === 'Resuelto'): ?>
+                                <div class="tarjeta-resuelto">
+                                    <div class="resuelto-icono">✓</div>
+                                    <div class="resuelto-info">
+                                        <h4>Ticket Resuelto</h4>
+                                        <p>Este caso fue cerrado satisfactoriamente.</p>
+                                        <p style="font-size: 12px; color: #1e4620; margin-top: 4px;">
+                                            <strong>Técnico:</strong> <?php echo htmlspecialchars($ticket['nombre_tecnico'] ?? 'Técnico asignado'); ?> | 
+                                            <strong>Fecha:</strong> <?php echo date('d/m/Y H:i', strtotime($ticket['fecha_actualizacion'])); ?>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 10px;">
+                                    <button type="button" class="btn-accion-ticket" onclick="abrirModalResolver('Resuelto')">
+                                        Modificar estado o solución
+                                    </button>
+                                </div>
+                            <?php else: ?>
+                                <div class="barra-acciones-rapidas">
+                                    <?php if ($ticket['id_tecnico'] === null || empty($ticket['id_tecnico'])): ?>
+                                        <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php" style="margin: 0;">
+                                            <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
+                                            <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
+                                            <input type="hidden" name="accion" value="asignarme">
+                                            <button type="submit" class="btn-accion-ticket btn-asignar">
+                                                Asignarme este ticket
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
 
-                        <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php">
-                            <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
-                            <input type="hidden" name="accion" value="actualizar_estado">
+                                    <button type="button" class="btn-accion-ticket btn-primario-accion" onclick="abrirModalResolver('Resuelto')">
+                                        Resolver Ticket
+                                    </button>
 
-                            <div class="grupoFormulario">
-                                <label for="estado">Cambiar estado</label>
-                                <select id="estado" name="estado" required>
-                                    <option value="Pendiente" <?php echo ($ticket['estado'] == 'Pendiente') ? 'selected' : ''; ?>>Pendiente</option>
-                                    <option value="En Proceso" <?php echo ($ticket['estado'] == 'En Proceso') ? 'selected' : ''; ?>>En Proceso</option>
-                                    <option value="Resuelto" <?php echo ($ticket['estado'] == 'Resuelto') ? 'selected' : ''; ?>>Resuelto</option>
-                                </select>
+                                    <button type="button" class="btn-accion-ticket" onclick="abrirModalResolver('<?php echo htmlspecialchars($ticket['estado']); ?>')">
+                                        Actualizar estado
+                                    </button>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- MODAL RESOLVER / ACTUALIZAR TICKET -->
+                        <div id="modalResolverTicket" class="modal-overlay" onclick="cerrarModalFuera(event)">
+                            <div class="modal-caja">
+                                <div class="modal-caja-header">
+                                    <h3 id="modalTitulo">Actualizar / Resolver Ticket</h3>
+                                    <button type="button" class="modal-cerrar-btn" onclick="cerrarModalResolver()">&times;</button>
+                                </div>
+
+                                <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php">
+                                    <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
+                                    <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
+                                    <input type="hidden" name="accion" value="actualizar_estado">
+
+                                    <div class="grupoFormulario" style="margin-bottom: 12px;">
+                                        <label for="modal_estado">Cambiar estado</label>
+                                        <select id="modal_estado" name="estado" required style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; margin-top: 4px;">
+                                            <option value="Pendiente" <?php echo ($ticket['estado'] == 'Pendiente') ? 'selected' : ''; ?>>Pendiente</option>
+                                            <option value="En Proceso" <?php echo ($ticket['estado'] == 'En Proceso') ? 'selected' : ''; ?>>En Proceso</option>
+                                            <option value="Resuelto" <?php echo ($ticket['estado'] == 'Resuelto') ? 'selected' : ''; ?>>Resuelto</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="grupoFormulario" style="margin-bottom: 12px;">
+                                        <label for="modal_diagnostico">Diagnóstico (opcional)</label>
+                                        <textarea id="modal_diagnostico" name="diagnostico" rows="3" placeholder="Describí el problema encontrado..." style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; margin-top: 4px; resize: vertical;"></textarea>
+                                    </div>
+
+                                    <div class="grupoFormulario" style="margin-bottom: 12px;">
+                                        <label for="modal_solucion">Solución aplicada (opcional)</label>
+                                        <textarea id="modal_solucion" name="solucion_aplicada" rows="3" placeholder="Describí qué se hizo para resolverlo..." style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; margin-top: 4px; resize: vertical;"></textarea>
+                                    </div>
+
+                                    <div class="grupoFormulario" style="margin-bottom: 16px;">
+                                        <label for="modal_equipo_diag">Equipo intervenido (opcional)</label>
+                                        <select id="modal_equipo_diag" name="id_equipo_diag" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; margin-top: 4px;">
+                                            <option value="">— Ninguno —</option>
+                                            <?php if ($res_equipos): $res_equipos->data_seek(0); while ($eq = $res_equipos->fetch_assoc()): ?>
+                                                <option value="<?php echo $eq['id_equipo']; ?>" <?php echo ($ticket['id_equipo'] == $eq['id_equipo']) ? 'selected' : ''; ?>>
+                                                    <?php echo htmlspecialchars($eq['nombre']); ?>
+                                                </option>
+                                            <?php endwhile; endif; ?>
+                                        </select>
+                                    </div>
+
+                                    <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #eee; padding-top: 12px;">
+                                        <button type="button" class="btn-accion-ticket" onclick="cerrarModalResolver()">Cancelar</button>
+                                        <button type="submit" class="btn-accion-ticket btn-primario-accion">Guardar cambios</button>
+                                    </div>
+                                </form>
                             </div>
+                        </div>
 
-                            <div class="grupoFormulario">
-                                <label for="diagnostico">Diagnóstico (opcional)</label>
-                                <textarea id="diagnostico" name="diagnostico" rows="3" placeholder="Describí el problema encontrado..."></textarea>
-                            </div>
+                        <script>
+                            function abrirModalResolver(estadoInicial) {
+                                const modal = document.getElementById('modalResolverTicket');
+                                if (!modal) return;
+                                if (estadoInicial) {
+                                    const selectEstado = document.getElementById('modal_estado');
+                                    if (selectEstado) selectEstado.value = estadoInicial;
+                                }
+                                modal.classList.add('activo');
+                            }
 
-                            <div class="grupoFormulario">
-                                <label for="solucion_aplicada">Solución aplicada (opcional)</label>
-                                <textarea id="solucion_aplicada" name="solucion_aplicada" rows="3" placeholder="Describí qué se hizo para resolverlo..."></textarea>
-                            </div>
+                            function cerrarModalResolver() {
+                                const modal = document.getElementById('modalResolverTicket');
+                                if (modal) modal.classList.remove('activo');
+                            }
 
-                            <div class="grupoFormulario">
-                                <label for="id_equipo_diag">Equipo intervenido (opcional)</label>
-                                <select id="id_equipo_diag" name="id_equipo_diag">
-                                    <option value="">— Ninguno —</option>
-                                    <?php if ($res_equipos): while ($eq = $res_equipos->fetch_assoc()): ?>
-                                        <option value="<?php echo $eq['id_equipo']; ?>" <?php echo ($ticket['id_equipo'] == $eq['id_equipo']) ? 'selected' : ''; ?>>
-                                            <?php echo htmlspecialchars($eq['nombre']); ?>
-                                        </option>
-                                    <?php endwhile; endif; ?>
-                                </select>
-                            </div>
+                            function cerrarModalFuera(e) {
+                                if (e.target.id === 'modalResolverTicket') {
+                                    cerrarModalResolver();
+                                }
+                            }
 
-                            <div class="botonesFormulario">
-                                <button type="submit" class="boton-primario">Guardar cambios</button>
-                            </div>
-                        </form>
-                    </div>
+                            document.addEventListener('keydown', function(e) {
+                                if (e.key === 'Escape') {
+                                    cerrarModalResolver();
+                                }
+                            });
+                        </script>
                     <?php endif; ?>
                 </div>
 
@@ -243,6 +319,7 @@
                     <h3 style="font-size: 14px; margin-bottom: 8px;">Agregar comentario</h3>
                     <form method="POST" action="../../acciones/mesa_ayuda/guardar_comentario.php" class="form-agregar-comentario">
                         <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
+                        <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
                         <textarea name="comentario" rows="3" placeholder="Escriba un comentario para el técnico..." required></textarea>
                         <div style="margin-top: 6px;">
                             <button type="submit" class="btn-enviar-comentario">Enviar comentario</button>

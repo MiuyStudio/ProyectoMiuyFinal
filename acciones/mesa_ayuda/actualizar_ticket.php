@@ -16,6 +16,8 @@ $accion     = trim($_POST['accion'] ?? '');
 $id_ticket  = intval($_POST['id_ticket'] ?? 0);
 $id_usuario = intval($_SESSION['usuario_id']);
 $rol        = intval($_SESSION['usuario_rol']);
+$origen     = trim($_POST['origen'] ?? '');
+$param_orig = !empty($origen) ? '&origen=' . urlencode($origen) : '';
 
 if ($id_ticket <= 0) {
     header("Location: ../../modulos/mesa_ayuda/mesa_ayuda.php");
@@ -32,9 +34,9 @@ if ($accion === 'asignarme') {
     // Asignarse el ticket y ponerlo En Proceso
     $sql = "UPDATE tickets SET id_tecnico = $id_usuario, estado = 'En Proceso' WHERE id_ticket = $id_ticket";
     if ($conn->query($sql)) {
-        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&mensaje=" . urlencode("Te asignaste el ticket correctamente."));
+        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&mensaje=" . urlencode("Te asignaste el ticket correctamente."));
     } else {
-        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&error=" . urlencode("Error al asignarse el ticket."));
+        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&error=" . urlencode("Error al asignarse el ticket."));
     }
     exit();
 
@@ -46,7 +48,7 @@ if ($accion === 'asignarme') {
 
     $estados_validos = ['Pendiente', 'En Proceso', 'Resuelto'];
     if (!in_array($nuevo_estado, $estados_validos)) {
-        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&error=" . urlencode("Estado no válido."));
+        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&error=" . urlencode("Estado no válido."));
         exit();
     }
 
@@ -54,7 +56,7 @@ if ($accion === 'asignarme') {
     $sql = "UPDATE tickets SET estado = '$estado_clean', id_tecnico = $id_usuario WHERE id_ticket = $id_ticket";
 
     if (!$conn->query($sql)) {
-        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&error=" . urlencode("Error al actualizar el estado."));
+        header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&error=" . urlencode("Error al actualizar el estado."));
         exit();
     }
 
@@ -77,12 +79,12 @@ if ($accion === 'asignarme') {
                      VALUES ($id_ticket, $equipo_valor, $id_usuario, '$diag_clean', '$solucion_clean', NOW())";
 
         if (!$conn->query($sql_diag)) {
-            header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&error=" . urlencode("Ticket actualizado pero error al guardar diagnóstico: " . $conn->error));
+            header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&error=" . urlencode("Ticket actualizado pero error al guardar diagnóstico: " . $conn->error));
             exit();
         }
     }
 
-    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket&mensaje=" . urlencode("Ticket actualizado correctamente."));
+    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$id_ticket" . $param_orig . "&mensaje=" . urlencode("Ticket actualizado correctamente."));
     exit();
 
 } else {
