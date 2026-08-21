@@ -435,3 +435,292 @@ input[type="text"] {
     border-top: 1px solid #ddd;
     padding-top: 10px;
 }
+
+/* ==========================================================================
+   MODAL DE AVISO (TICKET EN CURSO - ESTILO NOTIF)
+   ========================================================================== */
+.modal-aviso-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(2px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-aviso-overlay.activo {
+    display: flex;
+}
+
+.cajita1 {
+    border: #424242 2px solid;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 520px;
+    background-color: #555555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px 15px 20px 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    animation: notifFadeIn 0.25s ease-out;
+}
+
+@keyframes notifFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.cajita1 h3 {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0 10px 0;
+    text-shadow:
+        -1px -1px 0px #000,
+         1px -1px 0px #000,
+        -1px  1px 0px #000,
+         1px  1px 0px #000;
+    letter-spacing: 0.5px;
+}
+
+.cajita2 {
+    width: 100%;
+    background-color: #777777;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-direction: column;
+    padding: 18px 14px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.cajita2 h4 {
+    color: #ffd700;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.cajita2 p {
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.cajita2 .notif-ticket-info {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #e0e0e0;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.notif-botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.notif-btn-click {
+    color: #ffffff;
+    padding: 9px 24px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 6px;
+    background: #00c853;
+    cursor: pointer;
+    border: 1px solid #00e676;
+    transition: all 0.2s ease;
+}
+
+.notif-btn-click:hover {
+    background-color: #009624;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 200, 83, 0.4);
+}
+
+.notif-btn-cancelar {
+    color: #ffffff;
+    padding: 9px 24px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 6px;
+    background: #d50000;
+    cursor: pointer;
+    border: 1px solid #ff1744;
+    transition: all 0.2s ease;
+}
+
+.notif-btn-cancelar:hover {
+    background-color: #9b0000;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(213, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   LAYOUT EN 2 COLUMNAS (TICKET + COMENTARIOS EN TIEMPO REAL)
+   ========================================================================== */
+.contenedor-ticket-comentarios {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.ticket-col-izq {
+    flex: 1.15;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.ticket-col-der {
+    flex: 0.85;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 20px;
+}
+
+@media (max-width: 992px) {
+    .contenedor-ticket-comentarios {
+        flex-direction: column;
+    }
+    .ticket-col-izq,
+    .ticket-col-der {
+        width: 100%;
+        flex: none;
+        position: static;
+    }
+}
+
+.ticket-col-izq h2,
+.ticket-col-der h2 {
+    font-size: 16px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+/* PANEL DE COMENTARIOS */
+.comentarios-scroll-box {
+    max-height: 420px;
+    min-height: 120px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    background-color: #fafafa;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comentario-tarjeta {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 12px;
+}
+
+.comentario-tarjeta.es-mio {
+    background-color: #f0f7ff;
+    border-color: #b8daff;
+}
+
+.comentario-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.comentario-autor {
+    font-size: 13px;
+    color: #222;
+}
+
+.comentario-fecha {
+    font-size: 11px;
+    color: #777;
+}
+
+.comentario-cuerpo {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.comentarios-vacio {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* FORMULARIO AGREGAR COMENTARIO */
+.form-agregar-comentario {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-agregar-comentario textarea {
+    width: 100%;
+    min-height: 75px;
+    padding: 8px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 13px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.btn-enviar-comentario {
+    padding: 6px 14px;
+    background-color: #0066cc;
+    color: #ffffff;
+    border: 1px solid #0052a3;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-enviar-comentario:hover {
+    background-color: #004c99;
+}

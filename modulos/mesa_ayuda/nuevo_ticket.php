@@ -14,10 +14,12 @@ $error = $_GET['error'] ?? '';
 $sql_cat = "SELECT id_categoria, nombre_categoria FROM categorias WHERE id_categoria BETWEEN 1 AND 6";
 $res_cat = $conn->query($sql_cat);
 
-// Equipos para el modal (excluyendo equipos dados de baja)
-$sql_eq = "SELECT e.id_equipo, e.nombre, e.numero_serie, c.nombre_categoria 
+// Equipos para el modal (excluyendo equipos dados de baja) y verificando si tienen ticket activo
+$sql_eq = "SELECT e.id_equipo, e.nombre, e.numero_serie, c.nombre_categoria,
+                  t.id_ticket AS id_ticket_activo, t.titulo AS titulo_ticket_activo, t.estado AS estado_ticket_activo
            FROM equipos e 
            LEFT JOIN categorias c ON e.id_categoria = c.id_categoria 
+           LEFT JOIN tickets t ON e.id_equipo = t.id_equipo AND t.estado IN ('Pendiente', 'En Proceso')
            WHERE e.estado != 'De Baja' 
            ORDER BY e.nombre ASC";
 $res_eq = $conn->query($sql_eq);
@@ -176,7 +178,7 @@ if ($res_eq) {
                                     <td><?php echo htmlspecialchars($eq['nombre_categoria'] ?? '—'); ?></td>
                                     <td style="text-align: center;">
                                         <button type="button" class="btn-seleccionar-modal" 
-                                            onclick="seleccionarEquipo(<?php echo $eq['id_equipo']; ?>, '<?php echo htmlspecialchars($eq['nombre'], ENT_QUOTES); ?>')">
+                                            onclick="seleccionarEquipo(<?php echo $eq['id_equipo']; ?>, '<?php echo htmlspecialchars($eq['nombre'], ENT_QUOTES); ?>', <?php echo !empty($eq['id_ticket_activo']) ? intval($eq['id_ticket_activo']) : 0; ?>, '<?php echo htmlspecialchars($eq['titulo_ticket_activo'] ?? '', ENT_QUOTES); ?>')">
                                             Seleccionar
                                         </button>
                                     </td>
@@ -200,7 +202,25 @@ if ($res_eq) {
         </div>
     </div>
 
+    <!-- MODAL DE AVISO (TICKET EN CURSO - ESTILO NOTIF) -->
+    <div id="modalAvisoTicketActivo" class="modal-aviso-overlay">
+        <div class="cajita1">
+            <h3>Aviso</h3>
+            <div class="cajita2">
+                <h4>Este equipo ya tiene un ticket en curso.</h4>
+                <p>¿Deseas agregar un comentario para el técnico?</p>
+                <div id="notifInfoDetalle" class="notif-ticket-info" style="display: none;"></div>
+                <div class="notif-botones">
+                    <button type="button" class="notif-btn-click" id="btnAceptarNotif" onclick="redirigirATicketActivo()">Aceptar</button>
+                    <button type="button" class="notif-btn-cancelar" onclick="cerrarModalAviso()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+    let ticketActivoId = null;
+
     function abrirModalEquipos() {
         document.getElementById('modalSeleccionarEquipo').classList.add('activo');
         const inputBuscar = document.getElementById('inputBuscarEquipo');
@@ -213,11 +233,46 @@ if ($res_eq) {
         document.getElementById('modalSeleccionarEquipo').classList.remove('activo');
     }
 
-    function seleccionarEquipo(id, nombre) {
+    function abrirModalAviso(idTicket, infoTexto) {
+        ticketActivoId = idTicket;
+        const infoDiv = document.getElementById('notifInfoDetalle');
+        if (infoTexto) {
+            infoDiv.textContent = infoTexto;
+            infoDiv.style.display = 'block';
+        } else {
+            infoDiv.style.display = 'none';
+        }
+        document.getElementById('modalAvisoTicketActivo').classList.add('activo');
+    }
+
+    function cerrarModalAviso() {
+        document.getElementById('modalAvisoTicketActivo').classList.remove('activo');
+        ticketActivoId = null;
+        limpiarEquipo();
+    }
+
+    function redirigirATicketActivo() {
+        if (ticketActivoId) {
+            window.location.href = 'ver_ticket.php?id=' + ticketActivoId;
+        } else {
+            cerrarModalAviso();
+        }
+    }
+
+    function seleccionarEquipo(id, nombre, idTicketActivo, tituloTicketActivo) {
+        cerrarModalEquipos();
+        
+        if (idTicketActivo && idTicketActivo > 0) {
+            limpiarEquipo();
+            const detalle = tituloTicketActivo ? `Ticket #${idTicketActivo} — "${tituloTicketActivo}"` : `Ticket #${idTicketActivo}`;
+            abrirModalAviso(idTicketActivo, detalle);
+            return;
+        }
+
+        // Si no tiene ticket activo, se asigna directamente
         document.getElementById('id_equipo').value = id;
         document.getElementById('nombre_equipo_seleccionado').value = nombre;
         document.getElementById('btnLimpiarEquipo').style.display = 'inline-block';
-        cerrarModalEquipos();
     }
 
     function limpiarEquipo() {
@@ -252,9 +307,13 @@ if ($res_eq) {
 
     // Cerrar al hacer clic fuera del contenido del modal
     window.addEventListener('click', function(e) {
-        const modal = document.getElementById('modalSeleccionarEquipo');
-        if (e.target === modal) {
+        const modalEquipo = document.getElementById('modalSeleccionarEquipo');
+        if (e.target === modalEquipo) {
             cerrarModalEquipos();
+        }
+        const modalAviso = document.getElementById('modalAvisoTicketActivo');
+        if (e.target === modalAviso) {
+            cerrarModalAviso();
         }
     });
     </script>

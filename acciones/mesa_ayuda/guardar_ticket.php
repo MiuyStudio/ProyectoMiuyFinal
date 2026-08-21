@@ -34,11 +34,23 @@ $descripcion_clean = $conn->real_escape_string($descripcion);
 // id_equipo es opcional (NULL si no se seleccionó)
 $equipo_valor = ($id_equipo > 0) ? $id_equipo : 'NULL';
 
+// Si seleccionó equipo, verificar que no tenga un ticket activo (Pendiente o En Proceso)
+if ($id_equipo > 0) {
+    $res_check = $conn->query("SELECT id_ticket, titulo FROM tickets WHERE id_equipo = $id_equipo AND estado IN ('Pendiente', 'En Proceso') LIMIT 1");
+    if ($res_check && $res_check->num_rows > 0) {
+        $ticket_activo = $res_check->fetch_assoc();
+        $id_activo = $ticket_activo['id_ticket'];
+        header("Location: ../../modulos/mesa_ayuda/nuevo_ticket.php?error=" . urlencode("Este equipo ya tiene un ticket en curso (#$id_activo). No se puede abrir otro."));
+        exit();
+    }
+}
+
 $sql = "INSERT INTO tickets (titulo, descripcion, tipo_ticket, prioridad, estado, id_solicitante, id_categoria, id_equipo)
         VALUES ('$titulo_clean', '$descripcion_clean', '$tipo_clean', '$prioridad_clean', 'Pendiente', $id_solicitante, $id_categoria, $equipo_valor)";
 
 if ($conn->query($sql)) {
-    header("Location: ../../modulos/mesa_ayuda/mesa_ayuda.php?mensaje=" . urlencode("Ticket creado correctamente."));
+    $nuevo_id = $conn->insert_id;
+    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$nuevo_id&mensaje=" . urlencode("Ticket creado correctamente."));
     exit();
 } else {
     header("Location: ../../modulos/mesa_ayuda/nuevo_ticket.php?error=" . urlencode("Error al crear el ticket: " . $conn->error));
