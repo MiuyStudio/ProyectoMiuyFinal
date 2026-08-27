@@ -12,11 +12,28 @@
     $id_usuario = intval($_SESSION['usuario_id']);
     $mensaje    = $_GET['mensaje'] ?? '';
     $error      = $_GET['error'] ?? '';
-    $origen     = $_GET['origen'] ?? '';
+    $origen        = $_GET['origen'] ?? '';
+    $id_equipo_ref = intval($_GET['id_equipo'] ?? 0);
 
-    $es_de_todos = ($origen === 'todos' && ($rol == 1 || $rol == 2));
-    $volver_url  = $es_de_todos ? 'todos_tickets.php' : 'mesa_ayuda.php';
-    $volver_texto = $es_de_todos ? '← Volver a todos los tickets' : '← Volver a mis tickets';
+    if ($origen === 'todos') {
+        $volver_url   = 'todos_tickets.php';
+        $volver_texto = '← Volver a todos los tickets';
+    } elseif ($origen === 'equipos_atencion') {
+        $volver_url   = 'equipos_atencion.php';
+        $volver_texto = '← Volver a equipos con atención';
+    } elseif ($origen === 'diagnosticos') {
+        $volver_url   = 'diagnosticos.php';
+        $volver_texto = '← Volver a diagnósticos';
+    } elseif ($origen === 'soluciones') {
+        $volver_url   = 'soluciones.php';
+        $volver_texto = '← Volver a soluciones';
+    } elseif ($origen === 'equipo' && $id_equipo_ref > 0) {
+        $volver_url   = '../inventario/ver_equipo.php?id=' . $id_equipo_ref . '&origen=ticket&id_ticket=' . $id_ticket;
+        $volver_texto = '← Volver a la ficha del equipo';
+    } else {
+        $volver_url   = 'mesa_ayuda.php';
+        $volver_texto = '← Volver a mis tickets';
+    }
 
     if ($id_ticket <= 0) {
         header("Location: " . $volver_url);
@@ -93,11 +110,13 @@
         <!-- menú lateral -->
         <div class="barraLateral">
             <ul>
-                <li><a href="mesa_ayuda.php" class="<?php echo (!$es_de_todos) ? 'activo' : ''; ?>">Mis Tickets</a></li>
+                <li><a href="mesa_ayuda.php" class="<?php echo (empty($origen) || $origen === 'mis') ? 'activo' : ''; ?>">Mis Tickets</a></li>
                 <li><a href="nuevo_ticket.php">Nuevo Ticket</a></li>
                 <?php if ($rol == 1 || $rol == 2): ?>
-                <li><a href="todos_tickets.php" class="<?php echo ($es_de_todos) ? 'activo' : ''; ?>">Todos los Tickets</a></li>
-                <li><a href="equipos_atencion.php">Equipos con atención</a></li>
+                <li><a href="todos_tickets.php" class="<?php echo ($origen === 'todos') ? 'activo' : ''; ?>">Todos los Tickets</a></li>
+                <li><a href="equipos_atencion.php" class="<?php echo ($origen === 'equipos_atencion') ? 'activo' : ''; ?>">Equipos con atención</a></li>
+                <li><a href="diagnosticos.php" class="<?php echo ($origen === 'diagnosticos') ? 'activo' : ''; ?>">Diagnósticos</a></li>
+                <li><a href="soluciones.php" class="<?php echo ($origen === 'soluciones') ? 'activo' : ''; ?>">Soluciones Aplicadas</a></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -117,7 +136,7 @@
             <?php endif; ?>
 
             <div style="margin-bottom: 12px;">
-                <a href="<?php echo htmlspecialchars($volver_url); ?>" style="color: #0066cc; text-decoration: none; font-weight: 500;"><?php echo htmlspecialchars($volver_texto); ?></a>
+                <a href="<?php echo htmlspecialchars($volver_url); ?>" style="color: #0066cc; text-decoration: none; font-weight: 500; font-size: 14px;"><?php echo htmlspecialchars($volver_texto); ?></a>
             </div>
 
             <!-- CONTENEDOR EN 2 COLUMNAS (TICKET A LA IZQUIERDA Y COMENTARIOS A LA DERECHA) -->
@@ -135,7 +154,18 @@
                             <tr><th>Categoría</th><td><?php echo htmlspecialchars($ticket['nombre_categoria'] ?? '—'); ?></td></tr>
                             <tr><th>Solicitante</th><td><?php echo htmlspecialchars($ticket['nombre_solicitante']); ?></td></tr>
                             <tr><th>Técnico asignado</th><td><?php echo htmlspecialchars($ticket['nombre_tecnico'] ?? 'Sin asignar'); ?></td></tr>
-                            <tr><th>Equipo afectado</th><td><?php echo htmlspecialchars($ticket['nombre_equipo'] ?? '—'); ?></td></tr>
+                            <tr>
+                                <th>Equipo afectado</th>
+                                <td>
+                                    <?php if (!empty($ticket['id_equipo'])): ?>
+                                        <a href="../inventario/ver_equipo.php?id=<?php echo $ticket['id_equipo']; ?>&origen=ticket&id_ticket=<?php echo $ticket['id_ticket']; ?>" style="color: #0066cc; text-decoration: underline; font-weight: 500;">
+                                            <?php echo htmlspecialchars($ticket['nombre_equipo'] . ($ticket['numero_serie'] ? ' (' . $ticket['numero_serie'] . ')' : '')); ?> (Ver historial)
+                                        </a>
+                                    <?php else: ?>
+                                        —
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
                             <tr><th>Fecha creación</th><td><?php echo date('d/m/Y H:i', strtotime($ticket['fecha_creacion'])); ?></td></tr>
                             <tr><th>Última actualización</th><td><?php echo date('d/m/Y H:i', strtotime($ticket['fecha_actualizacion'])); ?></td></tr>
                             <tr><th>Descripción</th><td><?php echo nl2br(htmlspecialchars($ticket['descripcion'])); ?></td></tr>

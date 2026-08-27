@@ -75,6 +75,8 @@
                 <li><a href="nuevo_ticket.php">Nuevo Ticket</a></li>
                 <li><a href="todos_tickets.php" class="activo">Todos los Tickets</a></li>
                 <li><a href="equipos_atencion.php">Equipos con atención</a></li>
+                <li><a href="diagnosticos.php">Diagnósticos</a></li>
+                <li><a href="soluciones.php">Soluciones Aplicadas</a></li>
             </ul>
         </div>
 

@@ -61,6 +61,8 @@
                 <li><a href="nuevo_ticket.php">Nuevo Ticket</a></li>
                 <li><a href="todos_tickets.php">Todos los Tickets</a></li>
                 <li><a href="equipos_atencion.php" class="activo">Equipos con atención</a></li>
+                <li><a href="diagnosticos.php">Diagnósticos</a></li>
+                <li><a href="soluciones.php">Soluciones Aplicadas</a></li>
             </ul>
         </div>
 
@@ -100,7 +102,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="../inventario/ver_equipo.php?id=<?php echo $eq['id_equipo']; ?>">
+                                    <a href="../inventario/ver_equipo.php?id=<?php echo $eq['id_equipo']; ?>&origen=equipos_atencion">
                                         <button type="button">Ver Historial</button>
                                     </a>
                                 </td>

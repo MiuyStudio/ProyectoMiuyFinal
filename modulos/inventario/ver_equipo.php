@@ -12,11 +12,48 @@
         exit();
     }
 
+    $rol = intval($_SESSION['usuario_rol']);
+
     // 1. Obtener ID del equipo desde la URL
-    $id_equipo = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $id_equipo     = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $origen        = $_GET['origen'] ?? '';
+    $id_ticket_ref = intval($_GET['id_ticket'] ?? 0);
+
+    // Mapeo dinámico de retorno según el origen de navegación
+    if ($origen === 'equipos_atencion' || $origen === 'mesa_ayuda') {
+        $volver_url   = '../mesa_ayuda/equipos_atencion.php';
+        $volver_texto = '← Volver a Equipos con atención';
+        $modulo_titulo = 'Mesa de Ayuda';
+        $es_contexto_mesa_ayuda = true;
+    } elseif ($origen === 'ticket' && $id_ticket_ref > 0) {
+        $volver_url   = '../mesa_ayuda/ver_ticket.php?id=' . $id_ticket_ref . '&origen=equipos_atencion';
+        $volver_texto = '← Volver al Ticket #' . $id_ticket_ref;
+        $modulo_titulo = 'Mesa de Ayuda';
+        $es_contexto_mesa_ayuda = true;
+    } elseif ($origen === 'diagnosticos') {
+        $volver_url   = '../mesa_ayuda/diagnosticos.php';
+        $volver_texto = '← Volver a Diagnósticos';
+        $modulo_titulo = 'Mesa de Ayuda';
+        $es_contexto_mesa_ayuda = true;
+    } elseif ($origen === 'soluciones') {
+        $volver_url   = '../mesa_ayuda/soluciones.php';
+        $volver_texto = '← Volver a Soluciones Aplicadas';
+        $modulo_titulo = 'Mesa de Ayuda';
+        $es_contexto_mesa_ayuda = true;
+    } elseif ($origen === 'asignaciones') {
+        $volver_url   = 'asignaciones.php';
+        $volver_texto = '← Volver a Asignaciones';
+        $modulo_titulo = 'Inventario';
+        $es_contexto_mesa_ayuda = false;
+    } else {
+        $volver_url   = 'inventario.php';
+        $volver_texto = '← Volver al Inventario';
+        $modulo_titulo = 'Inventario';
+        $es_contexto_mesa_ayuda = false;
+    }
 
     if ($id_equipo <= 0) {
-        header("Location: inventario.php");
+        header("Location: " . $volver_url);
         exit();
     }
 
@@ -30,7 +67,7 @@
     $res_equipo = $conn->query($sql_equipo);
 
     if (!$res_equipo || $res_equipo->num_rows === 0) {
-        header("Location: inventario.php");
+        header("Location: " . $volver_url);
         exit();
     }
 
@@ -53,7 +90,9 @@
     $sql_modelos = "SELECT id_modelo, nombre_modelo, id_marca 
                     FROM modelos 
                     ORDER BY nombre_modelo ASC";
-    $res_modelos = $conn->query($sql_modelos);    // 6. Consultar historial de asignaciones del equipo
+    $res_modelos = $conn->query($sql_modelos);
+
+    // 6. Consultar historial de asignaciones del equipo
     $sql_asig_equipo = "SELECT a.*, 
                                CONCAT(u.nombre, ' ', u.apellido) AS nombre_usuario,
                                r.nombre_rol
@@ -76,7 +115,7 @@
                         ORDER BY d.fecha_intervencion DESC, d.id_diagnostico DESC";
     $res_diag_equipo = $conn->query($sql_diag_equipo);
 
-    $error = isset($_GET['error']) ? $_GET['error'] : '';
+    $error   = isset($_GET['error']) ? $_GET['error'] : '';
     $mensaje = isset($_GET['mensaje']) ? $_GET['mensaje'] : '';
     ?>
 <!DOCTYPE html>
@@ -85,17 +124,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario - Modificar / Dar de baja equipo</title>
+    <title><?php echo htmlspecialchars($modulo_titulo); ?> - Ficha y Detalle de Equipo</title>
     <link rel="icon" type="image/png" href="../../assets/utu.png">
-    <link rel="stylesheet" href="../css/inventario.css">
+    <link rel="stylesheet" href="../css/inventario.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
-    
 
     <!-- cabecera de la página -->
     <div class="encabezado">
-        <h1>Inventario</h1>
+        <h1><?php echo htmlspecialchars($modulo_titulo); ?></h1>
         <span>
             Usuario: <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?> 
             (<?php echo htmlspecialchars($_SESSION['nombre_rol']); ?>) | 
@@ -106,19 +144,37 @@
     <!-- layout principal -->
     <div class="contenedorPrincipal">
 
-        <!-- menú de la izquierda -->
+        <!-- menú lateral context-aware -->
         <div class="barraLateral">
             <ul>
-                <li><a href="inventario.php" class="activo">Equipos</a></li>
-                <li><a href="categorias.php">Categorías</a></li>
-                <li><a href="agregar_marca.php">Agregar marca</a></li>
-                <li><a href="agregar_modelo.php">Agregar modelo</a></li>
-                <li><a href="agregar_equipo.php">Agregar equipo</a></li>
+                <?php if ($es_contexto_mesa_ayuda): ?>
+                    <li><a href="../mesa_ayuda/mesa_ayuda.php">Mis Tickets</a></li>
+                    <li><a href="../mesa_ayuda/nuevo_ticket.php">Nuevo Ticket</a></li>
+                    <?php if ($rol == 1 || $rol == 2): ?>
+                        <li><a href="../mesa_ayuda/todos_tickets.php">Todos los Tickets</a></li>
+                        <li><a href="../mesa_ayuda/equipos_atencion.php" class="<?php echo ($origen === 'equipos_atencion' || $origen === 'mesa_ayuda' || $origen === 'ticket') ? 'activo' : ''; ?>">Equipos con atención</a></li>
+                        <li><a href="../mesa_ayuda/diagnosticos.php" class="<?php echo ($origen === 'diagnosticos') ? 'activo' : ''; ?>">Diagnósticos</a></li>
+                        <li><a href="../mesa_ayuda/soluciones.php" class="<?php echo ($origen === 'soluciones') ? 'activo' : ''; ?>">Soluciones Aplicadas</a></li>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <li><a href="inventario.php" class="<?php echo ($origen !== 'asignaciones') ? 'activo' : ''; ?>">Equipos</a></li>
+                    <li><a href="asignaciones.php" class="<?php echo ($origen === 'asignaciones') ? 'activo' : ''; ?>">Asignaciones</a></li>
+                    <li><a href="categorias.php">Categorías</a></li>
+                    <li><a href="agregar_marca.php">Agregar marca</a></li>
+                    <li><a href="agregar_modelo.php">Agregar modelo</a></li>
+                    <li><a href="agregar_equipo.php">Agregar equipo</a></li>
+                <?php endif; ?>
             </ul>
         </div>
 
         <!-- contenido principal -->
         <div class="areaContenido">
+
+            <div style="margin-bottom: 14px;">
+                <a href="<?php echo htmlspecialchars($volver_url); ?>" style="color: #0066cc; text-decoration: none; font-weight: 500; font-size: 14px;">
+                    <?php echo htmlspecialchars($volver_texto); ?>
+                </a>
+            </div>
 
             <?php if (!empty($mensaje)): ?>
                 <p style="color: green; font-weight: bold; margin-bottom: 15px; text-align: center;">
@@ -133,10 +189,12 @@
             <?php endif; ?>
 
             <div class="panel">
-                <h2>Modificar / Dar de baja equipo</h2>
+                <h2>Ficha del Equipo: <?php echo htmlspecialchars($equipo['nombre']); ?></h2>
 
                 <form method="POST" action="../../acciones/inventario/actualizar_equipo.php">
                     <input type="hidden" name="id_equipo" value="<?php echo $equipo['id_equipo']; ?>">
+                    <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
+                    <input type="hidden" name="id_ticket" value="<?php echo $id_ticket_ref; ?>">
 
                     <div class="fila-formulario">
                         <div class="grupo-campo">
@@ -147,11 +205,13 @@
                             <label for="categoria">Categoría</label>
                             <select id="categoria" name="id_categoria" required>
                                 <option value="">Seleccione una categoría</option>
-                                <?php while ($cat = $res_categorias->fetch_assoc()): ?>
-                                    <option value="<?php echo $cat['id_categoria']; ?>" <?php echo ($cat['id_categoria'] == $equipo['id_categoria']) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($cat['nombre_categoria']); ?>
-                                    </option>
-                                <?php endwhile; ?>
+                                <?php if ($res_categorias): ?>
+                                    <?php while ($cat = $res_categorias->fetch_assoc()): ?>
+                                        <option value="<?php echo $cat['id_categoria']; ?>" <?php echo ($cat['id_categoria'] == $equipo['id_categoria']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($cat['nombre_categoria']); ?>
+                                        </option>
+                                    <?php endwhile; ?>
+                                <?php endif; ?>
                             </select>
                         </div>
                     </div>
@@ -168,22 +228,26 @@
                             <label for="marca">Marca</label>
                             <select id="marca" name="id_marca" required>
                                 <option value="">Seleccione una marca</option>
-                                <?php while ($marca = $res_marcas->fetch_assoc()): ?>
-                                    <option value="<?php echo $marca['id_marca']; ?>" <?php echo ($marca['id_marca'] == $equipo['id_marca']) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($marca['nombre_marca']); ?>
-                                    </option>
-                                <?php endwhile; ?>
+                                <?php if ($res_marcas): ?>
+                                    <?php while ($marca = $res_marcas->fetch_assoc()): ?>
+                                        <option value="<?php echo $marca['id_marca']; ?>" <?php echo ($marca['id_marca'] == $equipo['id_marca']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($marca['nombre_marca']); ?>
+                                        </option>
+                                    <?php endwhile; ?>
+                                <?php endif; ?>
                             </select>
                         </div>
                         <div class="grupo-campo">
                             <label for="modelo">Modelo</label>
                             <select id="modelo" name="id_modelo" required>
                                 <option value="">Seleccione un modelo</option>
-                                <?php while ($modelo = $res_modelos->fetch_assoc()): ?>
-                                    <option value="<?php echo $modelo['id_modelo']; ?>" data-marca="<?php echo $modelo['id_marca']; ?>" <?php echo ($modelo['id_modelo'] == $equipo['id_modelo']) ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($modelo['nombre_modelo']); ?>
-                                    </option>
-                                <?php endwhile; ?>
+                                <?php if ($res_modelos): ?>
+                                    <?php while ($modelo = $res_modelos->fetch_assoc()): ?>
+                                        <option value="<?php echo $modelo['id_modelo']; ?>" data-marca="<?php echo $modelo['id_marca']; ?>" <?php echo ($modelo['id_modelo'] == $equipo['id_modelo']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($modelo['nombre_modelo']); ?>
+                                        </option>
+                                    <?php endwhile; ?>
+                                <?php endif; ?>
                             </select>
                         </div>
                     </div>
@@ -201,7 +265,7 @@
                     </div>
 
                     <div class="acciones">
-                        <a href="inventario.php" class="boton-secundario">Volver al Inventario</a>
+                        <a href="<?php echo htmlspecialchars($volver_url); ?>" class="boton-secundario"><?php echo htmlspecialchars($volver_texto); ?></a>
                         <button type="submit" name="accion" value="dar_baja" class="boton-peligro" onclick="return confirm('¿Está seguro de dar de baja este equipo?');">Dar de baja</button>
                         <button type="submit" name="accion" value="guardar" class="boton-primario">Guardar cambios</button>
                     </div>
@@ -233,9 +297,9 @@
                                     <td><?php echo htmlspecialchars($asig['fecha_inicio']); ?></td>
                                     <td>
                                         <?php if ($es_activa): ?>
-                                            <span class="estadoDisponible">Activa</span>
+                                            <span class="badge-activa">Activa</span>
                                         <?php else: ?>
-                                            <span><?php echo htmlspecialchars($asig['fecha_fin']); ?></span>
+                                            <span class="badge-finalizada"><?php echo htmlspecialchars($asig['fecha_fin']); ?></span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -267,7 +331,15 @@
                             <?php while ($diag = $res_diag_equipo->fetch_assoc()): ?>
                                 <tr>
                                     <td><strong><?php echo htmlspecialchars($diag['nombre_tecnico'] ?? 'N/A'); ?></strong></td>
-                                    <td><?php echo htmlspecialchars($diag['titulo_ticket'] ?? 'Sin Ticket'); ?></td>
+                                    <td>
+                                        <?php if (!empty($diag['id_ticket'])): ?>
+                                            <a href="../mesa_ayuda/ver_ticket.php?id=<?php echo $diag['id_ticket']; ?>&origen=equipo&id_equipo=<?php echo $id_equipo; ?>" style="color: #0066cc; text-decoration: underline; font-weight: 500;">
+                                                #<?php echo $diag['id_ticket']; ?> - <?php echo htmlspecialchars($diag['titulo_ticket'] ?? 'Ticket'); ?>
+                                            </a>
+                                        <?php else: ?>
+                                            <span style="color: #777;">Sin Ticket</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?php echo nl2br(htmlspecialchars($diag['diagnostico'])); ?></td>
                                     <td><?php echo !empty($diag['solucion_aplicada']) ? nl2br(htmlspecialchars($diag['solucion_aplicada'])) : '<em style="color:#888;">Sin solución registrada</em>'; ?></td>
                                     <td><?php echo htmlspecialchars($diag['fecha_intervencion'] ?? 'N/A'); ?></td>

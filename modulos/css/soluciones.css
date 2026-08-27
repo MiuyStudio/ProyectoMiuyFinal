@@ -1,10 +1,33 @@
-/* Estilos específicos para la vista de Soluciones Aplicadas */
-@import url('dashboard.css');
+/* Estilos específicos para la vista de Soluciones Aplicadas en Mesa de Ayuda */
+@import url('mesa_ayuda.css');
 
 .subtitulo-seccion {
     margin-bottom: 15px;
     color: #666;
     font-size: 13px;
+}
+
+.tablaSimple {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.tablaSimple th,
+.tablaSimple td {
+    border: 1px solid #bbb;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tablaSimple th {
+    background-color: #e8e8e8;
+    font-weight: bold;
+}
+
+.tablaSimple tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
 /* Modal de Soluciones */
@@ -41,6 +64,7 @@
 .modal-header h3 {
     font-size: 16px;
     color: #333;
+    margin: 0;
 }
 
 .btn-cerrar {

@@ -48,12 +48,15 @@ if ($id_equipo > 0) {
 $sql = "INSERT INTO tickets (titulo, descripcion, tipo_ticket, prioridad, estado, id_solicitante, id_categoria, id_equipo)
         VALUES ('$titulo_clean', '$descripcion_clean', '$tipo_clean', '$prioridad_clean', 'Pendiente', $id_solicitante, $id_categoria, $equipo_valor)";
 
+$origen = trim($_POST['origen'] ?? '');
+$param_orig = !empty($origen) ? '&origen=' . urlencode($origen) : '';
+
 if ($conn->query($sql)) {
     $nuevo_id = $conn->insert_id;
-    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$nuevo_id&mensaje=" . urlencode("Ticket creado correctamente."));
+    header("Location: ../../modulos/mesa_ayuda/ver_ticket.php?id=$nuevo_id" . $param_orig . "&mensaje=" . urlencode("Ticket creado correctamente."));
     exit();
 } else {
-    header("Location: ../../modulos/mesa_ayuda/nuevo_ticket.php?error=" . urlencode("Error al crear el ticket: " . $conn->error));
+    header("Location: ../../modulos/mesa_ayuda/nuevo_ticket.php?" . (!empty($origen) ? 'origen=' . urlencode($origen) . '&' : '') . "error=" . urlencode("Error al crear el ticket: " . $conn->error));
     exit();
 }
 ?>

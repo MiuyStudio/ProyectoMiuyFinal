@@ -20,6 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_marca      = isset($_POST['id_marca']) ? intval($_POST['id_marca']) : 0;
     $id_modelo     = isset($_POST['id_modelo']) ? intval($_POST['id_modelo']) : 0;
     $estado        = isset($_POST['estado']) ? trim($_POST['estado']) : '';
+    $origen        = trim($_POST['origen'] ?? '');
+    $id_ticket_ref = intval($_POST['id_ticket'] ?? 0);
+
+    $extra_params = '';
+    if (!empty($origen)) {
+        $extra_params .= '&origen=' . urlencode($origen);
+    }
+    if ($id_ticket_ref > 0) {
+        $extra_params .= '&id_ticket=' . $id_ticket_ref;
+    }
 
     if ($id_equipo <= 0) {
         header("Location: ../../modulos/inventario/inventario.php");
@@ -31,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "UPDATE equipos SET estado = 'De Baja' WHERE id_equipo = $id_equipo";
 
         if ($conn->query($sql)) {
-            header("Location: ../../modulos/inventario/inventario.php?mensaje=" . urlencode("El equipo ha sido dado de baja correctamente."));
+            header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . $extra_params . "&mensaje=" . urlencode("El equipo ha sido dado de baja correctamente."));
             exit();
         } else {
-            header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . "&error=" . urlencode("Error al dar de baja el equipo: " . $conn->error));
+            header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . $extra_params . "&error=" . urlencode("Error al dar de baja el equipo: " . $conn->error));
             exit();
         }
     } else {
@@ -52,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     WHERE id_equipo = $id_equipo";
 
             if ($conn->query($sql)) {
-                header("Location: ../../modulos/inventario/inventario.php?mensaje=" . urlencode("Equipo actualizado correctamente."));
+                header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . $extra_params . "&mensaje=" . urlencode("Equipo actualizado correctamente."));
                 exit();
             } else {
-                header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . "&error=" . urlencode("Error al actualizar el equipo: " . $conn->error));
+                header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . $extra_params . "&error=" . urlencode("Error al actualizar el equipo: " . $conn->error));
                 exit();
             }
         } else {
-            header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . "&error=" . urlencode("Por favor complete todos los campos obligatorios."));
+            header("Location: ../../modulos/inventario/ver_equipo.php?id=" . $id_equipo . $extra_params . "&error=" . urlencode("Por favor complete todos los campos obligatorios."));
             exit();
         }
     }

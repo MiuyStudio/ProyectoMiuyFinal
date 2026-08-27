@@ -51,6 +51,7 @@
         <div class="barraLateral">
             <ul>
                 <li><a href="inventario.php">Equipos</a></li>
+                <li><a href="asignaciones.php">Asignaciones</a></li>
                 <li><a href="categorias.php">Categorías</a></li>
                 <li><a href="agregar_marca.php">Agregar marca</a></li>
                 <li><a href="agregar_modelo.php" class="activo">Agregar modelo</a></li>

@@ -9,6 +9,8 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $rol = intval($_SESSION['usuario_rol']);
 $error = $_GET['error'] ?? '';
+$origen = $_GET['origen'] ?? '';
+$volver_cancelar = ($origen === 'todos') ? 'todos_tickets.php' : 'mesa_ayuda.php';
 
 // Categorías para tickets (ids 1-6)
 $sql_cat = "SELECT id_categoria, nombre_categoria FROM categorias WHERE id_categoria BETWEEN 1 AND 6";
@@ -64,6 +66,8 @@ if ($res_eq) {
                 <?php if ($rol == 1 || $rol == 2): ?>
                     <li><a href="todos_tickets.php">Todos los Tickets</a></li>
                     <li><a href="equipos_atencion.php">Equipos con atención</a></li>
+                    <li><a href="diagnosticos.php">Diagnósticos</a></li>
+                    <li><a href="soluciones.php">Soluciones Aplicadas</a></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -134,9 +138,10 @@ if ($res_eq) {
                         </div>
                     </div>
 
+                    <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
                     <div class="botonesFormulario">
                         <button type="submit">Enviar Ticket</button>
-                        <a href="mesa_ayuda.php" class="btn-cancelar">Cancelar</a>
+                        <a href="<?php echo htmlspecialchars($volver_cancelar); ?>" class="btn-cancelar">Cancelar</a>
                     </div>
 
                 </form>

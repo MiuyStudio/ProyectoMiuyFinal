@@ -107,6 +107,7 @@
         <div class="barraLateral">
             <ul>
                 <li><a href="inventario.php" class="activo">Equipos</a></li>
+                <li><a href="asignaciones.php">Asignaciones</a></li>
                 <li><a href="categorias.php">Categorías</a></li>
                 <li><a href="agregar_marca.php">Agregar marca</a></li>
                 <li><a href="agregar_modelo.php">Agregar modelo</a></li>
@@ -199,7 +200,7 @@
                                                 onclick="abrirModalDesdeBoton(this)">
                                                 Editar
                                             </button>
-                                            <a href="ver_equipo.php?id=<?php echo $equipo['id_equipo']; ?>" class="btn-ver">Detalle</a>
+                                            <a href="ver_equipo.php?id=<?php echo $equipo['id_equipo']; ?>&origen=inventario" class="btn-ver">Detalle</a>
                                         </div>
                                     </td>
                                 </tr>

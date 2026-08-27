@@ -68,6 +68,8 @@
                 <?php if ($rol == 1 || $rol == 2): ?>
                 <li><a href="todos_tickets.php">Todos los Tickets</a></li>
                 <li><a href="equipos_atencion.php">Equipos con atención</a></li>
+                <li><a href="diagnosticos.php">Diagnósticos</a></li>
+                <li><a href="soluciones.php">Soluciones Aplicadas</a></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -126,7 +128,7 @@
                                 <td><span class="badge-prioridad prioridad<?php echo htmlspecialchars($t['prioridad']); ?>"><?php echo htmlspecialchars($t['prioridad']); ?></span></td>
                                 <td><span class="badge-estado estado<?php echo str_replace(' ', '', $t['estado']); ?>"><?php echo htmlspecialchars($t['estado']); ?></span></td>
                                 <td><?php echo date('d/m/Y', strtotime($t['fecha_creacion'])); ?></td>
-                                <td><a href="ver_ticket.php?id=<?php echo $t['id_ticket']; ?>"><button type="button">Ver</button></a></td>
+                                <td><a href="ver_ticket.php?id=<?php echo $t['id_ticket']; ?>&origen=mis"><button type="button">Ver</button></a></td>
                             </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
