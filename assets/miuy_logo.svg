@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    .bg { fill: #040404; }
+    .txt { fill: #FCFCFC; font-family: system-ui, -apple-system, 'Space Grotesk', sans-serif; font-weight: 900; font-size: 27px; letter-spacing: -0.5px; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #FCFCFC; }
+      .txt { fill: #040404; }
+    }
+  </style>
+  <rect class="bg" width="64" height="64" rx="14" />
+  <text class="txt" x="50%" y="54%" text-anchor="middle" dominant-baseline="middle">MS</text>
+</svg>

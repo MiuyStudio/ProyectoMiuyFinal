@@ -33,3 +33,5 @@ vendor/
 composer.lock
 package-lock.json
 
+# === Herramientas de Demo / Pruebas Locales ===
+login/autologin.php
