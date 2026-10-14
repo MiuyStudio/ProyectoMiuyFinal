@@ -29,28 +29,28 @@ function formatearTiempo($minutosTotales)
     return $minutos . "m";
 }
 
-// 1. KPI RESUMEN: Equipos
-$sql_kpi_eq = "SELECT 
+// 1. RESUMEN: Equipos
+$sql_resumen_equipos = "SELECT 
                    COUNT(*) AS total,
                    SUM(CASE WHEN estado = 'Disponible' THEN 1 ELSE 0 END) AS disponibles,
                    SUM(CASE WHEN estado = 'En Uso' THEN 1 ELSE 0 END) AS en_uso,
                    SUM(CASE WHEN estado = 'En Mantenimiento' THEN 1 ELSE 0 END) AS en_mantenimiento,
                    SUM(CASE WHEN estado = 'De Baja' THEN 1 ELSE 0 END) AS de_baja
                FROM equipos";
-$res_kpi_eq = $conn->query($sql_kpi_eq);
-$kpi_eq = $res_kpi_eq ? $res_kpi_eq->fetch_assoc() : ['total' => 0, 'disponibles' => 0, 'en_uso' => 0, 'en_mantenimiento' => 0, 'de_baja' => 0];
+$res_resumen_equipos = $conn->query($sql_resumen_equipos);
+$resumen_equipos = $res_resumen_equipos ? $res_resumen_equipos->fetch_assoc() : ['total' => 0, 'disponibles' => 0, 'en_uso' => 0, 'en_mantenimiento' => 0, 'de_baja' => 0];
 
-// 2. KPI RESUMEN: Tickets
-$sql_kpi_tk = "SELECT 
+// 2. RESUMEN: Tickets
+$sql_resumen_tickets = "SELECT 
                    COUNT(*) AS total,
                    SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) AS pendientes,
                    SUM(CASE WHEN estado = 'En Proceso' THEN 1 ELSE 0 END) AS en_proceso,
                    SUM(CASE WHEN estado = 'Resuelto' THEN 1 ELSE 0 END) AS resueltos
                FROM tickets";
-$res_kpi_tk = $conn->query($sql_kpi_tk);
-$kpi_tk = $res_kpi_tk ? $res_kpi_tk->fetch_assoc() : ['total' => 0, 'pendientes' => 0, 'en_proceso' => 0, 'resueltos' => 0];
+$res_resumen_tickets = $conn->query($sql_resumen_tickets);
+$resumen_tickets = $res_resumen_tickets ? $res_resumen_tickets->fetch_assoc() : ['total' => 0, 'pendientes' => 0, 'en_proceso' => 0, 'resueltos' => 0];
 
-$porcentaje_resueltos = ($kpi_tk['total'] > 0) ? round(($kpi_tk['resueltos'] / $kpi_tk['total']) * 100) : 0;
+$porcentaje_resueltos = ($resumen_tickets['total'] > 0) ? round(($resumen_tickets['resueltos'] / $resumen_tickets['total']) * 100) : 0;
 
 // 3. MÉTRICA: Equipos con más fallas
 $sql_fallas = "SELECT e.nombre AS equipo, e.numero_serie, COUNT(t.id_ticket) AS fallas
@@ -135,28 +135,28 @@ $res_cat_tk = $conn->query($sql_cat_tk);
         <!-- contenido principal -->
         <div class="areaContenido">
 
-            <!-- TARJETAS DE INDICADORES CLAVE (KPIs) -->
+            <!-- TARJETAS DE RESUMEN PRINCIPAL -->
             <div class="filaTarjetas">
                 <!-- Tarjeta Equipos -->
                 <div class="tarjeta">
                     <div class="tarjeta-titulo">Equipos en Inventario</div>
-                    <div class="tarjeta-numero"><?php echo intval($kpi_eq['total']); ?></div>
+                    <div class="tarjeta-numero"><?php echo intval($resumen_equipos['total']); ?></div>
                     <div class="tarjeta-detalle">
-                        <span class="punto verde"></span> <?php echo intval($kpi_eq['disponibles']); ?> disponibles<br>
-                        <span class="punto naranja"></span> <?php echo intval($kpi_eq['en_uso']); ?> en uso<br>
-                        <span class="punto amarillo"></span> <?php echo intval($kpi_eq['en_mantenimiento']); ?> en mantenimiento<br>
-                        <span class="punto" style="background:#888;"></span> <?php echo intval($kpi_eq['de_baja']); ?> de baja
+                        <span class="punto verde"></span> <?php echo intval($resumen_equipos['disponibles']); ?> disponibles<br>
+                        <span class="punto naranja"></span> <?php echo intval($resumen_equipos['en_uso']); ?> en uso<br>
+                        <span class="punto amarillo"></span> <?php echo intval($resumen_equipos['en_mantenimiento']); ?> en mantenimiento<br>
+                        <span class="punto" style="background:#888;"></span> <?php echo intval($resumen_equipos['de_baja']); ?> de baja
                     </div>
                 </div>
 
                 <!-- Tarjeta Tickets -->
                 <div class="tarjeta">
                     <div class="tarjeta-titulo">Mesa de Ayuda</div>
-                    <div class="tarjeta-numero"><?php echo intval($kpi_tk['total']); ?></div>
+                    <div class="tarjeta-numero"><?php echo intval($resumen_tickets['total']); ?></div>
                     <div class="tarjeta-detalle">
-                        <span class="punto rojo"></span> <?php echo intval($kpi_tk['pendientes']); ?> pendientes<br>
-                        <span class="punto naranja"></span> <?php echo intval($kpi_tk['en_proceso']); ?> en proceso<br>
-                        <span class="punto verde"></span> <?php echo intval($kpi_tk['resueltos']); ?> resueltos
+                        <span class="punto rojo"></span> <?php echo intval($resumen_tickets['pendientes']); ?> pendientes<br>
+                        <span class="punto naranja"></span> <?php echo intval($resumen_tickets['en_proceso']); ?> en proceso<br>
+                        <span class="punto verde"></span> <?php echo intval($resumen_tickets['resueltos']); ?> resueltos
                     </div>
                 </div>
 
