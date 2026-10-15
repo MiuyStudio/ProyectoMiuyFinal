@@ -15,9 +15,14 @@
         exit();
     }
 
+    function e($val, $defecto = '') {
+        return htmlspecialchars($val ?? $defecto, ENT_QUOTES, 'UTF-8');
+    }
+
     // Equipos vinculados a tickets de soporte en Mesa de Ayuda
     $sql = "SELECT e.id_equipo, e.numero_serie, e.nombre, e.estado,
-                   m.nombre_marca, mo.nombre_modelo, c.nombre_categoria,
+                   c.nombre_categoria,
+                   CONCAT_WS(' ', m.nombre_marca, mo.nombre_modelo) AS marca_modelo,
                    COUNT(t.id_ticket) AS total_tickets,
                    MAX(t.fecha_creacion) AS ultima_incidencia
             FROM equipos e
@@ -85,31 +90,31 @@
                     </thead>
                     <tbody>
                         <?php if ($res && $res->num_rows > 0): ?>
-                            <?php while ($eq = $res->fetch_assoc()): ?>
+                            <?php foreach ($res as $eq): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($eq['numero_serie'] ?? '—'); ?></td>
-                                <td><strong><?php echo htmlspecialchars($eq['nombre']); ?></strong></td>
-                                <td><?php echo htmlspecialchars(($eq['nombre_marca'] ?? '') . ' ' . ($eq['nombre_modelo'] ?? '')); ?></td>
-                                <td><?php echo htmlspecialchars($eq['nombre_categoria'] ?? '—'); ?></td>
+                                <td><?= e($eq['numero_serie'], '—') ?></td>
+                                <td><strong><?= e($eq['nombre']) ?></strong></td>
+                                <td><?= e($eq['marca_modelo'], '—') ?></td>
+                                <td><?= e($eq['nombre_categoria'], '—') ?></td>
                                 <td>
-                                    <span style="background: #e3f2fd; color: #0d47a1; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 12px;">
-                                        <?php echo $eq['total_tickets']; ?> ticket(s)
+                                    <span class="badge-tickets">
+                                        <?= $eq['total_tickets']; ?> ticket(s)
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge-equipo estado<?php echo str_replace(' ', '', $eq['estado']); ?>">
-                                        <?php echo htmlspecialchars($eq['estado']); ?>
+                                    <span class="badge-equipo estado<?= str_replace(' ', '', $eq['estado']); ?>">
+                                        <?= e($eq['estado']); ?>
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="../inventario/ver_equipo.php?id=<?php echo $eq['id_equipo']; ?>&origen=equipos_atencion">
-                                        <button type="button">Ver Historial</button>
+                                    <a href="../inventario/ver_equipo.php?id=<?= $eq['id_equipo']; ?>&origen=equipos_atencion">
+                                        <button type="button" class="btn-ficha">Ver Historial</button>
                                     </a>
                                 </td>
                             </tr>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="7">No hay equipos vinculados a tickets de soporte registrados aún.</td></tr>
+                            <tr><td colspan="7" class="text-center">No hay equipos vinculados a tickets de soporte registrados aún.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>

@@ -12,43 +12,24 @@
         exit();
     }
 
-
-    // 1. Obtener categorías para el desplegable de filtros y modal
-    $sql_categorias = "SELECT id_categoria, nombre_categoria 
-                       FROM categorias 
-                       WHERE id_categoria BETWEEN 8 AND 12 
-                       ORDER BY nombre_categoria ASC";
-    $res_categorias = $conn->query($sql_categorias);
-    $categorias = [];
-    if ($res_categorias) {
-        while ($c = $res_categorias->fetch_assoc()) {
-            $categorias[] = $c;
-        }
+    function e($val) {
+        return htmlspecialchars($val ?? '', ENT_QUOTES, 'UTF-8');
     }
+
+    // 1. Obtener categorías para filtros y modal
+    $sql_categorias = "SELECT id_categoria, nombre_categoria FROM categorias WHERE id_categoria BETWEEN 8 AND 12 ORDER BY nombre_categoria ASC";
+    $res_cat = $conn->query($sql_categorias);
+    $categorias = ($res_cat) ? $res_cat->fetch_all(MYSQLI_ASSOC) : [];
 
     // 2. Obtener marcas para el modal
-    $sql_marcas = "SELECT id_marca, nombre_marca 
-                   FROM marcas 
-                   ORDER BY nombre_marca ASC";
-    $res_marcas = $conn->query($sql_marcas);
-    $marcas = [];
-    if ($res_marcas) {
-        while ($m = $res_marcas->fetch_assoc()) {
-            $marcas[] = $m;
-        }
-    }
+    $sql_marcas = "SELECT id_marca, nombre_marca FROM marcas ORDER BY nombre_marca ASC";
+    $res_m = $conn->query($sql_marcas);
+    $marcas = ($res_m) ? $res_m->fetch_all(MYSQLI_ASSOC) : [];
 
     // 3. Obtener modelos para el modal
-    $sql_modelos = "SELECT id_modelo, nombre_modelo, id_marca 
-                    FROM modelos 
-                    ORDER BY nombre_modelo ASC";
-    $res_modelos = $conn->query($sql_modelos);
-    $modelos = [];
-    if ($res_modelos) {
-        while ($mo = $res_modelos->fetch_assoc()) {
-            $modelos[] = $mo;
-        }
-    }
+    $sql_modelos = "SELECT id_modelo, nombre_modelo, id_marca FROM modelos ORDER BY nombre_modelo ASC";
+    $res_mo = $conn->query($sql_modelos);
+    $modelos = ($res_mo) ? $res_mo->fetch_all(MYSQLI_ASSOC) : [];
 
     // Capturar filtros y mensajes
     $cat_filtro = isset($_GET['categoria']) ? $_GET['categoria'] : '';
@@ -123,7 +104,7 @@
                 <h2>Lista de equipos</h2>
 
                 <?php if (!empty($mensaje)): ?>
-                    <p style="color: green; font-weight: bold; margin-bottom: 15px; text-align: center;"><?php echo htmlspecialchars($mensaje); ?></p>
+                    <p class="mensaje-exito"><?= htmlspecialchars($mensaje); ?></p>
                 <?php endif; ?>
 
                 <form method="GET" action="inventario.php" class="filtros">
@@ -174,37 +155,37 @@
                     </thead>
                     <tbody>
                         <?php if ($res_equipos && $res_equipos->num_rows > 0): ?>
-                            <?php while ($equipo = $res_equipos->fetch_assoc()): ?>
+                            <?php foreach ($res_equipos as $equipo): ?>
                                 <tr>
-                                    <td><?php echo $equipo['id_equipo']; ?></td>
-                                    <td><?php echo htmlspecialchars($equipo['numero_serie'] ?? ''); ?></td>
-                                    <td><?php echo htmlspecialchars($equipo['nombre'] ?? ''); ?></td>
-                                    <td><?php echo htmlspecialchars($equipo['nombre_marca'] ?? ''); ?></td>
-                                    <td><?php echo htmlspecialchars($equipo['nombre_modelo'] ?? ''); ?></td>
-                                    <td><?php echo htmlspecialchars($equipo['nombre_categoria'] ?? ''); ?></td>
+                                    <td><?= $equipo['id_equipo']; ?></td>
+                                    <td><?= e($equipo['numero_serie']); ?></td>
+                                    <td><?= e($equipo['nombre']); ?></td>
+                                    <td><?= e($equipo['nombre_marca']); ?></td>
+                                    <td><?= e($equipo['nombre_modelo']); ?></td>
+                                    <td><?= e($equipo['nombre_categoria']); ?></td>
                                     <td>
-                                        <span class="badge-equipo estado<?php echo str_replace(' ', '', $equipo['estado'] ?? ''); ?>">
-                                            <?php echo htmlspecialchars($equipo['estado'] ?? ''); ?>
+                                        <span class="badge-equipo estado<?= str_replace(' ', '', $equipo['estado'] ?? ''); ?>">
+                                            <?= e($equipo['estado']); ?>
                                         </span>
                                     </td>
                                     <td class="celda-acciones">
                                         <div class="acciones-tabla">
                                             <button type="button" class="btn-ver"
-                                                data-id="<?php echo $equipo['id_equipo']; ?>"
-                                                data-serie="<?php echo htmlspecialchars($equipo['numero_serie'] ?? '', ENT_QUOTES); ?>"
-                                                data-nombre="<?php echo htmlspecialchars($equipo['nombre'] ?? '', ENT_QUOTES); ?>"
-                                                data-categoria="<?php echo $equipo['id_categoria']; ?>"
-                                                data-marca="<?php echo $equipo['id_marca']; ?>"
-                                                data-modelo="<?php echo $equipo['id_modelo']; ?>"
-                                                data-estado="<?php echo htmlspecialchars($equipo['estado'] ?? '', ENT_QUOTES); ?>"
+                                                data-id="<?= $equipo['id_equipo']; ?>"
+                                                data-serie="<?= e($equipo['numero_serie']); ?>"
+                                                data-nombre="<?= e($equipo['nombre']); ?>"
+                                                data-categoria="<?= $equipo['id_categoria']; ?>"
+                                                data-marca="<?= $equipo['id_marca']; ?>"
+                                                data-modelo="<?= $equipo['id_modelo']; ?>"
+                                                data-estado="<?= e($equipo['estado']); ?>"
                                                 onclick="abrirModalDesdeBoton(this)">
                                                 Editar
                                             </button>
-                                            <a href="ver_equipo.php?id=<?php echo $equipo['id_equipo']; ?>&origen=inventario" class="btn-ver">Detalle</a>
+                                            <a href="ver_equipo.php?id=<?= $equipo['id_equipo']; ?>&origen=inventario" class="btn-ver">Detalle</a>
                                         </div>
                                     </td>
                                 </tr>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
                                 <td colspan="8">No hay equipos registrados.</td>

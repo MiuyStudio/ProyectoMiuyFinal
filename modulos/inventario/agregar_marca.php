@@ -60,8 +60,7 @@
                 <h2>Agregar nueva marca</h2>
 
                 <?php if (!empty($error)): ?>
-                    <p style="color: red; font-weight: bold; margin-bottom: 10px;"><?php echo htmlspecialchars($error); ?>
-                    </p>
+                    <p class="mensaje-error"><?= htmlspecialchars($error); ?></p>
                 <?php endif; ?>
 
                 <form id="formularioMarca" action="../../acciones/inventario/guardar_marca.php" method="POST">

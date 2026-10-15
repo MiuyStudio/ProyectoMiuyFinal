@@ -83,9 +83,7 @@
         <div class="areaContenido">
 
             <?php if (!empty($mensaje)): ?>
-                <p style="color: green; font-weight: bold; padding: 10px; background: #e6f4ea; border: 1px solid #b7e1cd; border-radius: 4px; margin-bottom: 15px;">
-                    <?php echo htmlspecialchars($mensaje); ?>
-                </p>
+                <p class="mensaje-exito"><?= htmlspecialchars($mensaje); ?></p>
             <?php endif; ?>
 
             <div class="seccion">

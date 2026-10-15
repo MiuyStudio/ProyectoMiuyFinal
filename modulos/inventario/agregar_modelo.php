@@ -12,11 +12,8 @@
         exit();
     }
 
-    // Consulta para traer todas las marcas ordenadas alfabéticamente
-    $sql_marcas = "SELECT id_marca, nombre_marca 
-                   FROM marcas 
-                   ORDER BY nombre_marca ASC";
-    $res_marcas = $conn->query($sql_marcas);
+    $res_marcas = $conn->query("SELECT id_marca, nombre_marca FROM marcas ORDER BY nombre_marca ASC");
+    $marcas = $res_marcas ? $res_marcas->fetch_all(MYSQLI_ASSOC) : [];
 
     $error = isset($_GET['error']) ? $_GET['error'] : '';
     ?>
@@ -66,8 +63,7 @@
                 <h2>Agregar nuevo modelo</h2>
 
                 <?php if (!empty($error)): ?>
-                    <p style="color: red; font-weight: bold; margin-bottom: 10px;"><?php echo htmlspecialchars($error); ?>
-                    </p>
+                    <p class="mensaje-error"><?= htmlspecialchars($error); ?></p>
                 <?php endif; ?>
 
                 <form id="formularioModelo" action="../../acciones/inventario/guardar_modelo.php" method="POST">
@@ -76,11 +72,11 @@
                         <label for="marcaModelo">Marca *</label>
                         <select id="marcaModelo" name="id_marca" required>
                             <option value="">Seleccione una marca</option>
-                            <?php while ($marca = $res_marcas->fetch_assoc()): ?>
-                                <option value="<?php echo $marca['id_marca']; ?>">
-                                    <?php echo htmlspecialchars($marca['nombre_marca']); ?>
+                            <?php foreach ($marcas as $marca): ?>
+                                <option value="<?= $marca['id_marca']; ?>">
+                                    <?= htmlspecialchars($marca['nombre_marca']); ?>
                                 </option>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 

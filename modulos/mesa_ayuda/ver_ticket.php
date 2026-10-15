@@ -124,15 +124,11 @@
         <div class="areaContenido">
 
             <?php if (!empty($mensaje)): ?>
-                <p style="color: green; font-weight: bold; padding: 10px; background: #e6f4ea; border: 1px solid #b7e1cd; border-radius: 4px; margin-bottom: 15px;">
-                    <?php echo htmlspecialchars($mensaje); ?>
-                </p>
+                <p class="mensaje-exito"><?= htmlspecialchars($mensaje); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($error)): ?>
-                <p style="color: red; font-weight: bold; padding: 10px; background: #fce8e6; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 15px;">
-                    <?php echo htmlspecialchars($error); ?>
-                </p>
+                <p class="mensaje-error"><?= htmlspecialchars($error); ?></p>
             <?php endif; ?>
 
             <div style="margin-bottom: 12px;">
@@ -284,34 +280,6 @@
                             </div>
                         </div>
 
-                        <script>
-                            function abrirModalResolver(estadoInicial) {
-                                const modal = document.getElementById('modalResolverTicket');
-                                if (!modal) return;
-                                if (estadoInicial) {
-                                    const selectEstado = document.getElementById('modal_estado');
-                                    if (selectEstado) selectEstado.value = estadoInicial;
-                                }
-                                modal.classList.add('activo');
-                            }
-
-                            function cerrarModalResolver() {
-                                const modal = document.getElementById('modalResolverTicket');
-                                if (modal) modal.classList.remove('activo');
-                            }
-
-                            function cerrarModalFuera(e) {
-                                if (e.target.id === 'modalResolverTicket') {
-                                    cerrarModalResolver();
-                                }
-                            }
-
-                            document.addEventListener('keydown', function(e) {
-                                if (e.key === 'Escape') {
-                                    cerrarModalResolver();
-                                }
-                            });
-                        </script>
                     <?php endif; ?>
                 </div>
 
@@ -362,6 +330,7 @@
         </div>
     </div>
 
+    <script src="js/ver_ticket.js"></script>
     <?php $conn->close(); ?>
 </body>
 

@@ -31,14 +31,8 @@ $sql_usuarios = "SELECT u.*, r.nombre_rol
 $res_usuarios = $conn->query($sql_usuarios);
 
 // Consultar lista de roles para desplegables
-$sql_roles = "SELECT * FROM roles ORDER BY id_rol ASC";
-$res_roles = $conn->query($sql_roles);
-$roles = [];
-if ($res_roles) {
-    while ($r = $res_roles->fetch_assoc()) {
-        $roles[] = $r;
-    }
-}
+$res_roles = $conn->query("SELECT * FROM roles ORDER BY id_rol ASC");
+$roles = ($res_roles) ? $res_roles->fetch_all(MYSQLI_ASSOC) : [];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -78,17 +72,11 @@ if ($res_roles) {
         <div class="areaContenido">
 
             <?php if (!empty($mensaje)): ?>
-                <p
-                    style="color: green; font-weight: bold; padding: 10px; background: #e6f4ea; border: 1px solid #b7e1cd; border-radius: 4px;">
-                    <?php echo htmlspecialchars($mensaje); ?>
-                </p>
+                <p class="mensaje-exito"><?= htmlspecialchars($mensaje); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($error)): ?>
-                <p
-                    style="color: red; font-weight: bold; padding: 10px; background: #fce8e6; border: 1px solid #f5c6cb; border-radius: 4px;">
-                    <?php echo htmlspecialchars($error); ?>
-                </p>
+                <p class="mensaje-error"><?= htmlspecialchars($error); ?></p>
             <?php endif; ?>
 
             <!-- Formulario para Registrar Nuevo Usuario -->
@@ -164,15 +152,15 @@ if ($res_roles) {
                                     </td>
                                     <td>
                                         <?php if ($u['activo'] == 1): ?>
-                                            <span style="color: #2e7d32; font-weight: bold; background: #e8f5e9; padding: 3px 8px; border-radius: 4px; font-size: 13px;">Activo</span>
+                                            <span class="badge-usuario-activo">Activo</span>
                                         <?php else: ?>
-                                            <span style="color: #c62828; font-weight: bold; background: #ffebee; padding: 3px 8px; border-radius: 4px; font-size: 13px;">Inactivo</span>
+                                            <span class="badge-usuario-inactivo">Inactivo</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <!-- Formulario rápido para actualizar el rol -->
                                         <form action="../../acciones/admin/gestion_usuarios_proceso.php" method="POST"
-                                            style="display: flex; gap: 6px; align-items: center;">
+                                            class="acciones-usuario">
                                             <input type="hidden" name="accion" value="cambiar_rol">
                                             <input type="hidden" name="id_usuario" value="<?php echo $u['id_usuario']; ?>">
 
@@ -194,8 +182,7 @@ if ($res_roles) {
                                                     onsubmit="return confirm('¿Está seguro de que desea desactivar la cuenta de <?php echo htmlspecialchars($u['nombre']); ?>?');">
                                                     <input type="hidden" name="accion" value="eliminar">
                                                     <input type="hidden" name="id_usuario" value="<?php echo $u['id_usuario']; ?>">
-                                                    <button type="submit" class="btn btn-eliminar"
-                                                        style="background-color: #fff; color: #d33; border-color: #d33;">Desactivar</button>
+                                                    <button type="submit" class="btn-desactivar">Desactivar</button>
                                                 </form>
                                             <?php else: ?>
                                                 <!-- Formulario para reactivar cuenta -->
@@ -203,12 +190,11 @@ if ($res_roles) {
                                                     onsubmit="return confirm('¿Desea reactivar la cuenta de <?php echo htmlspecialchars($u['nombre']); ?>?');">
                                                     <input type="hidden" name="accion" value="reactivar">
                                                     <input type="hidden" name="id_usuario" value="<?php echo $u['id_usuario']; ?>">
-                                                    <button type="submit" class="btn btn-guardar"
-                                                        style="background-color: #2e7d32; color: #fff; border: none;">Reactivar</button>
+                                                    <button type="submit" class="btn-reactivar">Reactivar</button>
                                                 </form>
                                             <?php endif; ?>
                                         <?php else: ?>
-                                            <span style="color: #888; font-size: 12px; font-style: italic;">(Cuenta actual)</span>
+                                            <span class="txt-cuenta-actual">(Cuenta actual)</span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

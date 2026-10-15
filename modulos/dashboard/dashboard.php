@@ -61,24 +61,17 @@ $sql_fallas = "SELECT e.nombre AS equipo, e.numero_serie, COUNT(t.id_ticket) AS 
                LIMIT 6";
 $res_fallas = $conn->query($sql_fallas);
 
-// 4. MÉTRICA: Tiempos promedio de resolución
-// Promedio General
-$sql_prom_gen = "SELECT AVG(TIMESTAMPDIFF(MINUTE, fecha_creacion, fecha_actualizacion)) AS min_promedios
-                 FROM tickets
-                 WHERE estado = 'Resuelto' AND fecha_actualizacion >= fecha_creacion";
-$res_prom_gen = $conn->query($sql_prom_gen);
-$row_prom_gen = ($res_prom_gen) ? $res_prom_gen->fetch_assoc() : null;
-$promedio_general_texto = formatearTiempo($row_prom_gen['min_promedios'] ?? 0);
-
-// Casos Críticos o Altos
-$sql_prom_crit = "SELECT AVG(TIMESTAMPDIFF(MINUTE, fecha_creacion, fecha_actualizacion)) AS min_promedios
+// 4. MÉTRICA: Tiempos promedio de resolución (general y casos críticos en una sola consulta)
+$sql_promedios = "SELECT 
+                    AVG(TIMESTAMPDIFF(MINUTE, fecha_creacion, fecha_actualizacion)) AS prom_general,
+                    AVG(CASE WHEN prioridad = 'Crítica' OR prioridad = 'Alta' THEN TIMESTAMPDIFF(MINUTE, fecha_creacion, fecha_actualizacion) END) AS prom_critico
                   FROM tickets
-                  WHERE estado = 'Resuelto' 
-                    AND fecha_actualizacion >= fecha_creacion
-                    AND (prioridad = 'Crítica' OR prioridad = 'Alta')";
-$res_prom_crit = $conn->query($sql_prom_crit);
-$row_prom_crit = ($res_prom_crit) ? $res_prom_crit->fetch_assoc() : null;
-$promedio_critico_texto = formatearTiempo($row_prom_crit['min_promedios'] ?? 0);
+                  WHERE estado = 'Resuelto' AND fecha_actualizacion >= fecha_creacion";
+$res_promedios = $conn->query($sql_promedios);
+$row_promedios = ($res_promedios) ? $res_promedios->fetch_assoc() : null;
+
+$promedio_general_texto = formatearTiempo($row_promedios['prom_general'] ?? 0);
+$promedio_critico_texto = formatearTiempo($row_promedios['prom_critico'] ?? 0);
 
 // 5. MÉTRICA: Tickets por técnico y efectividad (%)
 $sql_tecnicos = "SELECT CONCAT(u.nombre, ' ', u.apellido) AS nombre_tecnico,

@@ -13,30 +13,33 @@ if ($rol == 3) {
     exit();
 }
 
+function e($val, $defecto = '') {
+    return htmlspecialchars($val ?? $defecto, ENT_QUOTES, 'UTF-8');
+}
+
 // 1. Equipos con cantidad de soluciones aplicadas registradas (solucion_aplicada no vacía)
 $sql_equipos = "SELECT e.id_equipo, e.nombre, e.numero_serie, e.estado,
-                       c.nombre_categoria, m.nombre_marca, mo.nombre_modelo,
+                       c.nombre_categoria,
+                       CONCAT_WS(' ', m.nombre_marca, mo.nombre_modelo) AS marca_modelo,
                        COUNT(d.id_diagnostico) AS total_soluciones
                 FROM equipos e
                 LEFT JOIN categorias c ON e.id_categoria = c.id_categoria
                 LEFT JOIN marcas m ON e.id_marca = m.id_marca
                 LEFT JOIN modelos mo ON e.id_modelo = mo.id_modelo
-                LEFT JOIN diagnosticos d ON (
-                    (d.id_equipo = e.id_equipo
-                     OR (d.id_equipo IS NULL AND d.id_ticket IN (SELECT id_ticket FROM tickets WHERE id_equipo = e.id_equipo)))
-                    AND d.solucion_aplicada IS NOT NULL AND d.solucion_aplicada != ''
-                )
+                LEFT JOIN diagnosticos d ON d.id_equipo = e.id_equipo
+                    AND d.solucion_aplicada IS NOT NULL 
+                    AND d.solucion_aplicada != ''
                 GROUP BY e.id_equipo, e.nombre, e.numero_serie, e.estado, c.nombre_categoria, m.nombre_marca, mo.nombre_modelo
                 ORDER BY e.nombre ASC";
 $res_equipos = $conn->query($sql_equipos);
 
 // 2. Todas las soluciones aplicadas (registros donde solucion_aplicada no está vacía)
 $sql_sol = "SELECT d.*,
-                   COALESCE(d.id_equipo, t.id_equipo) AS equipo_efectivo,
+                   d.id_equipo AS equipo_efectivo,
                    t.titulo AS titulo_ticket,
                    CONCAT(u.nombre, ' ', u.apellido) AS nombre_tecnico
             FROM diagnosticos d
-            LEFT JOIN tickets t ON d.id_ticket = t.id_ticket
+            INNER JOIN tickets t ON d.id_ticket = t.id_ticket
             LEFT JOIN usuarios u ON d.id_tecnico = u.id_usuario
             WHERE d.solucion_aplicada IS NOT NULL AND d.solucion_aplicada != ''
             ORDER BY d.id_diagnostico DESC";
@@ -44,13 +47,9 @@ $res_sol = $conn->query($sql_sol);
 
 $soluciones_por_equipo = [];
 if ($res_sol) {
-    while ($row = $res_sol->fetch_assoc()) {
-        $eq_id = $row['equipo_efectivo'];
-        if ($eq_id) {
-            if (!isset($soluciones_por_equipo[$eq_id])) {
-                $soluciones_por_equipo[$eq_id] = [];
-            }
-            $soluciones_por_equipo[$eq_id][] = $row;
+    foreach ($res_sol as $row) {
+        if ($row['equipo_efectivo']) {
+            $soluciones_por_equipo[$row['equipo_efectivo']][] = $row;
         }
     }
 }
@@ -115,39 +114,39 @@ if ($res_sol) {
                     </thead>
                     <tbody>
                         <?php if ($res_equipos && $res_equipos->num_rows > 0): ?>
-                            <?php while ($eq = $res_equipos->fetch_assoc()): ?>
+                            <?php foreach ($res_equipos as $eq): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($eq['numero_serie'] ?? 'S/N'); ?></td>
-                                    <td><strong><?php echo htmlspecialchars($eq['nombre']); ?></strong></td>
-                                    <td><?php echo htmlspecialchars($eq['nombre_categoria'] ?? 'N/A'); ?></td>
-                                    <td><?php echo htmlspecialchars(($eq['nombre_marca'] ?? '') . ' ' . ($eq['nombre_modelo'] ?? '')); ?></td>
-                                    <td><?php echo htmlspecialchars($eq['estado']); ?></td>
-                                    <td style="text-align: center; font-weight: bold;">
+                                    <td><?= e($eq['numero_serie'], 'S/N') ?></td>
+                                    <td><strong><?= e($eq['nombre']) ?></strong></td>
+                                    <td><?= e($eq['nombre_categoria'], 'N/A') ?></td>
+                                    <td><?= e($eq['marca_modelo'], 'N/A') ?></td>
+                                    <td><?= e($eq['estado']) ?></td>
+                                    <td class="col-centrada">
                                         <?php if ($eq['total_soluciones'] > 0): ?>
-                                            <?php echo $eq['total_soluciones']; ?>
+                                            <?= $eq['total_soluciones'] ?>
                                         <?php else: ?>
                                             <span class="badge-sin-sol">Sin soluciones</span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <div style="display: flex; gap: 6px; align-items: center;">
+                                        <div class="acciones-fila">
                                             <?php if ($eq['total_soluciones'] > 0): ?>
-                                                <button class="btn-ver-sol" onclick="abrirModal(<?php echo $eq['id_equipo']; ?>, '<?php echo htmlspecialchars(addslashes($eq['nombre'])); ?>')">
+                                                <button class="btn-ver-sol" onclick="abrirModal(<?= $eq['id_equipo'] ?>, '<?= e(addslashes($eq['nombre'])) ?>')">
                                                     Ver soluciones
                                                 </button>
                                             <?php else: ?>
                                                 <span style="color: #777;">—</span>
                                             <?php endif; ?>
-                                            <a href="../inventario/ver_equipo.php?id=<?php echo $eq['id_equipo']; ?>&origen=soluciones">
-                                                <button type="button" style="padding: 5px 8px; font-size: 12px; cursor: pointer; border: 1px solid #aaa; background: #eee; border-radius: 3px;">Ficha Equipo</button>
+                                            <a href="../inventario/ver_equipo.php?id=<?= $eq['id_equipo'] ?>&origen=soluciones">
+                                                <button type="button" class="btn-ficha">Ficha Equipo</button>
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" style="text-align: center;">No hay equipos registrados.</td>
+                                <td colspan="7" class="text-center">No hay equipos registrados.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -171,52 +170,9 @@ if ($res_sol) {
     </div>
 
     <script>
-        const solucionesPorEquipo = <?php echo json_encode($soluciones_por_equipo); ?>;
-
-        function abrirModal(idEquipo, nombreEquipo) {
-            document.getElementById('tituloModal').innerText = 'Soluciones Aplicadas: ' + nombreEquipo;
-            const contenedor = document.getElementById('cuerpoModal');
-
-            const lista = solucionesPorEquipo[idEquipo] || [];
-
-            if (lista.length === 0) {
-                contenedor.innerHTML = '<p style="text-align: center; color: #777; padding: 20px 0;">No hay soluciones registradas para este equipo.</p>';
-            } else {
-                let html = '<table class="tablaSimple">';
-                html += '<thead><tr><th>Ticket</th><th>Técnico</th><th>Diagnóstico</th><th>Solución Aplicada</th><th>Fecha</th></tr></thead>';
-                html += '<tbody>';
-                lista.forEach(function(d) {
-                    let ticketHtml = d.id_ticket ? ('<a href="ver_ticket.php?id=' + d.id_ticket + '&origen=soluciones" style="color: #0066cc; font-weight: 500; text-decoration: underline;">#' + d.id_ticket + (d.titulo_ticket ? ' - ' + escapeHtml(d.titulo_ticket) : '') + '</a>') : 'N/A';
-                    let fechaTxt = d.fecha_intervencion ? d.fecha_intervencion : 'N/A';
-                    html += '<tr>';
-                    html += '<td>' + ticketHtml + '</td>';
-                    html += '<td>' + escapeHtml(d.nombre_tecnico || 'N/A') + '</td>';
-                    html += '<td>' + escapeHtml(d.diagnostico || '—') + '</td>';
-                    html += '<td><strong>' + escapeHtml(d.solucion_aplicada || '') + '</strong></td>';
-                    html += '<td>' + escapeHtml(fechaTxt) + '</td>';
-                    html += '</tr>';
-                });
-                html += '</tbody></table>';
-                contenedor.innerHTML = html;
-            }
-
-            document.getElementById('modalSoluciones').style.display = 'flex';
-        }
-
-        function cerrarModal() {
-            document.getElementById('modalSoluciones').style.display = 'none';
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
+        const solucionesPorEquipo = <?= json_encode($soluciones_por_equipo); ?>;
     </script>
+    <script src="js/soluciones.js"></script>
     <?php $conn->close(); ?>
 </body>
 </html>

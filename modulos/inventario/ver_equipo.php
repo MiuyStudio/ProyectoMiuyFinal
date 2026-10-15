@@ -108,10 +108,9 @@
                                t.titulo AS titulo_ticket,
                                CONCAT(u.nombre, ' ', u.apellido) AS nombre_tecnico
                         FROM diagnosticos d
-                        LEFT JOIN tickets t ON d.id_ticket = t.id_ticket
+                        INNER JOIN tickets t ON d.id_ticket = t.id_ticket
                         LEFT JOIN usuarios u ON d.id_tecnico = u.id_usuario
                         WHERE d.id_equipo = $id_equipo
-                           OR d.id_ticket IN (SELECT id_ticket FROM tickets WHERE id_equipo = $id_equipo)
                         ORDER BY d.fecha_intervencion DESC, d.id_diagnostico DESC";
     $res_diag_equipo = $conn->query($sql_diag_equipo);
 
@@ -177,15 +176,11 @@
             </div>
 
             <?php if (!empty($mensaje)): ?>
-                <p style="color: green; font-weight: bold; margin-bottom: 15px; text-align: center;">
-                    <?php echo htmlspecialchars($mensaje); ?>
-                </p>
+                <p class="mensaje-exito"><?= htmlspecialchars($mensaje); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($error)): ?>
-                <p style="color: red; font-weight: bold; margin-bottom: 15px; text-align: center;">
-                    <?php echo htmlspecialchars($error); ?>
-                </p>
+                <p class="mensaje-error"><?= htmlspecialchars($error); ?></p>
             <?php endif; ?>
 
             <div class="panel">

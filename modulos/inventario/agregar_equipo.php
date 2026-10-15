@@ -12,24 +12,17 @@
         exit();
     }
 
-    // 1. Consulta para traer las categorías en el rango (8-12)
-    $sql_categorias = "SELECT id_categoria, nombre_categoria 
-                       FROM categorias 
-                       WHERE id_categoria BETWEEN 8 AND 12 
-                       ORDER BY nombre_categoria ASC";
-    $res_categorias = $conn->query($sql_categorias);
+    // 1. Categorías (8-12)
+    $res_cat = $conn->query("SELECT id_categoria, nombre_categoria FROM categorias WHERE id_categoria BETWEEN 8 AND 12 ORDER BY nombre_categoria ASC");
+    $categorias = $res_cat ? $res_cat->fetch_all(MYSQLI_ASSOC) : [];
 
-    // 2. Consulta para traer todas las marcas ordenadas alfabéticamente
-    $sql_marcas = "SELECT id_marca, nombre_marca 
-                   FROM marcas 
-                   ORDER BY nombre_marca ASC";
-    $res_marcas = $conn->query($sql_marcas);
+    // 2. Marcas
+    $res_m = $conn->query("SELECT id_marca, nombre_marca FROM marcas ORDER BY nombre_marca ASC");
+    $marcas = $res_m ? $res_m->fetch_all(MYSQLI_ASSOC) : [];
 
-    // 3. Consulta para traer todos los modelos ordenados alfabéticamente
-    $sql_modelos = "SELECT id_modelo, nombre_modelo, id_marca 
-                    FROM modelos 
-                    ORDER BY nombre_modelo ASC";
-    $res_modelos = $conn->query($sql_modelos);
+    // 3. Modelos
+    $res_mo = $conn->query("SELECT id_modelo, nombre_modelo, id_marca FROM modelos ORDER BY nombre_modelo ASC");
+    $modelos = $res_mo ? $res_mo->fetch_all(MYSQLI_ASSOC) : [];
 
     $error = isset($_GET['error']) ? $_GET['error'] : '';
     ?>
@@ -79,8 +72,7 @@
                 <h2>Agregar nuevo equipo</h2>
 
                 <?php if (!empty($error)): ?>
-                    <p style="color: red; font-weight: bold; margin-bottom: 10px;"><?php echo htmlspecialchars($error); ?>
-                    </p>
+                    <p class="mensaje-error"><?= htmlspecialchars($error); ?></p>
                 <?php endif; ?>
 
                 <!-- Formulario configurado con POST y action -->
@@ -101,11 +93,11 @@
                         <label for="marcaEquipo">Marca *</label>
                         <select id="marcaEquipo" name="id_marca" required>
                             <option value="">Seleccione una marca</option>
-                            <?php while ($marca = $res_marcas->fetch_assoc()): ?>
-                                <option value="<?php echo $marca['id_marca']; ?>">
-                                    <?php echo htmlspecialchars($marca['nombre_marca']); ?>
+                            <?php foreach ($marcas as $marca): ?>
+                                <option value="<?= $marca['id_marca']; ?>">
+                                    <?= htmlspecialchars($marca['nombre_marca']); ?>
                                 </option>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 
@@ -113,31 +105,23 @@
                         <label for="modeloEquipo">Modelo *</label>
                         <select id="modeloEquipo" name="id_modelo" required disabled>
                             <option value="">Seleccione un modelo</option>
-                            <?php while ($modelo = $res_modelos->fetch_assoc()): ?>
-                                <option value="<?php echo $modelo['id_modelo']; ?>"
-                                    data-marca="<?php echo $modelo['id_marca']; ?>">
-                                    <?php echo htmlspecialchars($modelo['nombre_modelo']); ?>
+                            <?php foreach ($modelos as $modelo): ?>
+                                <option value="<?= $modelo['id_modelo']; ?>" data-marca="<?= $modelo['id_marca']; ?>">
+                                    <?= htmlspecialchars($modelo['nombre_modelo']); ?>
                                 </option>
-                            <?php endwhile; ?>
-                            <!-- Obtenemos  los modelos por su fk id_marca, en res_modelos guardamos la lista de modelos con su id_marca
-                            Si por ejemplo la base dice Galaxy S23 (id_modelo=10) Pertenece a Samsung (id_marca = 5)
-                            Mostraríamos esto al final 
-                            <option value="10" data-marca="5">Galaxy S23</option>
-                            -->
+                            <?php endforeach; ?>
                         </select>
                     </div>
-
-                    <script src="js/modelo_marca.js"></script>
 
                     <div class="grupoFormulario">
                         <label for="categoriaEquipo">Categoría *</label>
                         <select id="categoriaEquipo" name="id_categoria" required>
                             <option value="">Seleccione una categoría</option>
-                            <?php while ($cat = $res_categorias->fetch_assoc()): ?>
-                                <option value="<?php echo $cat['id_categoria']; ?>">
-                                    <?php echo htmlspecialchars($cat['nombre_categoria']); ?>
+                            <?php foreach ($categorias as $cat): ?>
+                                <option value="<?= $cat['id_categoria']; ?>">
+                                    <?= htmlspecialchars($cat['nombre_categoria']); ?>
                                 </option>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 
@@ -163,6 +147,7 @@
         </div>
     </div>
 
+    <script src="js/modelo_marca.js"></script>
     <?php $conn->close(); ?>
 </body>
 

@@ -31,15 +31,9 @@ $id_equipo = intval($_POST['id_equipo'] ?? 0);
 $id_usuario = intval($_POST['id_usuario'] ?? 0);
 $id_asig = intval($_POST['id_asignacion'] ?? 0);
 
-// Normalizar formato de fecha (adaptar datetime-local a MySQL)
-$fecha = trim($_POST['fecha_inicio'] ?? date('Y-m-d H:i:s'));
-$fecha = str_replace('T', ' ', $fecha);
-if (strlen($fecha) === 10) {
-    $fecha .= ' ' . date('H:i:s');
-} elseif (strlen($fecha) === 16) {
-    $fecha .= ':00';
-}
-$fecha_clean = $conn->real_escape_string($fecha);
+// Normalizar fecha al formato estándar MySQL (YYYY-MM-DD HH:MM:SS)
+$fecha_raw   = trim($_POST['fecha_inicio'] ?? '');
+$fecha_clean = date('Y-m-d H:i:s', !empty($fecha_raw) ? strtotime($fecha_raw) : time());
 
 // ==========================================
 // CASO 1: ASIGNAR EQUIPO A UN USUARIO
@@ -64,7 +58,7 @@ if ($accion === 'asignar') {
         $conn->begin_transaction();
 
         // Cerrar asignación anterior si hubiera quedado abierta
-        $conn->query("UPDATE asignaciones SET fecha_fin = NOW() WHERE id_equipo = $id_equipo AND (fecha_fin IS NULL OR fecha_fin = '0000-00-00')");
+        $conn->query("UPDATE asignaciones SET fecha_fin = NOW() WHERE id_equipo = $id_equipo AND fecha_fin IS NULL");
 
         // Registrar la nueva asignación
         $conn->query("INSERT INTO asignaciones (id_equipo, id_usuario, fecha_inicio) VALUES ($id_equipo, $id_usuario, '$fecha_clean')");
@@ -97,7 +91,7 @@ if ($accion === 'finalizar') {
         }
     }
 
-    $where = $id_asig > 0 ? "id_asignacion = $id_asig" : "id_equipo = $id_equipo AND (fecha_fin IS NULL OR fecha_fin = '0000-00-00')";
+    $where = $id_asig > 0 ? "id_asignacion = $id_asig" : "id_equipo = $id_equipo AND fecha_fin IS NULL";
 
     try {
         $conn->begin_transaction();
