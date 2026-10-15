@@ -169,8 +169,8 @@
         <!-- contenido principal -->
         <div class="areaContenido">
 
-            <div style="margin-bottom: 14px;">
-                <a href="<?php echo htmlspecialchars($volver_url); ?>" style="color: #0066cc; text-decoration: none; font-weight: 500; font-size: 14px;">
+            <div class="contenedor-volver">
+                <a href="<?php echo htmlspecialchars($volver_url); ?>" class="enlace-volver">
                     <?php echo htmlspecialchars($volver_texto); ?>
                 </a>
             </div>
@@ -301,7 +301,7 @@
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="4" style="text-align: center; color: #777;">No hay historial de asignaciones registrado para este equipo.</td>
+                                <td colspan="4" class="texto-vacio">No hay historial de asignaciones registrado para este equipo.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -328,21 +328,21 @@
                                     <td><strong><?php echo htmlspecialchars($diag['nombre_tecnico'] ?? 'N/A'); ?></strong></td>
                                     <td>
                                         <?php if (!empty($diag['id_ticket'])): ?>
-                                            <a href="../mesa_ayuda/ver_ticket.php?id=<?php echo $diag['id_ticket']; ?>&origen=equipo&id_equipo=<?php echo $id_equipo; ?>" style="color: #0066cc; text-decoration: underline; font-weight: 500;">
+                                            <a href="../mesa_ayuda/ver_ticket.php?id=<?php echo $diag['id_ticket']; ?>&origen=equipo&id_equipo=<?php echo $id_equipo; ?>" class="enlace-ticket">
                                                 #<?php echo $diag['id_ticket']; ?> - <?php echo htmlspecialchars($diag['titulo_ticket'] ?? 'Ticket'); ?>
                                             </a>
                                         <?php else: ?>
-                                            <span style="color: #777;">Sin Ticket</span>
+                                            <span class="texto-apagado">Sin Ticket</span>
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo nl2br(htmlspecialchars($diag['diagnostico'])); ?></td>
-                                    <td><?php echo !empty($diag['solucion_aplicada']) ? nl2br(htmlspecialchars($diag['solucion_aplicada'])) : '<em style="color:#888;">Sin solución registrada</em>'; ?></td>
+                                    <td><?php echo !empty($diag['solucion_aplicada']) ? nl2br(htmlspecialchars($diag['solucion_aplicada'])) : '<em class="texto-apagado">Sin solución registrada</em>'; ?></td>
                                     <td><?php echo htmlspecialchars($diag['fecha_intervencion'] ?? 'N/A'); ?></td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="5" style="text-align: center; color: #777;">No hay diagnósticos registrados para este equipo.</td>
+                                <td colspan="5" class="texto-vacio">No hay diagnósticos registrados para este equipo.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

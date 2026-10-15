@@ -264,3 +264,23 @@ body {
     font-size: 12px;
     font-style: italic;
 }
+
+/* ALERTA DE ACCESO RESTRINGIDO */
+.acceso-restringido-caja {
+    padding: 30px;
+    font-family: Arial, sans-serif;
+}
+
+.acceso-restringido-caja h2 {
+    color: #d33;
+    margin-bottom: 10px;
+}
+
+.acceso-restringido-caja p {
+    margin-bottom: 12px;
+}
+
+/* CONTENEDOR DE BOTONES DE FORMULARIO */
+.form-grupo-boton {
+    margin-top: 10px;
+}

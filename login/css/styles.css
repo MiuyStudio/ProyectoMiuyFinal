@@ -64,6 +64,23 @@ body {
     letter-spacing: 0.5px;
 }
 
+/* MENSAJE DE ERROR */
+.mensaje-error {
+    color: #ef4444;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/* TEXTO DE AYUDA DE CAMPO */
+.campo-ayuda {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    display: block;
+    margin-top: 4px;
+}
+
 /* CAMPOS DE ENTRADA */
 .tarjeta .campo {
     position: relative;

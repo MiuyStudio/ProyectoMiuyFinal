@@ -138,7 +138,7 @@ $res_cat_tk = $conn->query($sql_cat_tk);
                         <span class="punto verde"></span> <?php echo intval($resumen_equipos['disponibles']); ?> disponibles<br>
                         <span class="punto naranja"></span> <?php echo intval($resumen_equipos['en_uso']); ?> en uso<br>
                         <span class="punto amarillo"></span> <?php echo intval($resumen_equipos['en_mantenimiento']); ?> en mantenimiento<br>
-                        <span class="punto" style="background:#888;"></span> <?php echo intval($resumen_equipos['de_baja']); ?> de baja
+                        <span class="punto gris"></span> <?php echo intval($resumen_equipos['de_baja']); ?> de baja
                     </div>
                 </div>
 
@@ -156,7 +156,7 @@ $res_cat_tk = $conn->query($sql_cat_tk);
                 <!-- Tarjeta Tiempos -->
                 <div class="tarjeta">
                     <div class="tarjeta-titulo">Tiempo de Resolución</div>
-                    <div class="tarjeta-numero" style="font-size: 26px;"><?php echo htmlspecialchars($promedio_general_texto); ?></div>
+                    <div class="tarjeta-numero tarjeta-numero-sm"><?php echo htmlspecialchars($promedio_general_texto); ?></div>
                     <div class="tarjeta-detalle">
                         <strong>Promedio General</strong><br>
                         Casos Críticos: <strong><?php echo htmlspecialchars($promedio_critico_texto); ?></strong><br>
@@ -259,7 +259,7 @@ $res_cat_tk = $conn->query($sql_cat_tk);
                                     <td class="text-center"><?php echo $asignados; ?></td>
                                     <td class="text-center text-verde fw-bold"><?php echo $resueltos; ?></td>
                                     <td class="text-center">
-                                        <span class="badge-activa" style="font-size: 13px;">
+                                        <span class="badge-activa badge-activa-md">
                                             <?php echo $efectividad; ?>%
                                         </span>
                                     </td>

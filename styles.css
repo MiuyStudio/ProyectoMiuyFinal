@@ -196,22 +196,27 @@ body {
 /* =======================================================
    PANTALLA DE CARGA POST-LOGIN (MINIMALISTA Y PROFESIONAL)
    ======================================================= */
+#pantalla-carga-login,
 .login-loader-overlay {
     position: fixed;
-    inset: 0;
-    z-index: 999999;
-    background-color: #0f1115;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2147483647;
+    background-color: #0b0d12;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 22px;
+    gap: 24px;
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
     user-select: none;
 }
 
+#pantalla-carga-login.oculto,
 .login-loader-overlay.oculto {
     opacity: 0;
     visibility: hidden;

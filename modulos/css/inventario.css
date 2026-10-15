@@ -692,3 +692,53 @@ input[type="text"] {
     border-top: 1px solid #ddd;
     padding-top: 10px;
 }
+
+/* ELEMENTOS Y UTILIDADES DE VER EQUIPO Y ASIGNACIONES */
+.contenedor-volver {
+    margin-bottom: 14px;
+}
+
+.enlace-volver {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.enlace-volver:hover {
+    text-decoration: underline;
+}
+
+.enlace-ticket {
+    color: #0066cc;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.enlace-equipo-destacado {
+    color: #0066cc;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.texto-apagado {
+    color: #777;
+}
+
+.texto-vacio {
+    text-align: center;
+    color: #777;
+    padding: 15px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#btnLimpiarEquipo {
+    display: none;
+}
+
+#sinCoincidencias {
+    display: none;
+}

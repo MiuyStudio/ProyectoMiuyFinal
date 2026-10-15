@@ -137,7 +137,7 @@
                                 <td>
                                     <a href="ver_ticket.php?id=<?php echo $t['id_ticket']; ?>&origen=todos"><button type="button">Ver</button></a>
                                     <?php if ($t['nombre_tecnico'] === null): ?>
-                                        <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php" style="display: inline;">
+                                        <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php" class="form-asignarme-inline">
                                             <input type="hidden" name="id_ticket" value="<?php echo $t['id_ticket']; ?>">
                                             <input type="hidden" name="origen" value="todos">
                                             <input type="hidden" name="accion" value="asignarme">

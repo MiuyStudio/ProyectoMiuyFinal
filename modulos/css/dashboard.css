@@ -123,6 +123,10 @@ body {
     line-height: 1;
 }
 
+.tarjeta-numero.tarjeta-numero-sm {
+    font-size: 26px;
+}
+
 .tarjeta-detalle {
     font-size: 12px;
     color: #555;
@@ -153,6 +157,10 @@ body {
 
 .punto.rojo {
     background-color: crimson;
+}
+
+.punto.gris {
+    background-color: #888;
 }
 
 /* FILA DOBLE (dos secciones lado a lado) */
@@ -312,6 +320,10 @@ body {
     border-radius: 3px;
     font-weight: bold;
     font-size: 12px;
+}
+
+.badge-activa-md {
+    font-size: 13px;
 }
 
 .badge-finalizada {

@@ -107,7 +107,7 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
                         <div class="selector-equipo-contenedor">
                             <input type="text" id="nombre_equipo_seleccionado" value="" placeholder="-- Seleccionar Equipo --" readonly required>
                             <button type="button" class="btn-secundario" onclick="abrirModalEquipos()">Buscar equipo</button>
-                            <button type="button" class="btn-secundario" id="btnLimpiarEquipo" onclick="limpiarEquipo()" style="display: none;" title="Quitar equipo seleccionado">&times;</button>
+                            <button type="button" class="btn-secundario" id="btnLimpiarEquipo" onclick="limpiarEquipo()" title="Quitar equipo seleccionado">&times;</button>
                         </div>
                     </div>
 
@@ -159,7 +159,7 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
                                 ?>
                                 <tr>
                                     <td>
-                                        <a href="ver_equipo.php?id=<?php echo $asig['id_equipo']; ?>&origen=asignaciones" style="color: #0066cc; text-decoration: underline; font-weight: bold;">
+                                        <a href="ver_equipo.php?id=<?php echo $asig['id_equipo']; ?>&origen=asignaciones" class="enlace-equipo-destacado">
                                             <?php echo htmlspecialchars($asig['nombre_equipo']); ?>
                                         </a>
                                     </td>
@@ -220,7 +220,7 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
                             <th>Nombre</th>
                             <th>N° Serie</th>
                             <th>Categoría</th>
-                            <th style="text-align: center;">Acción</th>
+                            <th class="text-center">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -233,7 +233,7 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
                                     <td><strong><?php echo htmlspecialchars($eq['nombre']); ?></strong></td>
                                     <td><?php echo htmlspecialchars($eq['numero_serie'] ?? '—'); ?></td>
                                     <td><?php echo htmlspecialchars($eq['nombre_categoria'] ?? '—'); ?></td>
-                                    <td style="text-align: center;">
+                                    <td class="text-center">
                                         <button type="button" class="btn-seleccionar-modal" 
                                             onclick="seleccionarEquipo(<?php echo $eq['id_equipo']; ?>, '<?php echo htmlspecialchars($eq['nombre'] . ' (' . ($eq['numero_serie'] ?? 'S/N') . ')', ENT_QUOTES); ?>')">
                                             Seleccionar
@@ -243,11 +243,11 @@ $res_usuarios = $conn->query("SELECT u.id_usuario, u.nombre, u.apellido, r.nombr
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="4" style="text-align: center; color: #777; padding: 15px;">No hay equipos disponibles para asignar en este momento.</td>
+                                <td colspan="4" class="texto-vacio">No hay equipos disponibles para asignar en este momento.</td>
                             </tr>
                         <?php endif; ?>
-                        <tr id="sinCoincidencias" style="display: none;">
-                            <td colspan="4" style="text-align: center; color: #777; padding: 15px;">No se encontraron equipos que coincidan con la búsqueda.</td>
+                        <tr id="sinCoincidencias">
+                            <td colspan="4" class="texto-vacio">No se encontraron equipos que coincidan con la búsqueda.</td>
                         </tr>
                     </tbody>
                 </table>

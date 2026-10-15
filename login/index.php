@@ -22,14 +22,14 @@
                     <p class="titulo-login">Iniciar Sesión</p>
 
                     <?php if (!empty($error)): ?>
-                        <p style="color: #d33; font-weight: bold; font-size: 13px; margin-bottom: 12px; text-align: center;">
+                        <p class="mensaje-error">
                             <?php echo htmlspecialchars($error); ?>
                         </p>
                     <?php endif; ?>
 
                     <div class="campo">
                         <input name="ci" required placeholder="Cédula (sin puntos ni guiones)" type="text" autocomplete="username" />
-                        <small style="font-size: 11px; color: #777; display: block; margin-top: 4px;">Ej: 55204710 (solo números, sin puntos ni guiones)</small>
+                        <small class="campo-ayuda">Ej: 55204710 (solo números, sin puntos ni guiones)</small>
                     </div>
 
                     <div class="campo">

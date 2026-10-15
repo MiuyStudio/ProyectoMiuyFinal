@@ -10,11 +10,12 @@ if (!isset($_SESSION['usuario_id'])) {
 
 // Verificar permisos de Administrador (id_rol = 1)
 if (!isset($_SESSION['usuario_rol']) || $_SESSION['usuario_rol'] != 1) {
-    echo "<div style='padding: 30px; font-family: Arial, sans-serif;'>";
-    echo "<h2 style='color: red;'>Acceso Restringido</h2>";
+    echo "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><link rel='stylesheet' href='../css/administrar_usuarios.css'></head><body>";
+    echo "<div class='acceso-restringido-caja'>";
+    echo "<h2>Acceso Restringido</h2>";
     echo "<p>Esta sección es de uso exclusivo para Administradores del sistema.</p>";
     echo "<a href='../../index.php' target='_top'>Volver al portal principal</a>";
-    echo "</div>";
+    echo "</div></body></html>";
     exit();
 }
 
@@ -119,7 +120,7 @@ $roles = ($res_roles) ? $res_roles->fetch_all(MYSQLI_ASSOC) : [];
                         </select>
                     </div>
 
-                    <div style="margin-top: 10px;">
+                    <div class="form-grupo-boton">
                         <button type="submit" class="btn btn-guardar">Crear Usuario</button>
                     </div>
                 </form>

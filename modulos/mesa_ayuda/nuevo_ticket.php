@@ -131,7 +131,7 @@ if ($res_eq) {
                         <div class="selector-equipo-contenedor">
                             <input type="text" id="nombre_equipo_seleccionado" value="" placeholder="— Ninguno seleccionado —" readonly>
                             <button type="button" class="btn-secundario" onclick="abrirModalEquipos()">Buscar equipo</button>
-                            <button type="button" class="btn-secundario" id="btnLimpiarEquipo" onclick="limpiarEquipo()" style="display: none;" title="Quitar equipo seleccionado">✕</button>
+                            <button type="button" class="btn-secundario" id="btnLimpiarEquipo" onclick="limpiarEquipo()" title="Quitar equipo seleccionado">✕</button>
                         </div>
                     </div>
 
@@ -165,7 +165,7 @@ if ($res_eq) {
                             <th>Nombre</th>
                             <th>N° Serie</th>
                             <th>Categoría</th>
-                            <th style="text-align: center;">Acción</th>
+                            <th class="text-center">Acción</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -178,7 +178,7 @@ if ($res_eq) {
                                     <td><strong><?php echo htmlspecialchars($eq['nombre']); ?></strong></td>
                                     <td><?php echo htmlspecialchars($eq['numero_serie'] ?? '—'); ?></td>
                                     <td><?php echo htmlspecialchars($eq['nombre_categoria'] ?? '—'); ?></td>
-                                    <td style="text-align: center;">
+                                    <td class="text-center">
                                         <button type="button" class="btn-seleccionar-modal" 
                                             onclick="seleccionarEquipo(<?php echo $eq['id_equipo']; ?>, '<?php echo htmlspecialchars($eq['nombre'], ENT_QUOTES); ?>', <?php echo !empty($eq['id_ticket_activo']) ? intval($eq['id_ticket_activo']) : 0; ?>, '<?php echo htmlspecialchars($eq['titulo_ticket_activo'] ?? '', ENT_QUOTES); ?>')">
                                             Seleccionar
@@ -188,11 +188,11 @@ if ($res_eq) {
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="4" style="text-align: center; color: #777; padding: 15px;">No hay equipos disponibles.</td>
+                                <td colspan="4" class="texto-vacio">No hay equipos disponibles.</td>
                             </tr>
                         <?php endif; ?>
-                        <tr id="sinCoincidencias" style="display: none;">
-                            <td colspan="4" style="text-align: center; color: #777; padding: 15px;">No se encontraron equipos que coincidan con la búsqueda.</td>
+                        <tr id="sinCoincidencias">
+                            <td colspan="4" class="texto-vacio">No se encontraron equipos que coincidan con la búsqueda.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -211,7 +211,7 @@ if ($res_eq) {
             <div class="cajita2">
                 <h4>Este equipo ya tiene un ticket en curso.</h4>
                 <p>¿Deseas agregar un comentario para el técnico?</p>
-                <div id="notifInfoDetalle" class="notif-ticket-info" style="display: none;"></div>
+                <div id="notifInfoDetalle" class="notif-ticket-info"></div>
                 <div class="notif-botones">
                     <button type="button" class="notif-btn-click" id="btnAceptarNotif" onclick="redirigirATicketActivo()">Aceptar</button>
                     <button type="button" class="notif-btn-cancelar" onclick="cerrarModalAviso()">Cancelar</button>

@@ -568,6 +568,7 @@ input[type="text"] {
 }
 
 .cajita2 .notif-ticket-info {
+    display: none;
     margin-top: 4px;
     font-size: 12px;
     color: #e0e0e0;
@@ -1017,4 +1018,144 @@ input[type="text"] {
     font-weight: bold;
     font-size: 12px;
     display: inline-block;
+}
+
+/* CLASES EXTENDIDAS Y UTILIDADES PARA VER TICKET Y NUEVO TICKET */
+.contenedor-volver {
+    margin-bottom: 12px;
+}
+
+.enlace-volver {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.enlace-volver:hover {
+    text-decoration: underline;
+}
+
+.enlace-equipo-historial {
+    color: #0066cc;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mb-12 {
+    margin-bottom: 12px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-6 {
+    margin-top: 6px;
+}
+
+.seccion-diagnosticos {
+    margin-top: 25px;
+}
+
+.subtitulo-linea {
+    font-size: 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.caja-diagnostico-item {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #fafafa;
+}
+
+.fecha-diagnostico {
+    color: #888;
+    font-size: 0.85em;
+    margin-top: 4px;
+}
+
+.resuelto-detalles {
+    font-size: 12px;
+    color: #1e4620;
+    margin-top: 4px;
+}
+
+.form-asignarme {
+    margin: 0;
+}
+
+.form-asignarme-inline {
+    display: inline;
+}
+
+.input-modal-campo {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-top: 4px;
+}
+
+.textarea-modal-campo {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-top: 4px;
+    resize: vertical;
+}
+
+.modal-acciones-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+}
+
+.comentario-rol {
+    font-size: 11px;
+    color: #555;
+}
+
+.divisor-suave {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
+
+.subtitulo-comentario {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.texto-apagado {
+    color: #777;
+}
+
+.texto-vacio {
+    text-align: center;
+    color: #777;
+    padding: 15px;
+}
+
+#btnLimpiarEquipo {
+    display: none;
+}
+
+#sinCoincidencias {
+    display: none;
 }

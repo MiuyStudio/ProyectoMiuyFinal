@@ -135,7 +135,7 @@ if ($res_sol) {
                                                     Ver soluciones
                                                 </button>
                                             <?php else: ?>
-                                                <span style="color: #777;">—</span>
+                                                <span class="texto-apagado">—</span>
                                             <?php endif; ?>
                                             <a href="../inventario/ver_equipo.php?id=<?= $eq['id_equipo'] ?>&origen=soluciones">
                                                 <button type="button" class="btn-ficha">Ficha Equipo</button>
