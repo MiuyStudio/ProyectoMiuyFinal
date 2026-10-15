@@ -7,6 +7,10 @@
         exit();
     }
 
+    function e($val, $defecto = '') {
+        return htmlspecialchars($val ?? $defecto, ENT_QUOTES, 'UTF-8');
+    }
+
     $id_ticket  = intval($_GET['id'] ?? 0);
     $rol        = intval($_SESSION['usuario_rol']);
     $id_usuario = intval($_SESSION['usuario_id']);
@@ -99,8 +103,8 @@
     <div class="encabezado">
         <h1>Mesa de Ayuda</h1>
         <span>
-            Usuario: <?php echo htmlspecialchars($_SESSION['usuario_nombre']); ?>
-            (<?php echo htmlspecialchars($_SESSION['nombre_rol']); ?>) |
+            Usuario: <?= e($_SESSION['usuario_nombre']); ?>
+            (<?= e($_SESSION['nombre_rol']); ?>) |
             <a href="../../logout.php" target="_top">Cerrar sesión</a>
         </span>
     </div>
@@ -124,15 +128,15 @@
         <div class="areaContenido">
 
             <?php if (!empty($mensaje)): ?>
-                <p class="mensaje-exito"><?= htmlspecialchars($mensaje); ?></p>
+                <p class="mensaje-exito"><?= e($mensaje); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($error)): ?>
-                <p class="mensaje-error"><?= htmlspecialchars($error); ?></p>
+                <p class="mensaje-error"><?= e($error); ?></p>
             <?php endif; ?>
 
             <div class="contenedor-volver">
-                <a href="<?php echo htmlspecialchars($volver_url); ?>" class="enlace-volver"><?php echo htmlspecialchars($volver_texto); ?></a>
+                <a href="<?= e($volver_url); ?>" class="enlace-volver"><?= e($volver_texto); ?></a>
             </div>
 
             <!-- CONTENEDOR EN 2 COLUMNAS (TICKET A LA IZQUIERDA Y COMENTARIOS A LA DERECHA) -->
@@ -140,31 +144,31 @@
 
                 <!-- COLUMNA IZQUIERDA: DETALLE DEL TICKET -->
                 <div class="ticket-col-izq">
-                    <h2>Ticket #<?php echo $ticket['id_ticket']; ?> — <?php echo htmlspecialchars($ticket['titulo']); ?></h2>
+                    <h2>Ticket #<?= $ticket['id_ticket']; ?> — <?= e($ticket['titulo']); ?></h2>
 
                     <table class="tablaTickets mb-20">
                         <tbody>
-                            <tr><th>Estado</th><td><span class="badge-estado estado<?php echo str_replace(' ', '', $ticket['estado']); ?>"><?php echo htmlspecialchars($ticket['estado']); ?></span></td></tr>
-                            <tr><th>Tipo</th><td><?php echo htmlspecialchars($ticket['tipo_ticket']); ?></td></tr>
-                            <tr><th>Prioridad</th><td><span class="badge-prioridad prioridad<?php echo htmlspecialchars($ticket['prioridad']); ?>"><?php echo htmlspecialchars($ticket['prioridad']); ?></span></td></tr>
-                            <tr><th>Categoría</th><td><?php echo htmlspecialchars($ticket['nombre_categoria'] ?? '—'); ?></td></tr>
-                            <tr><th>Solicitante</th><td><?php echo htmlspecialchars($ticket['nombre_solicitante']); ?></td></tr>
-                            <tr><th>Técnico asignado</th><td><?php echo htmlspecialchars($ticket['nombre_tecnico'] ?? 'Sin asignar'); ?></td></tr>
+                            <tr><th>Estado</th><td><span class="badge-estado estado<?= str_replace(' ', '', $ticket['estado']); ?>"><?= e($ticket['estado']); ?></span></td></tr>
+                            <tr><th>Tipo</th><td><?= e($ticket['tipo_ticket']); ?></td></tr>
+                            <tr><th>Prioridad</th><td><span class="badge-prioridad prioridad<?= e($ticket['prioridad']); ?>"><?= e($ticket['prioridad']); ?></span></td></tr>
+                            <tr><th>Categoría</th><td><?= e($ticket['nombre_categoria'], '—'); ?></td></tr>
+                            <tr><th>Solicitante</th><td><?= e($ticket['nombre_solicitante']); ?></td></tr>
+                            <tr><th>Técnico asignado</th><td><?= e($ticket['nombre_tecnico'], 'Sin asignar'); ?></td></tr>
                             <tr>
                                 <th>Equipo afectado</th>
                                 <td>
                                     <?php if (!empty($ticket['id_equipo'])): ?>
-                                        <a href="../inventario/ver_equipo.php?id=<?php echo $ticket['id_equipo']; ?>&origen=ticket&id_ticket=<?php echo $ticket['id_ticket']; ?>" class="enlace-equipo-historial">
-                                            <?php echo htmlspecialchars($ticket['nombre_equipo'] . ($ticket['numero_serie'] ? ' (' . $ticket['numero_serie'] . ')' : '')); ?> (Ver historial)
+                                        <a href="../inventario/ver_equipo.php?id=<?= $ticket['id_equipo']; ?>&origen=ticket&id_ticket=<?= $ticket['id_ticket']; ?>" class="enlace-equipo-historial">
+                                            <?= e($ticket['nombre_equipo'] . ($ticket['numero_serie'] ? ' (' . $ticket['numero_serie'] . ')' : '')); ?> (Ver historial)
                                         </a>
                                     <?php else: ?>
                                         —
                                     <?php endif; ?>
                                 </td>
                             </tr>
-                            <tr><th>Fecha creación</th><td><?php echo date('d/m/Y H:i', strtotime($ticket['fecha_creacion'])); ?></td></tr>
-                            <tr><th>Última actualización</th><td><?php echo date('d/m/Y H:i', strtotime($ticket['fecha_actualizacion'])); ?></td></tr>
-                            <tr><th>Descripción</th><td><?php echo nl2br(htmlspecialchars($ticket['descripcion'])); ?></td></tr>
+                            <tr><th>Fecha creación</th><td><?= date('d/m/Y H:i', strtotime($ticket['fecha_creacion'])); ?></td></tr>
+                            <tr><th>Última actualización</th><td><?= date('d/m/Y H:i', strtotime($ticket['fecha_actualizacion'])); ?></td></tr>
+                            <tr><th>Descripción</th><td><?= nl2br(e($ticket['descripcion'])); ?></td></tr>
                         </tbody>
                     </table>
 
@@ -174,11 +178,11 @@
                         <h3 class="subtitulo-linea">Diagnósticos registrados</h3>
                         <?php while ($diag = $res_diag->fetch_assoc()): ?>
                         <div class="caja-diagnostico-item">
-                            <p><strong>Técnico:</strong> <?php echo htmlspecialchars($diag['nombre_tecnico']); ?></p>
-                            <p><strong>Equipo:</strong> <?php echo htmlspecialchars($diag['nombre_equipo'] ?? '—'); ?></p>
-                            <p><strong>Problema encontrado:</strong> <?php echo nl2br(htmlspecialchars($diag['diagnostico'])); ?></p>
-                            <p><strong>Solución aplicada:</strong> <?php echo nl2br(htmlspecialchars($diag['solucion_aplicada'])); ?></p>
-                            <p class="fecha-diagnostico"><?php echo date('d/m/Y H:i', strtotime($diag['fecha_intervencion'])); ?></p>
+                            <p><strong>Técnico:</strong> <?= e($diag['nombre_tecnico']); ?></p>
+                            <p><strong>Equipo:</strong> <?= e($diag['nombre_equipo'], '—'); ?></p>
+                            <p><strong>Problema encontrado:</strong> <?= nl2br(e($diag['diagnostico'])); ?></p>
+                            <p><strong>Solución aplicada:</strong> <?= nl2br(e($diag['solucion_aplicada'])); ?></p>
+                            <p class="fecha-diagnostico"><?= date('d/m/Y H:i', strtotime($diag['fecha_intervencion'])); ?></p>
                         </div>
                         <?php endwhile; ?>
                     </div>
@@ -194,8 +198,8 @@
                                         <h4>Ticket Resuelto</h4>
                                         <p>Este caso fue cerrado satisfactoriamente.</p>
                                         <p class="resuelto-detalles">
-                                            <strong>Técnico:</strong> <?php echo htmlspecialchars($ticket['nombre_tecnico'] ?? 'Técnico asignado'); ?> | 
-                                            <strong>Fecha:</strong> <?php echo date('d/m/Y H:i', strtotime($ticket['fecha_actualizacion'])); ?>
+                                            <strong>Técnico:</strong> <?= e($ticket['nombre_tecnico'], 'Técnico asignado'); ?> | 
+                                            <strong>Fecha:</strong> <?= date('d/m/Y H:i', strtotime($ticket['fecha_actualizacion'])); ?>
                                         </p>
                                     </div>
                                 </div>
@@ -208,8 +212,8 @@
                                 <div class="barra-acciones-rapidas">
                                     <?php if ($ticket['id_tecnico'] === null || empty($ticket['id_tecnico'])): ?>
                                         <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php" class="form-asignarme">
-                                            <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
-                                            <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
+                                            <input type="hidden" name="id_ticket" value="<?= $ticket['id_ticket']; ?>">
+                                            <input type="hidden" name="origen" value="<?= e($origen); ?>">
                                             <input type="hidden" name="accion" value="asignarme">
                                             <button type="submit" class="btn-accion-ticket btn-asignar">
                                                 Asignarme este ticket
@@ -221,7 +225,7 @@
                                         Resolver Ticket
                                     </button>
 
-                                    <button type="button" class="btn-accion-ticket" onclick="abrirModalResolver('<?php echo htmlspecialchars($ticket['estado']); ?>')">
+                                    <button type="button" class="btn-accion-ticket" onclick="abrirModalResolver('<?= e($ticket['estado']); ?>')">
                                         Actualizar estado
                                     </button>
                                 </div>
@@ -237,16 +241,16 @@
                                 </div>
 
                                 <form method="POST" action="../../acciones/mesa_ayuda/actualizar_ticket.php">
-                                    <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
-                                    <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
+                                    <input type="hidden" name="id_ticket" value="<?= $ticket['id_ticket']; ?>">
+                                    <input type="hidden" name="origen" value="<?= e($origen); ?>">
                                     <input type="hidden" name="accion" value="actualizar_estado">
 
                                     <div class="grupoFormulario mb-12">
                                         <label for="modal_estado">Cambiar estado</label>
                                         <select id="modal_estado" name="estado" required class="input-modal-campo">
-                                            <option value="Pendiente" <?php echo ($ticket['estado'] == 'Pendiente') ? 'selected' : ''; ?>>Pendiente</option>
-                                            <option value="En Proceso" <?php echo ($ticket['estado'] == 'En Proceso') ? 'selected' : ''; ?>>En Proceso</option>
-                                            <option value="Resuelto" <?php echo ($ticket['estado'] == 'Resuelto') ? 'selected' : ''; ?>>Resuelto</option>
+                                            <option value="Pendiente" <?= ($ticket['estado'] == 'Pendiente') ? 'selected' : ''; ?>>Pendiente</option>
+                                            <option value="En Proceso" <?= ($ticket['estado'] == 'En Proceso') ? 'selected' : ''; ?>>En Proceso</option>
+                                            <option value="Resuelto" <?= ($ticket['estado'] == 'Resuelto') ? 'selected' : ''; ?>>Resuelto</option>
                                         </select>
                                     </div>
 
@@ -265,8 +269,8 @@
                                         <select id="modal_equipo_diag" name="id_equipo_diag" class="input-modal-campo">
                                             <option value="">— Ninguno —</option>
                                             <?php if ($res_equipos): $res_equipos->data_seek(0); while ($eq = $res_equipos->fetch_assoc()): ?>
-                                                <option value="<?php echo $eq['id_equipo']; ?>" <?php echo ($ticket['id_equipo'] == $eq['id_equipo']) ? 'selected' : ''; ?>>
-                                                    <?php echo htmlspecialchars($eq['nombre']); ?>
+                                                <option value="<?= $eq['id_equipo']; ?>" <?= ($ticket['id_equipo'] == $eq['id_equipo']) ? 'selected' : ''; ?>>
+                                                    <?= e($eq['nombre']); ?>
                                                 </option>
                                             <?php endwhile; endif; ?>
                                         </select>
@@ -291,16 +295,16 @@
                     <div class="comentarios-scroll-box">
                         <?php if ($res_com && $res_com->num_rows > 0): ?>
                             <?php while ($com = $res_com->fetch_assoc()): ?>
-                                <div class="comentario-tarjeta <?php echo ($com['id_usuario'] == $id_usuario) ? 'es-mio' : ''; ?>">
+                                <div class="comentario-tarjeta <?= ($com['id_usuario'] == $id_usuario) ? 'es-mio' : ''; ?>">
                                     <div class="comentario-cabecera">
                                         <span class="comentario-autor">
-                                            <b><?php echo htmlspecialchars($com['autor']); ?></b>
-                                            <span class="comentario-rol">(<?php echo htmlspecialchars($com['nombre_rol']); ?>)</span>
+                                            <b><?= e($com['autor']); ?></b>
+                                            <span class="comentario-rol">(<?= e($com['nombre_rol']); ?>)</span>
                                         </span>
-                                        <span class="comentario-fecha"><?php echo date('d/m/Y H:i', strtotime($com['fecha_creacion'])); ?></span>
+                                        <span class="comentario-fecha"><?= date('d/m/Y H:i', strtotime($com['fecha_creacion'])); ?></span>
                                     </div>
                                     <div class="comentario-cuerpo">
-                                        <?php echo nl2br(htmlspecialchars($com['comentario'])); ?>
+                                        <?= nl2br(e($com['comentario'])); ?>
                                     </div>
                                 </div>
                             <?php endwhile; ?>
@@ -316,8 +320,8 @@
                     <!-- Formulario para agregar comentario -->
                     <h3 class="subtitulo-comentario">Agregar comentario</h3>
                     <form method="POST" action="../../acciones/mesa_ayuda/guardar_comentario.php" class="form-agregar-comentario">
-                        <input type="hidden" name="id_ticket" value="<?php echo $ticket['id_ticket']; ?>">
-                        <input type="hidden" name="origen" value="<?php echo htmlspecialchars($origen); ?>">
+                        <input type="hidden" name="id_ticket" value="<?= $ticket['id_ticket']; ?>">
+                        <input type="hidden" name="origen" value="<?= e($origen); ?>">
                         <textarea name="comentario" rows="3" placeholder="Escriba un comentario para el técnico..." required></textarea>
                         <div class="mt-6">
                             <button type="submit" class="btn-enviar-comentario">Enviar comentario</button>
