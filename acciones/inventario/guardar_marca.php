@@ -19,6 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($nombre_marca) && preg_match('/[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]/', $nombre_marca)) {
         $nombre_clean = $conn->real_escape_string($nombre_marca);
 
+        // Verificar si la marca ya existe
+        $sql_check = "SELECT id_marca FROM marcas WHERE LOWER(nombre_marca) = LOWER('$nombre_clean')";
+        $res_check = $conn->query($sql_check);
+
+        if ($res_check && $res_check->num_rows > 0) {
+            header("Location: ../../modulos/inventario/agregar_marca.php?error=" . urlencode("La marca '$nombre_marca' ya existe."));
+            exit();
+        }
+
         $sql = "INSERT INTO marcas (nombre_marca) 
                 VALUES ('$nombre_clean')";
 

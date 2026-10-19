@@ -20,6 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($id_marca) && !empty($nombre_modelo) && preg_match('/[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]/', $nombre_modelo)) {
         $nombre_clean = $conn->real_escape_string($nombre_modelo);
 
+        // Verificar si el modelo ya existe para la marca seleccionada
+        $sql_check = "SELECT id_modelo FROM modelos WHERE id_marca = $id_marca AND LOWER(nombre_modelo) = LOWER('$nombre_clean')";
+        $res_check = $conn->query($sql_check);
+
+        if ($res_check && $res_check->num_rows > 0) {
+            header("Location: ../../modulos/inventario/agregar_modelo.php?error=" . urlencode("El modelo '$nombre_modelo' ya existe para esta marca."));
+            exit();
+        }
+
         $sql = "INSERT INTO modelos (nombre_modelo, id_marca) 
                 VALUES ('$nombre_clean', $id_marca)";
 
